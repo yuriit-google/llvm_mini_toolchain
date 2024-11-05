@@ -1,6 +1,6 @@
 load(
-    "@llvm_mini_toolchain//features:feature_import.bzl",
-    "feature_import",
+    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
+    "cc_toolchain_import",
 )
 load(
     "@llvm_mini_toolchain//cc_toolchain:sysroot.bzl",
@@ -25,14 +25,14 @@ CRT_OBJECTS = [
 ]
 
 [
-    feature_import(
+    cc_toolchain_import(
         name = obj,
         static_library = "usr/lib/aarch64-linux-gnu/%s.o" % obj,
     )
     for obj in CRT_OBJECTS
 ]
 
-feature_import(
+cc_toolchain_import(
     name = "startup_libs",
     target_compatible_with = select({
         "@platforms//os:linux": ["@platforms//cpu:aarch64"],
@@ -42,7 +42,7 @@ feature_import(
     deps = [":" + obj for obj in CRT_OBJECTS],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "includes",
     hdrs = glob([
         "usr/include/c++/*/**",
@@ -68,7 +68,7 @@ feature_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "gcc",
     additional_libs = [
         "lib/aarch64-linux-gnu/libgcc_s.so.1",
@@ -84,23 +84,7 @@ feature_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-# absent
-#feature_import(
-#    name = "mvec",
-#    additional_libs = [
-#        "lib/aarch64-linux-gnu/libmvec-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
-#        "lib/aarch64-linux-gnu/libmvec.so.1",
-#        "usr/lib/aarch64-linux-gnu/libmvec_nonshared.a",
-#    ],
-#    shared_library = "usr/lib/aarch64-linux-gnu/libmvec.so",
-#    static_library = "usr/lib/aarch64-linux-gnu/libmvec.a",
-#    target_compatible_with = select({
-#        "@platforms//os:linux": ["@platforms//cpu:aarch64"],
-#        "//conditions:default": ["@platforms//:incompatible"],
-#    }),
-#)
-
-feature_import(
+cc_toolchain_import(
     name = "dynamic_linker",
     additional_libs = [
         "lib/aarch64-linux-gnu/ld-linux-aarch64.so.1",
@@ -115,7 +99,7 @@ feature_import(
     deps = [":libc"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "math",
     additional_libs = ["lib/aarch64-linux-gnu/libm.so.6"],
     shared_library = "usr/lib/aarch64-linux-gnu/libm.so",
@@ -126,7 +110,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "pthread",
     additional_libs = [
         "lib/aarch64-linux-gnu/libpthread.so.0",
@@ -145,7 +129,7 @@ feature_import(
     ],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "util",
     shared_library = "usr/lib/aarch64-linux-gnu/libutil.so",
     static_library = "usr/lib/aarch64-linux-gnu/libutil.a",
@@ -155,7 +139,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "libc",
     additional_libs = [
         "lib/aarch64-linux-gnu/libc.so.6",
@@ -180,7 +164,7 @@ feature_import(
 
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.
-feature_import(
+cc_toolchain_import(
     name = "glibc",
     runtime_path = "/lib/aarch64-linux-gnu",
     target_compatible_with = select({

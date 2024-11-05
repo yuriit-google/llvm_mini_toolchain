@@ -15,7 +15,7 @@ load(
     "CC_LINK_EXECUTABLE_ACTION_NAMES",
 )
 load(
-    "@llvm_mini_toolchain//features:feature_import.bzl",
+    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
     "CcToolchainImportInfo",
 )
 
@@ -261,6 +261,7 @@ cc_toolchain_sysroot_feature = rule(
         "provides": attr.string_list(),
         "requires": attr.string_list(),
         "implies": attr.string_list(),
+        "toolchain_import": attr.label(providers = [CcToolchainImportInfo]),
         "sysroot": attr.label(mandatory = True),
     },
     provides = [FeatureInfo],

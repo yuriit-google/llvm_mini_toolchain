@@ -1,6 +1,6 @@
 load(
-    "@llvm_mini_toolchain//features:feature_import.bzl",
-    "feature_import",
+    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
+    "cc_toolchain_import",
 )
 load(
     "@llvm_mini_toolchain//cc_toolchain:sysroot.bzl",
@@ -31,14 +31,14 @@ CRT_OBJECTS = [
 ]
 
 [
-    feature_import(
+    cc_toolchain_import(
         name = obj,
         static_library = "usr/lib/x86_64-linux-gnu/%s.o" % obj,
     )
     for obj in CRT_OBJECTS
 ]
 
-feature_import(
+cc_toolchain_import(
     name = "startup_libs",
     target_compatible_with = select({
         "@platforms//os:linux": ["@platforms//cpu:x86_64"],
@@ -48,7 +48,7 @@ feature_import(
     deps = [":" + obj for obj in CRT_OBJECTS],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "gcc",
     additional_libs = [
         "lib/x86_64-linux-gnu/libgcc_s.so.1",
@@ -64,7 +64,7 @@ feature_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "mvec",
     additional_libs = [
         "lib/x86_64-linux-gnu/libmvec-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
@@ -79,7 +79,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "dynamic_linker",
     additional_libs = [
         "lib64/ld-linux-x86-64.so.2",
@@ -95,7 +95,7 @@ feature_import(
     deps = [":libc"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "math",
     additional_libs = ["lib/x86_64-linux-gnu/libm.so.6"],
     shared_library = "usr/lib/x86_64-linux-gnu/libm.so",
@@ -106,7 +106,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "pthread",
     additional_libs = [
         "lib/x86_64-linux-gnu/libpthread.so.0",
@@ -125,7 +125,7 @@ feature_import(
     ],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "util",
     additional_libs = [
         "lib/x86_64-linux-gnu/libutil-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
@@ -139,7 +139,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "libc",
     hdrs = glob([inc + "/**/*.h" for inc in INCLUDES] + [inc + "/*.h" for inc in INCLUDES]),
     additional_libs = [
@@ -166,7 +166,7 @@ feature_import(
 
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.
-feature_import(
+cc_toolchain_import(
     name = "glibc",
     runtime_path = "/lib/x86_64-linux-gnu",
     target_compatible_with = select({

@@ -1,6 +1,6 @@
 load(
-    "@llvm_mini_toolchain//features:feature_import.bzl",
-    "feature_import",
+    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
+    "cc_toolchain_import",
 )
 
 print("------------------------------ llvm18_linux_x86_64.BUILD ----------------------------------------")
@@ -32,7 +32,7 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "llvm_libunwind",
     hdrs = glob([
         "lib/clang/*/include/unwind.h",
@@ -54,7 +54,7 @@ feature_import(
     ],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "llvm_libcxx",
     #hdrs = glob(["include/c++/v1/**"]),
     #includes = ["include/c++/v1"],
@@ -71,7 +71,7 @@ feature_import(
     ],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "llvm_config_site",
     #hdrs = ["include/x86_64-unknown-linux-gnu/c++/v1/__config_site"],
     #includes = ["include/x86_64-unknown-linux-gnu/c++/v1"],
@@ -82,7 +82,7 @@ feature_import(
     visibility = ["//visibility:public"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "llvm_libcxx_abi",
     #hdrs = glob(["include/c++/v1/**"]),
     #includes = ["include/c++/v1"],
@@ -98,7 +98,7 @@ feature_import(
     ],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "llvm_clang",
     #hdrs = glob([
     #    "lib/clang/*/*.h",

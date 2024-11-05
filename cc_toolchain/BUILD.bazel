@@ -1,9 +1,9 @@
 load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
 load(":toolchain_config.bzl", "cc_toolchain_config")
-load("//features:feature_import.bzl", "feature_import")
+load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 #load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
-feature_import(
+cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
