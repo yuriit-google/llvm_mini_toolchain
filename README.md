@@ -1,0 +1,1 @@
+bazel build //tests:hello_world --platforms=//config:linux_aarch64_platform -s
