@@ -1,0 +1,50 @@
+workspace(
+    name = "llvm_mini_toolchain",
+)
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+http_archive(
+    name = "bazel_skylib",
+    sha256 = "23ef380aa62e2f1b631d02d0c9d163e43be03e880953dafe133d754fb8d96f0a",
+    strip_prefix = "bazel-skylib-1.7.1",
+    urls = ["https://github.com/bazelbuild/bazel-skylib/archive/refs/tags/1.7.1.zip"],
+)
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+http_archive(
+    name = "platforms",
+    sha256 = "5308fc1d8865406a49427ba24a9ab53087f17f5266a7aabbfc28823f3916e1ca",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.6/platforms-0.0.6.tar.gz",
+        "https://github.com/bazelbuild/platforms/releases/download/0.0.6/platforms-0.0.6.tar.gz",
+    ],
+)
+
+git_repository(
+    name = "rules_os",
+    commit  = "b9a7cb63a80d3c7662b58bcf32347a3dcdf3ff3f",
+    remote = "https://github.com/silvergasp/rules_os.git",
+)
+
+http_archive(
+    name = "sysroot_linux_x86_64_glibc2_27",
+    sha256 = "d19c4b010a75eb9d599f055c834a993d848880c936d7d91366a7c3765ad028ae",
+    urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_x86_64_sysroot.tar.xz"],
+    build_file = "//config:sysroot_linux_x86_64_glibc2_27.BUILD",
+    strip_prefix = "ubuntu18_x86_64_sysroot"
+)
+
+http_archive(
+    name = "llvm18_linux_x86_64",
+    url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
+    sha256 = "54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36",
+    build_file = "//config:llvm18_linux_x86_64.BUILD",
+    strip_prefix = "clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04",
+)
+
+register_toolchains("//cc_toolchain/...")

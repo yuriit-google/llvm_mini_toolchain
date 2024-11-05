@@ -1,0 +1,5 @@
+bazel-bin
+bazel-llvm_mini_toolchain
+bazel-out
+bazel-testlogs
+compare/
