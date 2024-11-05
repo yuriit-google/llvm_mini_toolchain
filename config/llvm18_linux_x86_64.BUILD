@@ -37,15 +37,15 @@ feature_import(
     hdrs = glob([
         "lib/clang/*/include/unwind.h",
     ]),
-    includes = [
-        "lib/clang/{clang_version}".format(clang_version = CLANG_VERSION),
-        "lib/clang/{clang_version}/include".format(clang_version = CLANG_VERSION),
-    ],
+    #includes = [
+    #    "lib/clang/{clang_version}".format(clang_version = CLANG_VERSION),
+    #    "lib/clang/{clang_version}/include".format(clang_version = CLANG_VERSION),
+    #],
     runtime_path = "/usr/lib/x86_64-linux-gnu",
     shared_library = "lib/libunwind.so",
     static_library = "lib/x86_64-unknown-linux-gnu/libunwind.a",
     target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
@@ -60,7 +60,7 @@ feature_import(
     #includes = ["include/c++/v1"],
     static_library = "lib/x86_64-unknown-linux-gnu/libc++.a",
     target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
@@ -76,7 +76,7 @@ feature_import(
     #hdrs = ["include/x86_64-unknown-linux-gnu/c++/v1/__config_site"],
     #includes = ["include/x86_64-unknown-linux-gnu/c++/v1"],
     target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
@@ -88,7 +88,7 @@ feature_import(
     #includes = ["include/c++/v1"],
     static_library = "lib/x86_64-unknown-linux-gnu/libc++abi.a",
     target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],
@@ -110,7 +110,7 @@ feature_import(
     #    "lib/clang/{clang_version}/include".format(clang_version = CLANG_VERSION),
     #],
     target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "@platforms//os:linux": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["//visibility:public"],

@@ -1,4 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_toolchain")
+load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 load("//features:feature_import.bzl", "feature_import")
 #load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
@@ -7,8 +7,6 @@ feature_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
-        # buildifier don't sort, allow user to override system libs. 
-        # System libs will be found first as the include paths are found.
         "//config:libc",
         "//config:libc++",
         "//config:libc++abi",
@@ -47,9 +45,19 @@ filegroup(
     ],
 )
 
+cc_toolchain_suite(
+    name = "clang_suite",
+    toolchains = {
+        "aarch64|linux_clang": ":aarch64_linux_clang",
+    },
+)
+
+######################################################################
+# aarch64
+######################################################################
 cc_toolchain(
-    name = "linux_x86_64_toolchain",
-    toolchain_identifier = "linux_x86_64_toolchain",
+    name = "aarch64_linux_clang",
+    toolchain_identifier = "aarch64_linux_clang_id",
     all_files = ":all",
     ar_files = ":empty",
     compiler_files = ":compiler_files",
@@ -58,14 +66,16 @@ cc_toolchain(
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":linux_x86_64_toolchain_config",
+    toolchain_config = ":aarch64_linux_clang_toolchain_config",
 )
 
 cc_toolchain_config(
-    name = "linux_x86_64_toolchain_config",
+    name = "aarch64_linux_clang_toolchain_config",
     c_compiler = "@llvm18_linux_x86_64//:bin/clang",
     cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
     linker = "@llvm18_linux_x86_64//:bin/ld.lld",
+    target_system_name = "local",
+    target_cpu = "aarch64",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
@@ -78,7 +88,7 @@ cc_toolchain_config(
         "//features:reproducible",
         "//features:language",
         "//features:use_lld",
-        "//features:sysroot",
+        "//features:sysroot_linux_aarch64",
         "//features:dbg",
         "//features:opt",
         "//features:fastbuild",
@@ -95,16 +105,16 @@ cc_toolchain_config(
     ],
 )
 
-toolchain(
-    name = "linux_x86_64_cc_toolchain",
-    exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
-    target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
-    toolchain = ":linux_x86_64_toolchain",
-    toolchain_type = "@rules_cc//cc:toolchain_type",
-)
+#toolchain(
+#    name = "linux_aarch64_cc_toolchain",
+#    exec_compatible_with = [
+#        "@platforms//cpu:aarch64",
+#        #"@platforms//os:linux",
+#    ],
+#    target_compatible_with = [
+#        "@platforms//cpu:aarch64",
+#        #"@platforms//os:linux",
+#    ],
+#    toolchain = ":linux_aarch64_toolchain",
+#    toolchain_type = "@rules_cc//cc:toolchain_type",
+#)

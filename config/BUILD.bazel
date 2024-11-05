@@ -12,10 +12,35 @@ config_setting(
     ],
 )
 
+config_setting(
+    name = "linux_aarch64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+)
+
+platform(
+    name = "linux_x86_64_platform",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],    
+)
+
+platform(
+    name = "linux_aarch64_platform",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+)
+
 alias(
     name = "libc",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:glibc",
     }),
 )
 
@@ -24,6 +49,7 @@ alias(
     actual = select({
         # TODO: Explore using llvm-libunwind statically linked.
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:gcc",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:gcc",
     }),
 )
 
@@ -31,6 +57,7 @@ alias(
     name = "pthread",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:pthread",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:pthread",
     }),
 )
 
@@ -38,6 +65,7 @@ alias(
     name = "libc++",
     actual = select({
         ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_libcxx",
+        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_libcxx",
     }),
 )
 
@@ -45,6 +73,7 @@ alias(
     name = "libc++abi",
     actual = select({
         ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_libcxx_abi",
+        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_libcxx_abi",
     }),
 )
 
@@ -52,6 +81,7 @@ alias(
     name = "llvm_clang",
     actual = select({
         ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_clang",
+        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_clang",
     }),
 )
 
@@ -59,6 +89,7 @@ alias(
     name = "llvm_config_site",
     actual = select({
         ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_config_site",
+        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_config_site",
     }),
 )
 
@@ -66,6 +97,7 @@ alias(
     name = "startup_libs",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
         "//conditions:default": ":empty",
     }),
 )

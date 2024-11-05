@@ -77,7 +77,7 @@ cc_feature(
 cc_feature(
     name = "hermetic_libraries",
     cc_flags = ["-nostdinc++"],
-    compiler_flags = ["-nostdinc"],
+    compiler_flags = ["-nostdinc", "--target=aarch64-linux-gnu"],
     enabled = True,
     linker_flags = [
         "-nostdlib",
@@ -142,9 +142,15 @@ cc_feature(
 )
 
 cc_toolchain_sysroot_feature(
-    name = "sysroot",
+    name = "sysroot_linux_x86_64",
     enabled = True,
     sysroot = "@sysroot_linux_x86_64_glibc2_27//:sysroot",
+)
+
+cc_toolchain_sysroot_feature(
+    name = "sysroot_linux_aarch64",
+    enabled = True,
+    sysroot = "@sysroot_linux_aarch64_glibc2_27//:sysroot",
 )
 
 cc_feature(

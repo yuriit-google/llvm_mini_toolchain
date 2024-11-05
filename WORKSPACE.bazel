@@ -40,6 +40,14 @@ http_archive(
 )
 
 http_archive(
+    name = "sysroot_linux_aarch64_glibc2_27",
+    sha256 = "d883a1d664500f11bb49aa70c650a9e68d49341324c447f9abda77ec2f335ac5",
+    urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_aarch64-sysroot.tar.xz"],
+    build_file = "//config:sysroot_linux_aarch64_glibc2_27.BUILD",
+    strip_prefix = "ubuntu18_aarch64-sysroot"
+)
+
+http_archive(
     name = "llvm18_linux_x86_64",
     url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
     sha256 = "54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36",
@@ -47,4 +55,4 @@ http_archive(
     strip_prefix = "clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04",
 )
 
-register_toolchains("//cc_toolchain/...")
+#register_toolchains("//cc_toolchain/...")
