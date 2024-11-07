@@ -44,17 +44,17 @@ filegroup(
 cc_toolchain_suite(
     name = "clang_suite",
     toolchains = {
-        "aarch64|linux_clang": ":aarch64_linux_clang",
-        "aarch64": ":aarch64_linux_clang",
+        "x86_64|linux": ":linux_x86_64_toolchain",
+        "aarch64|linux": ":linux_aarch64_toolchain",
     },
 )
 
 ######################################################################
-# aarch64
+# x86_64
 ######################################################################
 cc_toolchain(
-    name = "aarch64_linux_clang",
-    toolchain_identifier = "aarch64_linux_clang_id",
+    name = "linux_x86_64_toolchain",
+    toolchain_identifier = "linux_x86_64_toolchain",
     all_files = ":all",
     ar_files = ":empty",
     compiler_files = ":compiler_files",
@@ -63,11 +63,64 @@ cc_toolchain(
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":aarch64_linux_clang_toolchain_config",
+    toolchain_config = ":linux_x86_64_toolchain_config",
 )
 
 cc_toolchain_config(
-    name = "aarch64_linux_clang_toolchain_config",
+    name = "linux_x86_64_toolchain_config",
+    c_compiler = "@llvm18_linux_x86_64//:bin/clang",
+    cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
+    linker = "@llvm18_linux_x86_64//:bin/ld.lld",
+    target_system_name = "local",
+    target_cpu = "x86_64",
+    compiler_features = [
+        # Hermetic libraries feature required before import.
+        "//features:hermetic_libraries",
+        "//features:toolchain_import",
+
+        # Toolchain configuration
+        "//features:garbage_collect_symbols",
+        "//features:warnings",
+        "//features:errors",
+        "//features:reproducible",
+        "//features:language",
+        "//features:use_lld",
+        "//features:sysroot_linux_x86_64",
+        "//features:dbg",
+        "//features:opt",
+        "//features:fastbuild",
+        "//features:position_independent_code",
+        "//features:supports_pic",
+        "//features:startup_libs",
+        "//features:coverage",
+
+        # C++ standard configuration
+        "//features:c++11",
+        "//features:c++14",
+        "//features:c++17",
+        "//features:c++20",
+    ],
+)
+
+######################################################################
+# aarch64
+######################################################################
+cc_toolchain(
+    name = "linux_aarch64_toolchain",
+    toolchain_identifier = "linux_aarch64_toolchain_id",
+    all_files = ":all",
+    ar_files = ":empty",
+    compiler_files = ":compiler_files",
+    dwp_files = ":all",
+    linker_files = ":linker_files",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":linux_aarch64_toolchain_config",
+)
+
+cc_toolchain_config(
+    name = "linux_aarch64_toolchain_config",
     c_compiler = "@llvm18_linux_x86_64//:bin/clang",
     cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
     linker = "@llvm18_linux_x86_64//:bin/ld.lld",

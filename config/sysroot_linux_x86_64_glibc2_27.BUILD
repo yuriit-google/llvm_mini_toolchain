@@ -17,12 +17,6 @@ sysroot_package(
 GCC_VERSION = 7
 GLIBC_VERSION = "2.27"
 
-INCLUDES = [
-    "usr/local/include",
-    "usr/include/x86_64-linux-gnu",
-    "usr/include",
-]
-
 CRT_OBJECTS = [
     "crti",
     "crtn",
@@ -46,6 +40,32 @@ cc_toolchain_import(
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [":" + obj for obj in CRT_OBJECTS],
+)
+
+cc_toolchain_import(
+    name = "includes",
+    hdrs = glob([
+        "usr/include/c++/*/**",
+        "usr/include/x86_64-linux-gnu/c++/*/**",
+        "usr/lib/gcc/x86_64-linux-gnu/7/include/**",
+        "usr/local/include/**",
+        "usr/include/x86_64-linux-gnu/**",
+        "usr/include/**",
+    ]),
+    includes = [
+        "usr/include/c++/7",
+        "usr/include/x86_64-linux-gnu/c++/7",
+        "usr/include/c++/7/backward",
+        "usr/lib/gcc/x86_64-linux-gnu/7/include",
+        "usr/local/include",
+        "usr/include/x86_64-linux-gnu",
+        "usr/include",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
 cc_toolchain_import(
@@ -141,13 +161,11 @@ cc_toolchain_import(
 
 cc_toolchain_import(
     name = "libc",
-    hdrs = glob([inc + "/**/*.h" for inc in INCLUDES] + [inc + "/*.h" for inc in INCLUDES]),
     additional_libs = [
         "lib/x86_64-linux-gnu/libc.so.6",
         "lib/x86_64-linux-gnu/libc-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
         "usr/lib/x86_64-linux-gnu/libc_nonshared.a",
     ],
-    includes = INCLUDES,
     runtime_path = "/usr/lib/gcc/x86_64-linux-gnu/{gcc_version}".format(gcc_version = GCC_VERSION),
     shared_library = "usr/lib/x86_64-linux-gnu/libc.so",
     static_library = "usr/lib/x86_64-linux-gnu/libc.a",
@@ -157,6 +175,7 @@ cc_toolchain_import(
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [
+        ":includes",
         ":gcc",
         ":math",
         ":mvec",

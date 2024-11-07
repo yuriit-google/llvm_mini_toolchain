@@ -1,4 +1,5 @@
-bazel build //tests:hello_world -s \
-    --platforms=//config:linux_aarch64_platform \
-    --host_platform=//config:linux_aarch64_platform \
-    --verbose_failures
+# Build x86_64
+bazel build //tests:hello_world --config=x86_64
+
+# Build aarch64
+bazel build //tests:hello_world --config=aarch64
