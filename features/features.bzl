@@ -249,6 +249,11 @@ def _sysroot_feature(ctx):
                             ctx.attr.sysroot.label.workspace_root,
                         ],
                     ),
+                    flag_group(
+                        flags = [
+                            "--target=" + ctx.attr.target,
+                        ],
+                    ),
                 ],
             ),
         ],
@@ -263,6 +268,7 @@ cc_toolchain_sysroot_feature = rule(
         "implies": attr.string_list(),
         "toolchain_import": attr.label(providers = [CcToolchainImportInfo]),
         "sysroot": attr.label(mandatory = True),
+        "target": attr.string(mandatory = True),
     },
     provides = [FeatureInfo],
 )
