@@ -85,6 +85,21 @@ cc_toolchain_import(
 )
 
 cc_toolchain_import(
+    name = "stdc++",
+    additional_libs = [
+        "usr/lib/aarch64-linux-gnu/libstdc++.so.6",
+        "usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.25",
+    ],
+    shared_library = "usr/lib/gcc/aarch64-linux-gnu/{gcc_version}/libstdc++.so".format(gcc_version = GCC_VERSION),
+    static_library = "usr/lib/gcc/aarch64-linux-gnu/{gcc_version}/libstdc++.a".format(gcc_version = GCC_VERSION),
+    target_compatible_with = select({
+        "@platforms//os:linux": ["@platforms//cpu:aarch64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
+cc_toolchain_import(
     name = "dynamic_linker",
     additional_libs = [
         "lib/aarch64-linux-gnu/ld-linux-aarch64.so.1",
@@ -159,6 +174,7 @@ cc_toolchain_import(
         ":math",
         #":mvec",
         ":util",
+        "stdc++",
     ],
 )
 
