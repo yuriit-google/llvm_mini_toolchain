@@ -98,7 +98,6 @@ cc_toolchain_config(
         "//features:c++11",
         "//features:c++14",
         "//features:c++17",
-        "//features:c++20",
     ],
 )
 
