@@ -7,7 +7,7 @@ build --crosstool_top=//cc_toolchain:clang_suite
 build --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 # Use --cpu as a differentiator.
-build --cpu=aarch64
+#build --cpu=aarch64
 
 # Use --cpu as a differentiator.
 build --compiler=linux_clang
