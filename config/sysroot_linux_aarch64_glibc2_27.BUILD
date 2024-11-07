@@ -174,7 +174,7 @@ cc_toolchain_import(
         ":math",
         #":mvec",
         ":util",
-        "stdc++",
+        ":stdc++",
     ],
 )
 
