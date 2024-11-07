@@ -144,7 +144,6 @@ cc_feature(
 cc_toolchain_sysroot_feature(
     name = "sysroot_linux_x86_64",
     enabled = True,
-    toolchain_import = "//cc_toolchain:all_imports",
     sysroot = "@sysroot_linux_x86_64_glibc2_27//:sysroot",
     target = "x86_64-linux-gnu",
 )
@@ -152,7 +151,6 @@ cc_toolchain_sysroot_feature(
 cc_toolchain_sysroot_feature(
     name = "sysroot_linux_aarch64",
     enabled = True,
-    toolchain_import = "//cc_toolchain:all_imports",
     sysroot = "@sysroot_linux_aarch64_glibc2_27//:sysroot",
     target = "aarch64-linux-gnu",
 )

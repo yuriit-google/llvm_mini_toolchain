@@ -266,7 +266,6 @@ cc_toolchain_sysroot_feature = rule(
         "provides": attr.string_list(),
         "requires": attr.string_list(),
         "implies": attr.string_list(),
-        "toolchain_import": attr.label(providers = [CcToolchainImportInfo]),
         "sysroot": attr.label(mandatory = True),
         "target": attr.string(mandatory = True),
     },

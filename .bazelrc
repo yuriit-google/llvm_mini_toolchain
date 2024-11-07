@@ -11,12 +11,10 @@ build --compiler=linux
 
 # aarch64
 build:aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-build:aarch64 --platforms=//config:linux_aarch64_platform
 build:aarch64 --host_platform=//config:linux_aarch64_platform
 
 # x86_64
 build:x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-build:x86_64 --platforms=//config:linux_x86_64_platform
 build:x86_64 --host_platform=//config:linux_x86_64_platform
 
 # Code coverage support
