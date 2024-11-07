@@ -1,6 +1,6 @@
 load(
-    "@llvm_mini_toolchain//features:feature_import.bzl",
-    "feature_import",
+    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
+    "cc_toolchain_import",
 )
 load(
     "@llvm_mini_toolchain//cc_toolchain:sysroot.bzl",
@@ -17,12 +17,6 @@ sysroot_package(
 GCC_VERSION = 7
 GLIBC_VERSION = "2.27"
 
-#INCLUDES = [
-#    "usr/local/include",
-#    "usr/include/x86_64-linux-gnu",
-#    "usr/include",
-#]
-
 CRT_OBJECTS = [
     "crti",
     "crtn",
@@ -31,14 +25,24 @@ CRT_OBJECTS = [
 ]
 
 [
-    feature_import(
+    cc_toolchain_import(
         name = obj,
         static_library = "usr/lib/x86_64-linux-gnu/%s.o" % obj,
     )
     for obj in CRT_OBJECTS
 ]
 
-feature_import(
+cc_toolchain_import(
+    name = "startup_libs",
+    target_compatible_with = select({
+        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    deps = [":" + obj for obj in CRT_OBJECTS],
+)
+
+cc_toolchain_import(
     name = "includes",
     hdrs = glob([
         "usr/include/c++/*/**",
@@ -64,17 +68,7 @@ feature_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-feature_import(
-    name = "startup_libs",
-    target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
-    deps = [":" + obj for obj in CRT_OBJECTS],
-)
-
-feature_import(
+cc_toolchain_import(
     name = "gcc",
     additional_libs = [
         "lib/x86_64-linux-gnu/libgcc_s.so.1",
@@ -90,7 +84,22 @@ feature_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-feature_import(
+cc_toolchain_import(
+    name = "stdc++",
+    additional_libs = [
+        "usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+        "usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25",
+    ],
+    shared_library = "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libstdc++.so".format(gcc_version = GCC_VERSION),
+    static_library = "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libstdc++.a".format(gcc_version = GCC_VERSION),
+    target_compatible_with = select({
+        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
+cc_toolchain_import(
     name = "mvec",
     additional_libs = [
         "lib/x86_64-linux-gnu/libmvec-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
@@ -105,7 +114,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "dynamic_linker",
     additional_libs = [
         "lib64/ld-linux-x86-64.so.2",
@@ -121,7 +130,7 @@ feature_import(
     deps = [":libc"],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "math",
     additional_libs = ["lib/x86_64-linux-gnu/libm.so.6"],
     shared_library = "usr/lib/x86_64-linux-gnu/libm.so",
@@ -132,7 +141,7 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "pthread",
     additional_libs = [
         "lib/x86_64-linux-gnu/libpthread.so.0",
@@ -151,7 +160,7 @@ feature_import(
     ],
 )
 
-feature_import(
+cc_toolchain_import(
     name = "util",
     additional_libs = [
         "lib/x86_64-linux-gnu/libutil-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
@@ -165,15 +174,13 @@ feature_import(
     }),
 )
 
-feature_import(
+cc_toolchain_import(
     name = "libc",
-    #hdrs = glob([inc + "/**/*.h" for inc in INCLUDES] + [inc + "/*.h" for inc in INCLUDES]),
     additional_libs = [
         "lib/x86_64-linux-gnu/libc.so.6",
         "lib/x86_64-linux-gnu/libc-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
         "usr/lib/x86_64-linux-gnu/libc_nonshared.a",
     ],
-    #includes = INCLUDES,
     runtime_path = "/usr/lib/gcc/x86_64-linux-gnu/{gcc_version}".format(gcc_version = GCC_VERSION),
     shared_library = "usr/lib/x86_64-linux-gnu/libc.so",
     static_library = "usr/lib/x86_64-linux-gnu/libc.a",
@@ -188,12 +195,13 @@ feature_import(
         ":math",
         ":mvec",
         ":util",
+        ":stdc++",
     ],
 )
 
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.
-feature_import(
+cc_toolchain_import(
     name = "glibc",
     runtime_path = "/lib/x86_64-linux-gnu",
     target_compatible_with = select({

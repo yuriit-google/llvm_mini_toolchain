@@ -47,7 +47,7 @@ def _compilation_ctx(headers, injected_headers, includes):
         injected_headers = injected_headers,
     )
 
-def _feature_import(compilation_context, linking_context):
+def _cc_toolchain_import(compilation_context, linking_context):
     return CcToolchainImportInfo(
         compilation_context = compilation_context,
         linking_context = linking_context,
@@ -62,8 +62,8 @@ def _normalise_include(ctx, inc):
         package_str = ctx.label.package + "/"
     return root_str + package_str + inc
 
-def _feature_import_impl(ctx):
-    print("_feature_import_impl: Adding {}".format(ctx.attr.name))
+def _cc_toolchain_import_impl(ctx):
+    print("_cc_toolchain_import_impl: Adding {}".format(ctx.attr.name))
     deps = ctx.attr.deps
     transitive_hdrs = []
     transitive_shared_libraries = []
@@ -176,12 +176,12 @@ def _feature_import_impl(ctx):
                                          transitive_injected_hdrs,
                             order = "topological",
                         )),
-        _feature_import(compilation_context, linking_context),
+        _cc_toolchain_import(compilation_context, linking_context),
     ]
     return result
 
-feature_import = rule(
-    _feature_import_impl,
+cc_toolchain_import = rule(
+    _cc_toolchain_import_impl,
     attrs = {
         "hdrs": attr.label_list(
             doc = "List of headers.",

@@ -72,12 +72,13 @@ def _cc_toolchain_config_impl(ctx):
         ],
     ) for action in ACTION_NAME_GROUPS.all_cc_link_actions]
 
+    print("_cc_toolchain_config_impl: {}/{}".format(ctx.attr.target_system_name, ctx.attr.target_cpu))
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
-        toolchain_identifier = "k8-toolchain",
-        host_system_name = "x86_64",
-        target_system_name = "x86_64",
-        target_cpu = "x86_64",
+        host_system_name = "local",
+        target_system_name = ctx.attr.target_system_name,
+        target_cpu = ctx.attr.target_cpu,
+        toolchain_identifier = "aarch64_linux_clang_id",
         target_libc = "unknown",
         compiler = "clang",
         abi_version = "unknown",
@@ -99,6 +100,14 @@ def _cc_toolchain_config_impl(ctx):
 cc_toolchain_config = rule(
     implementation = _cc_toolchain_config_impl,
     attrs = {
+        "target_system_name": attr.string(
+            doc = "Target system name.",
+            mandatory = True,
+        ),
+        "target_cpu": attr.string(
+            doc = "Target CPU name.",
+            mandatory = True,
+        ),
         "_tool_paths": attr.string_dict(
             default = {
                 "gcc": "wrappers/posix/gcc",

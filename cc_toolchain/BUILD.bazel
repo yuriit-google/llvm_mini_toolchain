@@ -1,21 +1,15 @@
-load("@rules_cc//cc:defs.bzl", "cc_toolchain")
+load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
 load(":toolchain_config.bzl", "cc_toolchain_config")
-load("//features:feature_import.bzl", "feature_import")
+load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 #load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
-feature_import(
+# Add libraries and includes here
+cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
-        # buildifier don't sort, allow user to override system libs. 
-        # System libs will be found first as the include paths are found.
         "//config:libc",
-        "//config:libc++",
-        "//config:libc++abi",
-        "//config:llvm_clang",
-        "//config:libunwind",
     ],
-
 )
 
 filegroup(
@@ -47,6 +41,17 @@ filegroup(
     ],
 )
 
+cc_toolchain_suite(
+    name = "clang_suite",
+    toolchains = {
+        "x86_64|linux": ":linux_x86_64_toolchain",
+        "aarch64|linux": ":linux_aarch64_toolchain",
+    },
+)
+
+######################################################################
+# x86_64
+######################################################################
 cc_toolchain(
     name = "linux_x86_64_toolchain",
     toolchain_identifier = "linux_x86_64_toolchain",
@@ -66,6 +71,8 @@ cc_toolchain_config(
     c_compiler = "@llvm18_linux_x86_64//:bin/clang",
     cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
     linker = "@llvm18_linux_x86_64//:bin/ld.lld",
+    target_system_name = "local",
+    target_cpu = "x86_64",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
@@ -78,7 +85,7 @@ cc_toolchain_config(
         "//features:reproducible",
         "//features:language",
         "//features:use_lld",
-        "//features:sysroot",
+        "//features:sysroot_linux_x86_64",
         "//features:dbg",
         "//features:opt",
         "//features:fastbuild",
@@ -95,16 +102,69 @@ cc_toolchain_config(
     ],
 )
 
-toolchain(
-    name = "linux_x86_64_cc_toolchain",
-    exec_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
-    target_compatible_with = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
-    toolchain = ":linux_x86_64_toolchain",
-    toolchain_type = "@rules_cc//cc:toolchain_type",
+######################################################################
+# aarch64
+######################################################################
+cc_toolchain(
+    name = "linux_aarch64_toolchain",
+    toolchain_identifier = "linux_aarch64_toolchain_id",
+    all_files = ":all",
+    ar_files = ":empty",
+    compiler_files = ":compiler_files",
+    dwp_files = ":all",
+    linker_files = ":linker_files",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":linux_aarch64_toolchain_config",
 )
+
+cc_toolchain_config(
+    name = "linux_aarch64_toolchain_config",
+    c_compiler = "@llvm18_linux_x86_64//:bin/clang",
+    cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
+    linker = "@llvm18_linux_x86_64//:bin/ld.lld",
+    target_system_name = "local",
+    target_cpu = "aarch64",
+    compiler_features = [
+        # Hermetic libraries feature required before import.
+        "//features:hermetic_libraries",
+        "//features:toolchain_import",
+
+        # Toolchain configuration
+        "//features:garbage_collect_symbols",
+        "//features:warnings",
+        "//features:errors",
+        "//features:reproducible",
+        "//features:language",
+        "//features:use_lld",
+        "//features:sysroot_linux_aarch64",
+        "//features:dbg",
+        "//features:opt",
+        "//features:fastbuild",
+        "//features:position_independent_code",
+        "//features:supports_pic",
+        "//features:startup_libs",
+        "//features:coverage",
+
+        # C++ standard configuration
+        "//features:c++11",
+        "//features:c++14",
+        "//features:c++17",
+        "//features:c++20",
+    ],
+)
+
+#toolchain(
+#    name = "linux_aarch64_cc_toolchain",
+#    exec_compatible_with = [
+#        "@platforms//cpu:aarch64",
+#        #"@platforms//os:linux",
+#    ],
+#    target_compatible_with = [
+#        "@platforms//cpu:aarch64",
+#        #"@platforms//os:linux",
+#    ],
+#    toolchain = ":linux_aarch64_toolchain",
+#    toolchain_type = "@rules_cc//cc:toolchain_type",
+#)
