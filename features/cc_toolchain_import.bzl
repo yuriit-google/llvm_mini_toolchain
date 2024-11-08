@@ -4,6 +4,7 @@ LinkingContextInfo = provider(
         "static_libraries": "The static library file.",
         "runtime_paths": "The directory to search for shared libs at runtime.",
         "additional_libs": "Additional files required for linking.",
+        "architecture": "Target CPU architecture",
     },
     doc = "The linking context for a precompiled toolchain library.",
 )
@@ -14,6 +15,7 @@ CompilationContextInfo = provider(
         "injected_headers": "The set of headers that are injected into every\
 compilation unit e.g. using -include.",
         "includes": "A depset of includes that configure this lib.",
+        "architecture": "Target CPU architecture",
     },
     doc = "The headers and includes that make up a lib.",
 )
@@ -32,19 +34,24 @@ def _linking_context(
         dynamic_library,
         static_library,
         runtime_path,
-        additional_libs):
+        additional_libs,
+        architecture):
+    print("_linking_context: architecture={}".format(architecture))
     return LinkingContextInfo(
         dynamic_libraries = dynamic_library,
         static_libraries = static_library,
         runtime_paths = runtime_path,
         additional_libs = additional_libs,
+        architecture = architecture,
     )
 
-def _compilation_ctx(headers, injected_headers, includes):
+def _compilation_ctx(headers, injected_headers, includes, architecture):
+    print("_linking_context: architecture={}".format(architecture))
     return CompilationContextInfo(
         headers = headers,
         includes = includes,
         injected_headers = injected_headers,
+        architecture = architecture,
     )
 
 def _cc_toolchain_import(compilation_context, linking_context):
@@ -72,6 +79,8 @@ def _cc_toolchain_import_impl(ctx):
     transitive_runtime_paths = []
     transitive_additional_libs = []
     transitive_injected_hdrs = []
+    transitive_arch = ""
+
     if deps:
         transitive_hdrs = [
             dep[CcToolchainImportInfo].compilation_context.headers
@@ -101,6 +110,13 @@ def _cc_toolchain_import_impl(ctx):
             dep[CcToolchainImportInfo].linking_context.additional_libs
             for dep in deps
         ]
+
+        for dep in deps:
+            if ctx.attr.architecture:
+                transitive_arch = ctx.attr.architecture
+            else:
+                transitive_arch = dep[CcToolchainImportInfo].compilation_context.architecture
+
     if not ctx.attr.includes:
         includes = []
     else:
@@ -117,6 +133,7 @@ def _cc_toolchain_import_impl(ctx):
             # works as expected.
             order = "topological",
         ),
+        transitive_arch,
     )
 
     if ctx.file.shared_library:
@@ -155,6 +172,7 @@ def _cc_toolchain_import_impl(ctx):
             transitive = transitive_additional_libs,
             order = "topological",
         ),
+        transitive_arch,
     )
     library_files = []
     if ctx.file.static_library:
@@ -218,6 +236,9 @@ e.g. libgcc_s.so requires libgcc_s.so.1",
         "deps": attr.label_list(
             doc = "Toolchain libraries that this library depends on.",
             default = [],
+        ),
+        "architecture": attr.string(
+            doc = "Target CPU architecture",
         ),
     },
     provides = [CcToolchainImportInfo],

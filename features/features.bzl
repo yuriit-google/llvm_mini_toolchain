@@ -233,6 +233,10 @@ cc_toolchain_import_feature = rule(
 )
 
 def _sysroot_feature(ctx):
+    toolchain_import_info = ctx.attr.toolchain_import[CcToolchainImportInfo]
+    target = "--target=" + toolchain_import_info.compilation_context.architecture
+    print(target)
+
     return _feature(
         name = ctx.label.name,
         enabled = ctx.attr.enabled,
@@ -247,11 +251,7 @@ def _sysroot_feature(ctx):
                         flags = [
                             "--sysroot",
                             ctx.attr.sysroot.label.workspace_root,
-                        ],
-                    ),
-                    flag_group(
-                        flags = [
-                            "--target=" + ctx.attr.target,
+                            target,
                         ],
                     ),
                 ],
@@ -267,7 +267,7 @@ cc_toolchain_sysroot_feature = rule(
         "requires": attr.string_list(),
         "implies": attr.string_list(),
         "sysroot": attr.label(mandatory = True),
-        "target": attr.string(mandatory = True),
+        "toolchain_import": attr.label(providers = [CcToolchainImportInfo]),
     },
     provides = [FeatureInfo],
 )

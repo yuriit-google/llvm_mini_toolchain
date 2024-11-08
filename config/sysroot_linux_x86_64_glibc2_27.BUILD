@@ -17,6 +17,11 @@ sysroot_package(
 GCC_VERSION = 7
 GLIBC_VERSION = "2.27"
 
+cc_toolchain_import(
+    name = "arch",
+    architecture = "x86_64-linux-gnu",
+)
+
 CRT_OBJECTS = [
     "crti",
     "crtn",
@@ -190,6 +195,7 @@ cc_toolchain_import(
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [
+        ":arch",
         ":includes",
         ":gcc",
         ":math",
