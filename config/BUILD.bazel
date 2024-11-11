@@ -4,6 +4,7 @@ package(
     default_visibility = ["//visibility:public"],
 )
 
+# Platforms settings
 config_setting(
     name = "linux_x86_64",
     constraint_values = [
@@ -36,20 +37,20 @@ platform(
     ],
 )
 
+# Sysroot aliases
+alias(
+    name = "sysroot",
+    actual = select({
+        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:sysroot",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:sysroot",
+    }),
+)
+
 alias(
     name = "libc",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:glibc",
-    }),
-)
-
-alias(
-    name = "libunwind",
-    actual = select({
-        # TODO: Explore using llvm-libunwind statically linked.
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:gcc",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:gcc",
     }),
 )
 
@@ -62,43 +63,40 @@ alias(
 )
 
 alias(
-    name = "libc++",
-    actual = select({
-        ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_libcxx",
-        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_libcxx",
-    }),
-)
-
-alias(
-    name = "libc++abi",
-    actual = select({
-        ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_libcxx_abi",
-        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_libcxx_abi",
-    }),
-)
-
-alias(
-    name = "llvm_clang",
-    actual = select({
-        ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_clang",
-        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_clang",
-    }),
-)
-
-alias(
-    name = "llvm_config_site",
-    actual = select({
-        ":linux_x86_64": "@llvm18_linux_x86_64//:llvm_config_site",
-        ":linux_aarch64": "@llvm18_linux_x86_64//:llvm_config_site",
-    }),
-)
-
-alias(
     name = "startup_libs",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
         "//conditions:default": ":empty",
+    }),
+)
+
+# LLVM aliases
+alias(
+    name = "llvm_clang",
+    actual = select({
+        "//conditions:default": "@llvm18_linux_x86_64//:clang",
+    }),
+)
+
+alias(
+    name = "llvm_clang++",
+    actual = select({
+        "//conditions:default": "@llvm18_linux_x86_64//:clang++",
+    }),
+)
+
+alias(
+    name = "llvm_ld",
+    actual = select({
+        "//conditions:default": "@llvm18_linux_x86_64//:ld",
+    }),
+)
+
+alias(
+    name = "llvm_all",
+    actual = select({
+        "//conditions:default": "@llvm18_linux_x86_64//:all",
     }),
 )
 

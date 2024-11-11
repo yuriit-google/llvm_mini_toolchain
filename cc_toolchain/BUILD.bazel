@@ -18,7 +18,7 @@ filegroup(
         ":all_imports",
         "//features:startup_libs", 
         "//cc_toolchain/wrappers:all",
-        "@llvm18_linux_x86_64//:all",
+        "//config:llvm_all",
     ],
 )
 
@@ -27,7 +27,8 @@ filegroup(
     srcs = [
         ":all_imports",
         "//cc_toolchain/wrappers:all",
-        "@llvm18_linux_x86_64//:compiler_files",
+        "//config:llvm_clang",
+        "//config:llvm_clang++",
     ],
 )
 
@@ -37,7 +38,7 @@ filegroup(
         ":compiler_files",
         "//features:startup_libs",
         "//cc_toolchain/wrappers:all",
-        "@llvm18_linux_x86_64//:linker_files",
+        "//config:llvm_ld",
     ],
 )
 
@@ -68,9 +69,9 @@ cc_toolchain(
 
 cc_toolchain_config(
     name = "linux_x86_64_toolchain_config",
-    c_compiler = "@llvm18_linux_x86_64//:bin/clang",
-    cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
-    linker = "@llvm18_linux_x86_64//:bin/ld.lld",
+    c_compiler = "//config:llvm_clang",
+    cc_compiler = "//config:llvm_clang++",
+    linker = "//config:llvm_ld",
     target_system_name = "local",
     target_cpu = "x86_64",
     compiler_features = [
@@ -120,9 +121,9 @@ cc_toolchain(
 
 cc_toolchain_config(
     name = "linux_aarch64_toolchain_config",
-    c_compiler = "@llvm18_linux_x86_64//:bin/clang",
-    cc_compiler = "@llvm18_linux_x86_64//:bin/clang++",
-    linker = "@llvm18_linux_x86_64//:bin/ld.lld",
+    c_compiler = "//config:llvm_clang",
+    cc_compiler = "//config:llvm_clang++",
+    linker = "//config:llvm_ld",
     target_system_name = "local",
     target_cpu = "aarch64",
     compiler_features = [

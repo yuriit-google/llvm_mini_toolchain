@@ -12,22 +12,29 @@ CLANG_VERSION = "18"
 filegroup(
     name = "all",
     srcs = glob(["**/*"]),
-    visibility = ["//visibility:public"],
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
 filegroup(
-    name = "compiler_files",
+    name = "clang",
     srcs = [
         "bin/clang",
-        "bin/clang++",
     ],
-    visibility = ["//visibility:public"],
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
 filegroup(
-    name = "linker_files",
+    name = "clang++",
+    srcs = [
+        "bin/clang++",
+    ],
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
+filegroup(
+    name = "ld",
     srcs = [
         "bin/ld.lld",
     ],
-    visibility = ["//visibility:public"],
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
