@@ -4,6 +4,7 @@ workspace(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("//cc_toolchain/deps:cc_toolchain_deps.bzl", "cc_toolchain_deps")
 
 http_archive(
     name = "bazel_skylib",
@@ -31,34 +32,6 @@ git_repository(
     remote = "https://github.com/silvergasp/rules_os.git",
 )
 
-http_archive(
-    name = "sysroot_linux_x86_64_glibc2_27",
-    sha256 = "d19c4b010a75eb9d599f055c834a993d848880c936d7d91366a7c3765ad028ae",
-    urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_x86_64_sysroot.tar.xz"],
-    build_file = "//config:sysroot_linux_x86_64_glibc2_27.BUILD",
-    strip_prefix = "ubuntu18_x86_64_sysroot"
-)
-
-http_archive(
-    name = "sysroot_linux_aarch64_glibc2_27",
-    sha256 = "d883a1d664500f11bb49aa70c650a9e68d49341324c447f9abda77ec2f335ac5",
-    urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_aarch64-sysroot.tar.xz"],
-    build_file = "//config:sysroot_linux_aarch64_glibc2_27.BUILD",
-    strip_prefix = "ubuntu18_aarch64-sysroot"
-)
-
-http_archive(
-    name = "llvm18_linux_x86_64",
-    url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
-    sha256 = "54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36",
-    build_file = "//config:llvm18_linux_x86_64.BUILD",
-    strip_prefix = "clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04",
-    remote_file_urls = {
-        "lib/": "https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/libtinfo.so.5-binary.tar.xz",
-    },
-    remote_file_integrity = {
-        "lib/": "a102cceb742223565c3da31168cf3e14c953660d92805559b353cc186cfbbcbc",
-    },
-)
+cc_toolchain_deps()
 
 #register_toolchains("//cc_toolchain/...")
