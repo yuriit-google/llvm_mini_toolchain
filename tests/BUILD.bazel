@@ -1,4 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
 cc_binary(
     name = "hello_world",
     srcs = ["hello_world.cc"],
+)
+
+proto_library(
+    name = "hello_world_proto",
+    srcs = ["hello_world.proto"],
 )
