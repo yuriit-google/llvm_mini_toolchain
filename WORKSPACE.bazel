@@ -5,9 +5,6 @@ workspace(
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("//cc_toolchain/deps:cc_toolchain_deps.bzl", "cc_toolchain_deps")
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-
-protobuf_deps()
 
 http_archive(
     name = "bazel_skylib",
@@ -38,3 +35,13 @@ git_repository(
 cc_toolchain_deps()
 
 #register_toolchains("//cc_toolchain/...")
+
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "f66073dee0bc159157b0bd7f502d7d1ee0bc76b3c1eac9836927511bdc4b3fc1",
+    strip_prefix = "protobuf-3.21.9",
+    urls = [ "https://github.com/protocolbuffers/protobuf/archive/v3.21.9.zip" ],
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+protobuf_deps()
