@@ -21,4 +21,4 @@
 :: SOFTWARE.
 
 @ECHO OFF
-%LD_TOOL_PATH% %*
+%AR_TOOL_PATH% %*
