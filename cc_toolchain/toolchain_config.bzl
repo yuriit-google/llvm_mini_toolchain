@@ -72,7 +72,6 @@ def _cc_toolchain_config_impl(ctx):
         ],
     ) for action in ACTION_NAME_GROUPS.all_cc_link_actions]
 
-    print("_cc_toolchain_config_impl: {}/{}".format(ctx.attr.target_system_name, ctx.attr.target_cpu))
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
         host_system_name = "local",

@@ -19,12 +19,6 @@ load(
     "CcToolchainImportInfo",
 )
 
-def print_attributes(obj):
-    for attr_name in dir(obj):
-        if not attr_name.startswith('__'):  # Filter out internal attributes
-            print("{}: {}".format(attr_name, getattr(obj, attr_name)))
-            
-
 def _cc_feature_impl(ctx):
     flag_sets = []
     if ctx.attr.cc_flags:
@@ -98,36 +92,24 @@ the target is a C or C++ library.",
 )
 
 def _file_to_library_flag(file):
-    print("_file_to_library_flag method")
-    #print_attributes(file)
-
     lib_prefix = "lib"
     if file.basename.startswith(lib_prefix):
         library_name = file.basename.replace("." + file.extension, "")
         library_flag = "-l" + library_name[len(lib_prefix):]
     else:
         library_flag = file.path
-    
-    print("_file_to_library_flag: {}".format(library_flag))
+
     return library_flag
 
 def _import_feature_impl(ctx):
-    print("...............................................")
-    print(ctx.attr.name)
-    print("...............................................")
-
     toolchain_import_info = ctx.attr.toolchain_import[CcToolchainImportInfo]
 
-    print("===_import_feature_impl: -isystem: {}".format(len(toolchain_import_info
-            .compilation_context.includes.to_list())))
     include_flags = [
         "-isystem" + inc
         for inc in toolchain_import_info
             .compilation_context.includes.to_list()
     ]
 
-    print("===_import_feature_impl: -include: {}".format(len(toolchain_import_info
-            .compilation_context.injected_headers.to_list())))
     injected_include_flags = [
         "-include " + hdr.path
         for hdr in toolchain_import_info
@@ -136,23 +118,11 @@ def _import_feature_impl(ctx):
             .to_list()
     ]
 
-    print("===_import_feature_impl: Linker runtime path: {}".format(len(toolchain_import_info
-            .linking_context.runtime_paths.to_list())))
-
     linker_runtime_path_flags = depset([
         "-Wl,-rpath," + path
         for path in toolchain_import_info
             .linking_context.runtime_paths.to_list()
     ]).to_list()
-
-    print("===_import_feature_impl: static_libraries: {}".format(len(toolchain_import_info
-            .linking_context.static_libraries.to_list())))
-
-    print("===_import_feature_impl: dynamic_libraries: {}".format(len(toolchain_import_info
-            .linking_context.dynamic_libraries.to_list())))
-
-    print("===_import_feature_impl: additional_libs: {}".format(len(toolchain_import_info
-            .linking_context.additional_libs.to_list())))
 
     linker_dir_flags = depset([
         "-L" + file.dirname

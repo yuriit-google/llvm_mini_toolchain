@@ -7,8 +7,6 @@ load(
     "sysroot_package",
 )
 
-print("================================ sysroot_linux_x86_64_glibc2_27.BUILD ========================================")
-
 sysroot_package(
     name = "sysroot",
     visibility = ["//visibility:public"],
