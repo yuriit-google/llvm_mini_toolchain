@@ -63,6 +63,14 @@ alias(
 )
 
 alias(
+    name = "sysroot_math",
+    actual = select({
+        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:math",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:math",
+    }),
+)
+
+alias(
     name = "sysroot_startup_libs",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
@@ -97,6 +105,13 @@ alias(
     name = "llvm_ld",
     actual = select({
         "//conditions:default": "@llvm18_linux_x86_64//:ld",
+    }),
+)
+
+alias(
+    name = "llvm_ar",
+    actual = select({
+        "//conditions:default": "@llvm18_linux_x86_64//:ar",
     }),
 )
 

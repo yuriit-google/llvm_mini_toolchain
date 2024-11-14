@@ -9,6 +9,8 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
     deps = [
         "//config:sysroot_libc",
+        "//config:sysroot_pthread",
+        "//config:sysroot_math",
         "//config:llvm_clang_includes"
     ],
 )
@@ -43,6 +45,14 @@ filegroup(
     ],
 )
 
+filegroup(
+    name = "ar_files",
+    srcs = [
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ar",
+    ],
+)
+
 cc_toolchain_suite(
     name = "clang_suite",
     toolchains = {
@@ -58,7 +68,7 @@ cc_toolchain(
     name = "linux_x86_64_toolchain",
     toolchain_identifier = "linux_x86_64_toolchain",
     all_files = ":all",
-    ar_files = ":empty",
+    ar_files = ":ar_files",
     compiler_files = ":compiler_files",
     dwp_files = ":all",
     linker_files = ":linker_files",
@@ -73,6 +83,7 @@ cc_toolchain_config(
     c_compiler = "//config:llvm_clang",
     cc_compiler = "//config:llvm_clang++",
     linker = "//config:llvm_ld",
+    archiver = "//config:llvm_ar",
     target_system_name = "local",
     target_cpu = "x86_64",
     compiler_features = [
@@ -110,7 +121,7 @@ cc_toolchain(
     name = "linux_aarch64_toolchain",
     toolchain_identifier = "linux_aarch64_toolchain_id",
     all_files = ":all",
-    ar_files = ":empty",
+    ar_files = ":ar_files",
     compiler_files = ":compiler_files",
     dwp_files = ":all",
     linker_files = ":linker_files",
@@ -125,6 +136,7 @@ cc_toolchain_config(
     c_compiler = "//config:llvm_clang",
     cc_compiler = "//config:llvm_clang++",
     linker = "//config:llvm_ld",
+    archiver = "//config:llvm_ar",
     target_system_name = "local",
     target_cpu = "aarch64",
     compiler_features = [

@@ -39,6 +39,12 @@ filegroup(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
+filegroup(
+    name = "ar",
+    srcs = ["bin/llvm-ar"],
+    visibility = ["//visibility:public"],
+)
+
 cc_toolchain_import(
     name = "clang_includes",
     hdrs = glob([
