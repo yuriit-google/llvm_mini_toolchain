@@ -11,6 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# TODO: Remove this file after updating bazel to 7.3.0 or newer
+
 """Rules for downloading files and archives over HTTP.
 
 ### Setup
@@ -20,7 +23,7 @@ To use these rules, load them in your `WORKSPACE` file as follows:
 ```python
 load(
     "@bazel_tools//tools/build_defs/repo:http.bzl",
-    "http_archive",
+    "http_archive_bazel7",
 )
 ```
 
@@ -138,7 +141,7 @@ def _update_sha256_attr(ctx, attrs, download_info):
     sha256_override = {} if ctx.attr.integrity else {"sha256": download_info.sha256}
     return update_attrs(ctx.attr, attrs.keys(), sha256_override)
 
-def _new_http_archive_impl(ctx):
+def _http_archive_bazel7_impl(ctx):
     """Implementation of the llvm18_archive rule."""
     if ctx.attr.build_file and ctx.attr.build_file_content:
         fail("Only one of build_file and build_file_content can be provided.")
@@ -327,8 +330,8 @@ following: `"zip"`, `"war"`, `"aar"`, `"tar"`, `"tar.gz"`, `"tgz"`,
     ),
 }
 
-new_http_archive = repository_rule(
-    implementation = _new_http_archive_impl,
+http_archive_bazel7 = repository_rule(
+    implementation = _http_archive_bazel7_impl,
     attrs = _http_archive_attrs,
     doc =
         """Downloads a Bazel repository as a compressed archive file, decompresses it,
