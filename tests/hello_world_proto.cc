@@ -1,9 +1,10 @@
 #include <iostream>
-#include "tests/hello_world.pb.h"
+#include <fstream>
+#include "helloworld.pb.h"
 
 using namespace std;
 
-int main() {
+void sayHello() {
   helloworld::HelloRequest request;
   request.set_name("World");
 
@@ -16,7 +17,9 @@ int main() {
   deserialized_request.ParseFromString(output);
 
   cout << "Hello, " << deserialized_request.name() << "!" << endl;
-
-  return 0;
 }
 
+int main() {
+    sayHello();
+    return 0;
+}

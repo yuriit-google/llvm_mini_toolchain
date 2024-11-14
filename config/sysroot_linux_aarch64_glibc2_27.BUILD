@@ -123,6 +123,7 @@ cc_toolchain_import(
         "@platforms//os:linux": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
 cc_toolchain_import(

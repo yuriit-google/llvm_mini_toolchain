@@ -94,6 +94,7 @@ def _cc_toolchain_config_impl(ctx):
             "gcc": ctx.file.c_compiler,
             "cpp": ctx.file.cc_compiler,
             "ld": ctx.file.linker,
+            "ar": ctx.file.archiver,
         })],
     )
 
@@ -113,7 +114,7 @@ cc_toolchain_config = rule(
                 "gcc": "wrappers/posix/gcc",
                 "cpp": "wrappers/posix/cpp",
                 "ld": "wrappers/posix/ld",
-                "ar": "wrappers/posix/idle",
+                "ar": "wrappers/posix/ar",
                 "gcov": "wrappers/posix/idle",
                 "llvm-cov": "wrappers/posix/idle",
                 "nm": "wrappers/posix/idle",
@@ -138,6 +139,11 @@ cc_toolchain_config = rule(
         ),
         "linker": attr.label(
             doc = "The linker e.g. ld/lld. Maps to tool path 'ld'.",
+            allow_single_file = True,
+            mandatory = True,
+        ),
+        "archiver": attr.label(
+            doc = "The archiver e.g. ar/llvm-ar. Maps to tool path 'ar'.",
             allow_single_file = True,
             mandatory = True,
         ),
