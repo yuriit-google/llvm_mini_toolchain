@@ -47,7 +47,7 @@ alias(
 )
 
 alias(
-    name = "libc",
+    name = "sysroot_libc",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:glibc",
@@ -55,7 +55,7 @@ alias(
 )
 
 alias(
-    name = "pthread",
+    name = "sysroot_pthread",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:pthread",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:pthread",
@@ -63,15 +63,22 @@ alias(
 )
 
 alias(
-    name = "startup_libs",
+    name = "sysroot_startup_libs",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
-        "//conditions:default": ":empty",
+        #"//conditions:default": ":empty",
     }),
 )
 
 # LLVM aliases
+alias(
+    name = "llvm_clang_includes",
+    actual = select({
+        "//conditions:default": "@llvm18_linux_x86_64//:clang_includes",
+    }),
+)
+
 alias(
     name = "llvm_clang",
     actual = select({

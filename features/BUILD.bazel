@@ -19,8 +19,7 @@ cc_toolchain_import_feature(
 cc_toolchain_import_feature(
     name = "startup_libs",
     enabled = True,
-    #toolchain_import = "@rules_cc_toolchain_config//:startup_libs",
-    toolchain_import = "//config:startup_libs",
+    toolchain_import = "//config:sysroot_startup_libs",
 )
 
 # Reduces binary size by putting each block of data and function in their own

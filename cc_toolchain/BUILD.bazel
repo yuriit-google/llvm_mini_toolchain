@@ -8,7 +8,8 @@ cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
-        "//config:libc",
+        "//config:sysroot_libc",
+        "//config:llvm_clang_includes"
     ],
 )
 
