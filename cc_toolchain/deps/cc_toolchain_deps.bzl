@@ -20,10 +20,10 @@ def cc_toolchain_deps():
             strip_prefix = "ubuntu18_aarch64-sysroot",
         )
 
-    if "llvm18_linux_x86_64" not in native.existing_rules():
+    if "llvm_linux_x86_64" not in native.existing_rules():
         # Replace 'http_archive_bazel7' by 'http_archive' after updating bazel to 7.3.0 or newer
         http_archive_bazel7(
-            name = "llvm18_linux_x86_64",
+            name = "llvm_linux_x86_64",
             url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
             sha256 = "54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36",
             build_file = "//config:llvm18_linux_x86_64.BUILD",

@@ -83,42 +83,42 @@ alias(
 alias(
     name = "llvm_clang_includes",
     actual = select({
-        "//conditions:default": "@llvm18_linux_x86_64//:clang_includes",
+        "//conditions:default": "@llvm_linux_x86_64//:clang_includes",
     }),
 )
 
 alias(
     name = "llvm_clang",
     actual = select({
-        "//conditions:default": "@llvm18_linux_x86_64//:clang",
+        "//conditions:default": "@llvm_linux_x86_64//:clang",
     }),
 )
 
 alias(
     name = "llvm_clang++",
     actual = select({
-        "//conditions:default": "@llvm18_linux_x86_64//:clang++",
+        "//conditions:default": "@llvm_linux_x86_64//:clang++",
     }),
 )
 
 alias(
     name = "llvm_ld",
     actual = select({
-        "//conditions:default": "@llvm18_linux_x86_64//:ld",
+        "//conditions:default": "@llvm_linux_x86_64//:ld",
     }),
 )
 
 alias(
     name = "llvm_ar",
     actual = select({
-        "//conditions:default": "@llvm18_linux_x86_64//:ar",
+        "//conditions:default": "@llvm_linux_x86_64//:ar",
     }),
 )
 
 alias(
     name = "llvm_all",
     actual = select({
-        "//conditions:default": "@llvm18_linux_x86_64//:all",
+        "//conditions:default": "@llvm_linux_x86_64//:all",
     }),
 )
 
