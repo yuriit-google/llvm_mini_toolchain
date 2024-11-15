@@ -1,25 +1,25 @@
 #include <iostream>
 #include <fstream>
-#include "helloworld.pb.h"
+#include "tests/hello.pb.h"
 
 using namespace std;
 
 void sayHello() {
-  helloworld::HelloRequest request;
-  request.set_name("World");
+  protobuf::HelloRequest request;
+  request.set_name("Hello Protobuf");
 
   // Serialize the message to a string
   string output;
   request.SerializeToString(&output);
 
   // Deserialize the message from the string
-  helloworld::HelloRequest deserialized_request;
+  protobuf::HelloRequest deserialized_request;
   deserialized_request.ParseFromString(output);
 
-  cout << "Hello, " << deserialized_request.name() << "!" << endl;
+  cout << "Say, " << deserialized_request.name() << "!" << endl;
 }
 
 int main() {
-    sayHello();
-    return 0;
+  sayHello();
+  return 0;
 }
