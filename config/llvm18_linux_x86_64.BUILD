@@ -3,8 +3,6 @@ load(
     "cc_toolchain_import",
 )
 
-print("------------------------------ llvm18_linux_x86_64.BUILD ----------------------------------------")
-
 exports_files(glob(["bin/*"]))
 
 CLANG_VERSION = "18"

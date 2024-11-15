@@ -63,7 +63,6 @@ def _normalise_include(ctx, inc):
     return root_str + package_str + inc
 
 def _cc_toolchain_import_impl(ctx):
-    print("_cc_toolchain_import_impl: Adding {}".format(ctx.attr.name))
     deps = ctx.attr.deps
     transitive_hdrs = []
     transitive_shared_libraries = []

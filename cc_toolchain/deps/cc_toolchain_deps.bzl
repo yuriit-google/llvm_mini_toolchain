@@ -29,9 +29,11 @@ def cc_toolchain_deps():
             build_file = "//config:llvm18_linux_x86_64.BUILD",
             strip_prefix = "clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04",
             remote_file_urls = {
-                "lib/libtinfo.so.5": [ "https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/libtinfo.so.5" ]
+                "lib/libtinfo.so.5": [ "https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/libtinfo.so.5" ],
+                "lib/libtinfo5-copyright.txt": [ "https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/copyright" ],
             },
             remote_file_integrity = {
                 "lib/libtinfo.so.5": "sha256-3AfQHdSwWRIn3v7sjDRd+IyZzex0FzpDSslg1eXV4ts=",
+                "lib/libtinfo5-copyright.txt": "sha256-Xo7pAsiQbdt3ef023Jl5ywi1H76/fAsamut4rzgq9ZA=",
             },
         )
