@@ -10,6 +10,6 @@
 # TODOs
 - [X] Create custom repository rule which downloads LLVM18 and libtinfo5
 - [X] Test prototype with protobuf stubs. Make sure that new toolchains works correctly with cc_proto_library (toolchain for executor)
-- [ ] Import abseil library and write tests
+- [X] Import abseil library and write tests
 - [ ] Add support of local machine toolchain for build without arguments (for example k8|linux for x86_64)
-- [ ] Add darwin os target support (arm64, x86_64)
+- [ ] Add darwin os target support (arm64 only)
