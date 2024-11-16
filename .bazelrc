@@ -1,24 +1,29 @@
+build --enable_platform_specific_config
 build --toolchain_resolution_debug=.*
 
-# Use our custom-configured c++ toolchain.
-build --crosstool_top=//cc_toolchain:clang_suite
+# Non hermetic
+build:non_hermetic --crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:non_hermetic --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-# Use the default Bazel C++ toolchain to build the tools used during the build.
-build --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+# Hermetic
+build:hermetic --crosstool_top=//cc_toolchain:clang_suite
+build:hermetic --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-# Use --cpu as a differentiator.
-build --compiler=linux
+build:linux --config=hermetic
+build:linux --compiler=clang
 
 # aarch64
-build:aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-build:aarch64 --host_platform=//config:linux_aarch64_platform
+#build:linux_aarch64 --config=hermetic
+#build:linux_aarch64 --compiler=clang
+#build:linux_aarch64 --cpu=aarch64
+#build:linux_aarch64 --host_platform=//config:linux_aarch64_platform
 
 # x86_64
-build:x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-build:x86_64 --host_platform=//config:linux_x86_64_platform
+#build:linux_x86_64 --config=hermetic
+#build:linux_x86_64 --compiler=clang
+#build:linux_x86_64 --cpu=k8
+#build:linux_x86_64 --host_platform=//config:linux_x86_64_platform
 
-# Code coverage support
-coverage --combined_report=lcov
-coverage --experimental_use_llvm_covmap
-coverage --experimental_generate_llvm_lcov
-coverage --incompatible_cc_coverage
+########################################################
+#build:macos --cxxopt=-std=c++17
+#build:macos --host_cxxopt=-std=c++17
