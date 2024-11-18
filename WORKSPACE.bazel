@@ -14,6 +14,10 @@ http_archive(
     strip_prefix = "rules_cc-0.0.9",
 )
 
+#load("@rules_cc//cc:repositories.bzl", "rules_cc_dependencies", "rules_cc_toolchains")
+#rules_cc_dependencies()
+#rules_cc_toolchains()
+
 ### bazel_skylib
 http_archive(
     name = "bazel_skylib",
