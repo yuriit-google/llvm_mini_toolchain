@@ -1,11 +1,19 @@
 # Constraints
 - <s>LLVM 18 portable distribution depends on libtinfo5 library, so please install it: `sudo apt install libtinfo5`</s>
 
-# Build linux x86_64
+# Linux x86_64
+# Build
 `bazel build //tests:hello_world --config=x86_64`
 
-# Build linux aarch64
+# Run tests
+`bazel test //tests/... --config=x86_64`
+
+# Linux aarch64
+# Build
 `bazel build //tests:hello_world --config=aarch64`
+
+# Run tests
+`bazel test //tests/... --config=aarch64`
 
 # TODOs
 - [X] Create custom repository rule which downloads LLVM18 and libtinfo5
