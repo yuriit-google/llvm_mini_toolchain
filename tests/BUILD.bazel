@@ -1,35 +1,25 @@
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library", "cc_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 #############################################
 # C++
-cc_binary(
+cc_test(
     name = "hello_world",
     srcs = ["hello_world.cc"],
 )
 
 #############################################
 # C++ and Google Protobuf
-proto_library(
-    name = "hello_proto",
-    srcs = ["hello.proto"],
-)
-
-cc_proto_library(
-   name = "hello_proto_lib",
-   deps = [":hello_proto"],
-)
-
-cc_binary(
+cc_test(
     name = "hello_protobuf",
     srcs = ["hello_protobuf.cc"],
-    deps = [":hello_proto_lib"],
+    deps = ["//tests/protobuf:hello_proto_lib"],
 )
 
 #############################################
 # C++ and Abseil
-cc_binary(
-  name = "hello_absl",
-  deps = ["@com_google_absl//absl/strings"],
-  srcs = ["hello_absl.cc"],
+cc_test(
+    name = "hello_absl",
+    srcs = ["hello_absl.cc"],
+    deps = ["@com_google_absl//absl/strings"],
 )
