@@ -5,14 +5,14 @@
 # Build
 `bazel build //tests:hello_world --config=x86_64`
 
-# Run tests
+# Run tests (works on x86_64)
 `bazel test //tests/... --config=x86_64`
 
 # Linux aarch64
 # Build
 `bazel build //tests:hello_world --config=aarch64`
 
-# Run tests
+# Run tests (works on aarch64)
 `bazel test //tests/... --config=aarch64`
 
 # TODOs

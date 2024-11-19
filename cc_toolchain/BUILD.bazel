@@ -1,17 +1,18 @@
 load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
-load(":toolchain_config.bzl", "cc_toolchain_config")
 load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 #load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+load(":toolchain_config.bzl", "cc_toolchain_config")
 
 # Add libraries and includes here
 cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
+        "//config:llvm_clang_includes",
         "//config:sysroot_libc",
-        "//config:sysroot_pthread",
         "//config:sysroot_math",
-        "//config:llvm_clang_includes"
+        "//config:sysroot_pthread",
     ],
 )
 
@@ -19,9 +20,9 @@ filegroup(
     name = "all",
     srcs = [
         ":all_imports",
-        "//features:startup_libs", 
         "//cc_toolchain/wrappers:all",
         "//config:llvm_all",
+        "//features:startup_libs",
     ],
 )
 
@@ -39,9 +40,9 @@ filegroup(
     name = "linker_files",
     srcs = [
         ":compiler_files",
-        "//features:startup_libs",
         "//cc_toolchain/wrappers:all",
         "//config:llvm_ld",
+        "//features:startup_libs",
     ],
 )
 
@@ -56,17 +57,16 @@ filegroup(
 cc_toolchain_suite(
     name = "clang_suite",
     toolchains = {
-        "x86_64|linux": ":linux_x86_64_toolchain",
-        "aarch64|linux": ":linux_aarch64_toolchain",
+        "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
+        "aarch64|linux_clang": ":linux_aarch64_toolchain",
     },
 )
 
 ######################################################################
-# x86_64
+# k8 / x86_64
 ######################################################################
 cc_toolchain(
     name = "linux_x86_64_toolchain",
-    toolchain_identifier = "linux_x86_64_toolchain",
     all_files = ":all",
     ar_files = ":ar_files",
     compiler_files = ":compiler_files",
@@ -76,16 +76,14 @@ cc_toolchain(
     strip_files = ":empty",
     supports_param_files = 0,
     toolchain_config = ":linux_x86_64_toolchain_config",
+    toolchain_identifier = "linux_x86_64_toolchain",
 )
 
 cc_toolchain_config(
     name = "linux_x86_64_toolchain_config",
+    archiver = "//config:llvm_ar",
     c_compiler = "//config:llvm_clang",
     cc_compiler = "//config:llvm_clang++",
-    linker = "//config:llvm_ld",
-    archiver = "//config:llvm_ar",
-    target_system_name = "local",
-    target_cpu = "x86_64",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
@@ -112,6 +110,9 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
+    linker = "//config:llvm_ld",
+    target_cpu = "x86_64",
+    target_system_name = "local",
 )
 
 ######################################################################
@@ -119,7 +120,6 @@ cc_toolchain_config(
 ######################################################################
 cc_toolchain(
     name = "linux_aarch64_toolchain",
-    toolchain_identifier = "linux_aarch64_toolchain_id",
     all_files = ":all",
     ar_files = ":ar_files",
     compiler_files = ":compiler_files",
@@ -129,16 +129,14 @@ cc_toolchain(
     strip_files = ":empty",
     supports_param_files = 0,
     toolchain_config = ":linux_aarch64_toolchain_config",
+    toolchain_identifier = "linux_aarch64_toolchain_id",
 )
 
 cc_toolchain_config(
     name = "linux_aarch64_toolchain_config",
+    archiver = "//config:llvm_ar",
     c_compiler = "//config:llvm_clang",
     cc_compiler = "//config:llvm_clang++",
-    linker = "//config:llvm_ld",
-    archiver = "//config:llvm_ar",
-    target_system_name = "local",
-    target_cpu = "aarch64",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
@@ -165,6 +163,9 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
+    linker = "//config:llvm_ld",
+    target_cpu = "aarch64",
+    target_system_name = "local",
 )
 
 #
