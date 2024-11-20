@@ -9,15 +9,20 @@ package(
     default_visibility = ["//cc_toolchain:__pkg__"],
 )
 
-# System library feature.
 cc_toolchain_import_feature(
-    name = "toolchain_import",
+    name = "toolchain_imports",
     enabled = True,
-    toolchain_import = "//cc_toolchain:all_imports",
+    toolchain_import = "//cc_toolchain:toolchain_imports",
 )
 
 cc_toolchain_import_feature(
-    name = "startup_libs",
+    name = "toolchain_and_sysroot_imports",
+    enabled = True,
+    toolchain_import = "//cc_toolchain:toolchain_and_sysroot_imports",
+)
+
+cc_toolchain_import_feature(
+    name = "sysroot_startup_libs",
     enabled = True,
     toolchain_import = "//config:sysroot_startup_libs",
 )

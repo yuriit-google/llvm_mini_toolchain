@@ -1,23 +1,38 @@
+build --enable_platform_specific_config
 build --toolchain_resolution_debug=.*
 
-# Non hermetic
+# System default toolchain
+build --compiler=gcc
 build --crosstool_top=@bazel_tools//tools/cpp:toolchain
 build --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-# Hermetic
-build:hermetic --crosstool_top=//cc_toolchain:clang_suite
-build:hermetic --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-build:hermetic --compiler=linux_clang
+# Custom toolchain
+build:clang_toolchain --crosstool_top=//cc_toolchain:clang_suite
+build:clang_toolchain --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
-# aarch64
-build:aarch64 --config=hermetic
-build:aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-build:aarch64 --host_platform=//config:linux_aarch64_platform
+# Linux aarch64
+build:linux_aarch64 --cpu=aarch64
+build:linux_aarch64 --host_platform=//config:linux_aarch64_platform
 
-# x86_64
-build:x86_64 --config=hermetic
-build:x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-build:x86_64 --host_platform=//config:linux_x86_64_platform
+build:linux_aarch64_clang --config=clang_toolchain
+build:linux_aarch64_clang --config=linux_aarch64
+build:linux_aarch64_clang --compiler=linux_clang
+
+build:linux_aarch64_clang_sysroot --config=clang_toolchain
+build:linux_aarch64_clang_sysroot --config=linux_aarch64
+build:linux_aarch64_clang_sysroot --compiler=linux_clang_sysroot
+
+# Linux 86_64
+build:linux_x86_64 --cpu=x86_64
+build:linux_x86_64 --host_platform=//config:linux_x86_64_platform
+
+build:linux_x86_64_clang --config=clang_toolchain
+build:linux_x86_64_clang --config=linux_x86_64
+build:linux_x86_64_clang --compiler=linux_clang
+
+build:linux_x86_64_clang_sysroot --config=clang_toolchain
+build:linux_x86_64_clang_sysroot --config=linux_x86_64
+build:linux_x86_64_clang_sysroot --compiler=linux_clang_sysroot
 
 ##########
 # Tests

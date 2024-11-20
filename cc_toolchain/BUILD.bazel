@@ -4,9 +4,13 @@ load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
-# Add libraries and includes here
+######################################################################
+# Hermetic configuration
+######################################################################
+
+# Libraries and includes here
 cc_toolchain_import(
-    name = "all_imports",
+    name = "toolchain_and_sysroot_imports",
     visibility = ["//visibility:public"],
     deps = [
         "//config:llvm_clang_includes",
@@ -17,19 +21,19 @@ cc_toolchain_import(
 )
 
 filegroup(
-    name = "all",
+    name = "all_toolchain_and_sysroot_files",
     srcs = [
-        ":all_imports",
+        ":toolchain_and_sysroot_imports",
         "//cc_toolchain/wrappers:all",
         "//config:llvm_all",
-        "//features:startup_libs",
+        "//features:sysroot_startup_libs",
     ],
 )
 
 filegroup(
-    name = "compiler_files",
+    name = "compiler_and_sysroot_files",
     srcs = [
-        ":all_imports",
+        ":toolchain_and_sysroot_imports",
         "//cc_toolchain/wrappers:all",
         "//config:llvm_clang",
         "//config:llvm_clang++",
@@ -37,57 +41,110 @@ filegroup(
 )
 
 filegroup(
-    name = "linker_files",
+    name = "linker_and_sysroot_files",
     srcs = [
-        ":compiler_files",
+        ":compiler_and_sysroot_files",
         "//cc_toolchain/wrappers:all",
         "//config:llvm_ld",
-        "//features:startup_libs",
+        "//features:sysroot_startup_libs",
     ],
 )
 
 filegroup(
-    name = "ar_files",
+    name = "ar_and_sysroot_files",
     srcs = [
         "//cc_toolchain/wrappers:all",
         "//config:llvm_ar",
     ],
 )
 
+######################################################################
+# Non hermetic configuration
+######################################################################
+
+# Libraries and includes here
+cc_toolchain_import(
+    name = "toolchain_imports",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//config:llvm_clang_includes",
+    ],
+)
+
+filegroup(
+    name = "all_toolchain_files",
+    srcs = [
+        ":toolchain_imports",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_all",
+    ],
+)
+
+filegroup(
+    name = "compiler_toolchain_files",
+    srcs = [
+        ":toolchain_imports",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_clang",
+        "//config:llvm_clang++",
+    ],
+)
+
+filegroup(
+    name = "linker_toolchain_files",
+    srcs = [
+        ":compiler_toolchain_files",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ld",
+    ],
+)
+
+filegroup(
+    name = "ar_toolchain_files",
+    srcs = [
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ar",
+    ],
+)
+
+######################################################################
+
 cc_toolchain_suite(
     name = "clang_suite",
     toolchains = {
-        "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
-        "aarch64|linux_clang": ":linux_aarch64_toolchain",
+        "x86_64|linux_clang_sysroot": ":linux_x86_64_toolchain_and_sysroot",
+        "x86_64|linux_clang": ":linux_x86_64_toolchain",
+        "aarch64|linux_clang_sysroot": ":linux_aarch64_toolchain_and_sysroot",
+        #"aarch64|linux_clang": ":linux_aarch64_toolchain",
     },
 )
 
 ######################################################################
-# k8 / x86_64
+# x86_64 toolchain and sysroot
 ######################################################################
 cc_toolchain(
-    name = "linux_x86_64_toolchain",
-    all_files = ":all",
-    ar_files = ":ar_files",
-    compiler_files = ":compiler_files",
-    dwp_files = ":all",
-    linker_files = ":linker_files",
+    name = "linux_x86_64_toolchain_and_sysroot",
+    all_files = ":all_toolchain_and_sysroot_files",
+    ar_files = ":ar_and_sysroot_files",
+    compiler_files = ":compiler_and_sysroot_files",
+    dwp_files = ":all_toolchain_and_sysroot_files",
+    linker_files = ":linker_and_sysroot_files",
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":linux_x86_64_toolchain_config",
-    toolchain_identifier = "linux_x86_64_toolchain",
+    toolchain_config = ":linux_x86_64_toolchain_and_sysroot_config",
+    toolchain_identifier = "linux_x86_64_toolchain_and_sysroot_id",
 )
 
 cc_toolchain_config(
-    name = "linux_x86_64_toolchain_config",
+    name = "linux_x86_64_toolchain_and_sysroot_config",
     archiver = "//config:llvm_ar",
     c_compiler = "//config:llvm_clang",
     cc_compiler = "//config:llvm_clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
-        "//features:toolchain_import",
+        "//features:toolchain_and_sysroot_imports",
 
         # Toolchain configuration
         "//features:garbage_collect_symbols",
@@ -102,7 +159,7 @@ cc_toolchain_config(
         "//features:fastbuild",
         "//features:position_independent_code",
         "//features:supports_pic",
-        "//features:startup_libs",
+        "//features:sysroot_startup_libs",
         "//features:coverage",
 
         # C++ standard configuration
@@ -116,31 +173,30 @@ cc_toolchain_config(
 )
 
 ######################################################################
-# aarch64
+# x86_64 toolchain only
 ######################################################################
 cc_toolchain(
-    name = "linux_aarch64_toolchain",
-    all_files = ":all",
-    ar_files = ":ar_files",
-    compiler_files = ":compiler_files",
-    dwp_files = ":all",
-    linker_files = ":linker_files",
+    name = "linux_x86_64_toolchain",
+    all_files = ":all_toolchain_files",
+    ar_files = ":ar_toolchain_files",
+    compiler_files = ":compiler_toolchain_files",
+    dwp_files = ":all_toolchain_files",
+    linker_files = ":linker_toolchain_files",
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":linux_aarch64_toolchain_config",
-    toolchain_identifier = "linux_aarch64_toolchain_id",
+    toolchain_config = ":linux_x86_64_toolchain_config",
+    toolchain_identifier = "linux_x86_64_toolchain_id",
 )
 
 cc_toolchain_config(
-    name = "linux_aarch64_toolchain_config",
+    name = "linux_x86_64_toolchain_config",
     archiver = "//config:llvm_ar",
     c_compiler = "//config:llvm_clang",
     cc_compiler = "//config:llvm_clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
-        "//features:hermetic_libraries",
-        "//features:toolchain_import",
+        "//features:toolchain_imports",
 
         # Toolchain configuration
         "//features:garbage_collect_symbols",
@@ -149,13 +205,64 @@ cc_toolchain_config(
         "//features:reproducible",
         "//features:language",
         "//features:use_lld",
-        "//features:sysroot_linux_aarch64",
         "//features:dbg",
         "//features:opt",
         "//features:fastbuild",
         "//features:position_independent_code",
         "//features:supports_pic",
-        "//features:startup_libs",
+        "//features:coverage",
+
+        # C++ standard configuration
+        "//features:c++11",
+        "//features:c++14",
+        "//features:c++17",
+    ],
+    linker = "//config:llvm_ld",
+    target_cpu = "x86_64",
+    target_system_name = "local",
+)
+
+######################################################################
+# aarch64 hermetic
+######################################################################
+cc_toolchain(
+    name = "linux_aarch64_toolchain_and_sysroot",
+    all_files = ":all_toolchain_and_sysroot_files",
+    ar_files = ":ar_and_sysroot_files",
+    compiler_files = ":compiler_and_sysroot_files",
+    dwp_files = ":all_toolchain_and_sysroot_files",
+    linker_files = ":linker_and_sysroot_files",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":linux_aarch64_toolchain_and_sysroot_config",
+    toolchain_identifier = "linux_aarch64_toolchain_and_sysroot_id",
+)
+
+cc_toolchain_config(
+    name = "linux_aarch64_toolchain_and_sysroot_config",
+    archiver = "//config:llvm_ar",
+    c_compiler = "//config:llvm_clang",
+    cc_compiler = "//config:llvm_clang++",
+    compiler_features = [
+        # Hermetic libraries feature required before import.
+        "//features:hermetic_libraries",
+        "//features:toolchain_and_sysroot_imports",
+
+        # Toolchain configuration
+        "//features:garbage_collect_symbols",
+        "//features:warnings",
+        "//features:errors",
+        "//features:reproducible",
+        "//features:language",
+        "//features:use_lld",
+        "//features:sysroot_linux_aarch64",  # TODO: Move line to hermetic part
+        "//features:dbg",
+        "//features:opt",
+        "//features:fastbuild",
+        "//features:position_independent_code",
+        "//features:supports_pic",
+        "//features:sysroot_startup_libs",
         "//features:coverage",
 
         # C++ standard configuration
@@ -181,6 +288,6 @@ cc_toolchain_config(
 #        "@platforms//cpu:aarch64",
 #        #"@platforms//os:linux",
 #    ],
-#    toolchain = ":linux_aarch64_toolchain",
+#    toolchain = ":linux_aarch64_toolchain_and_sysroot",
 #    toolchain_type = "@rules_cc//cc:toolchain_type",
 #)

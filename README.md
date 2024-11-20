@@ -15,6 +15,13 @@
 # Run tests (works on aarch64)
 `bazel test //tests/... --config=aarch64`
 
+# Hermetic builds
+`bazel build //tests:hello_world --config=aarch64`
+
+# Portable toolchain builds
+
+# Native builds
+
 # TODOs
 - [X] Create custom repository rule which downloads LLVM18 and libtinfo5
 - [X] Test prototype with protobuf stubs. Make sure that new toolchains works correctly with cc_proto_library (toolchain for executor)
