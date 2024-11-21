@@ -1,5 +1,5 @@
 build --enable_platform_specific_config
-build --toolchain_resolution_debug=.*
+build --toolchain_resolution_debug
 
 # System default toolchain
 build --compiler=gcc
