@@ -12,52 +12,25 @@ sysroot_package(
     visibility = ["//visibility:public"],
 )
 
-GCC_VERSION = 7
-GLIBC_VERSION = "2.27"
-
-CRT_OBJECTS = [
-    "crti",
-    "crtn",
-    # Use PIC Scrt1.o instead of crt1.o to keep PIC code from segfaulting.
-    "Scrt1",
-]
-
-[
-    cc_toolchain_import(
-        name = obj,
-        static_library = "usr/lib/x86_64-linux-gnu/%s.o" % obj,
-    )
-    for obj in CRT_OBJECTS
-]
-
-cc_toolchain_import(
-    name = "startup_libs",
-    target_compatible_with = select({
-        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
-    deps = [":" + obj for obj in CRT_OBJECTS],
-)
-
 cc_toolchain_import(
     name = "includes",
     hdrs = glob([
-        "usr/include/c++/*/**",
-        "usr/include/x86_64-linux-gnu/c++/*/**",
-        "usr/lib/gcc/x86_64-linux-gnu/7/include/**",
-        "usr/local/include/**",
-        "usr/include/x86_64-linux-gnu/**",
-        "usr/include/**",
+        "/usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/**",
+        "/usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/**",
+        "/usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/backward/**",
+        "/usr/local/google/home/yuriit/Downloads/LLVM-19.1.3-Linux-X64/lib/clang/19/include/**",
+        "/usr/local/include/**",
+        "/usr/include/x86_64-linux-gnu/**",
+        "/usr/include/**",
     ]),
     includes = [
-        "usr/include/c++/7",
-        "usr/include/x86_64-linux-gnu/c++/7",
-        "usr/include/c++/7/backward",
-        "usr/lib/gcc/x86_64-linux-gnu/7/include",
-        "usr/local/include",
-        "usr/include/x86_64-linux-gnu",
-        "usr/include",
+        "/usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14",
+        "/usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14",
+        "/usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/backward",
+        "/usr/local/google/home/yuriit/Downloads/LLVM-19.1.3-Linux-X64/lib/clang/19/include",
+        "/usr/local/include",
+        "/usr/include/x86_64-linux-gnu",
+        "/usr/include",
     ],
     target_compatible_with = select({
         "@platforms//os:linux": ["@platforms//cpu:x86_64"],

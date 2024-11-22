@@ -1,4 +1,9 @@
 load(
+    "@rules_cc//cc:action_names.bzl",
+    "ACTION_NAMES",
+    "ACTION_NAME_GROUPS",
+)
+load(
     "@rules_cc//cc:cc_toolchain_config_lib.bzl",
     "FeatureInfo",
     "action_config",
@@ -7,11 +12,6 @@ load(
     "feature",
     "tool",
     "tool_path",
-)
-load(
-    "@rules_cc//cc:action_names.bzl",
-    "ACTION_NAMES",
-    "ACTION_NAME_GROUPS",
 )
 
 ALL_ACTIONS = [
@@ -77,7 +77,7 @@ def _cc_toolchain_config_impl(ctx):
         host_system_name = "local",
         target_system_name = ctx.attr.target_system_name,
         target_cpu = ctx.attr.target_cpu,
-        toolchain_identifier = "aarch64_linux_clang_id",
+        toolchain_identifier = "config_clang_id",
         target_libc = "unknown",
         compiler = "clang",
         abi_version = "unknown",
@@ -95,6 +95,8 @@ def _cc_toolchain_config_impl(ctx):
             "ld": ctx.file.linker,
             "ar": ctx.file.archiver,
         })],
+        cxx_builtin_include_directories = ctx.attr.cxx_builtin_include_directories,
+        #link_libs = ctx.attr.link_libs,   # parameter doesn't exist for create_cc_toolchain_config_info
     )
 
 cc_toolchain_config = rule(
@@ -145,6 +147,13 @@ cc_toolchain_config = rule(
             doc = "The archiver e.g. ar/llvm-ar. Maps to tool path 'ar'.",
             allow_single_file = True,
             mandatory = True,
+        ),
+        "cxx_builtin_include_directories": attr.string_list(
+            doc = "Built-in include directories for C++ compilation. These should be the exact paths used by the compiler, and are generally relative to the system root.",
+        ),
+        # TODO: remove, parameters doesn't exist for create_cc_toolchain_config_info
+        "link_libs": attr.string_list(
+            doc = "Built-in include directories for C++ compilation. These should be the exact paths used by the compiler, and are generally relative to the system root.",
         ),
     },
     provides = [CcToolchainConfigInfo],

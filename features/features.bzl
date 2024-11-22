@@ -1,10 +1,6 @@
 load(
-    "@rules_cc//cc:cc_toolchain_config_lib.bzl",
-    "FeatureInfo",
-    "feature",
-    "flag_group",
-    "flag_set",
-    _feature = "feature",
+    "@llvm_mini_toolchain//cc_toolchain:cc_toolchain_import.bzl",
+    "CcToolchainImportInfo",
 )
 load(
     "@rules_cc//cc:action_names.bzl",
@@ -15,8 +11,12 @@ load(
     "CC_LINK_EXECUTABLE_ACTION_NAMES",
 )
 load(
-    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
-    "CcToolchainImportInfo",
+    "@rules_cc//cc:cc_toolchain_config_lib.bzl",
+    "FeatureInfo",
+    "feature",
+    "flag_group",
+    "flag_set",
+    _feature = "feature",
 )
 
 def _cc_feature_impl(ctx):

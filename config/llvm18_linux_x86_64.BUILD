@@ -1,5 +1,5 @@
 load(
-    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
+    "@llvm_mini_toolchain//cc_toolchain:cc_toolchain_import.bzl",
     "cc_toolchain_import",
 )
 
