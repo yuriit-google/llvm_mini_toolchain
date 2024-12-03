@@ -26,7 +26,7 @@ def cc_toolchain_deps():
             name = "llvm_linux_x86_64",
             url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04.tar.xz",
             sha256 = "54ec30358afcc9fb8aa74307db3046f5187f9fb89fb37064cdde906e062ebf36",
-            build_file = "//config:llvm18_linux_x86_64.BUILD",
+            build_file = "//config:llvm_linux_x86_64.BUILD",
             strip_prefix = "clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04",
             remote_file_urls = {
                 "lib/libtinfo.so.5": [ "https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/libtinfo.so.5" ],
