@@ -5,17 +5,17 @@ build --crosstool_top=@bazel_tools//tools/cpp:toolchain
 build --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 # Hermetic
-build:hermetic --crosstool_top=//cc_toolchain:clang_suite
-build:hermetic --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-build:hermetic --compiler=linux_clang
+build:hermetic_tool --crosstool_top=//cc_toolchain:clang_suite
+build:hermetic_tool --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:hermetic_tool --compiler=linux_clang
 
 # aarch64 target hermetic build
-build:hermetic_linux_aarch64 --config=hermetic
+build:hermetic_linux_aarch64 --config=hermetic_tool
 build:hermetic_linux_aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
 build:hermetic_linux_aarch64 --host_platform=//config:linux_aarch64_platform
 
 # x86_64 target hermetic build
-build:hermetic_linux_x86_64 --config=hermetic
+build:hermetic_linux_x86_64 --config=hermetic_tool
 build:hermetic_linux_x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
 build:hermetic_linux_x86_64 --host_platform=//config:linux_x86_64_platform
 
@@ -26,16 +26,16 @@ test --crosstool_top=@bazel_tools//tools/cpp:toolchain
 test --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 # Hermetic
-test:hermetic --crosstool_top=//cc_toolchain:clang_suite
-test:hermetic --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-test:hermetic --compiler=linux_clang
+test:hermetic_tool --crosstool_top=//cc_toolchain:clang_suite
+test:hermetic_tool --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+test:hermetic_tool --compiler=linux_clang
 
 # aarch64
-test:aarch64 --config=hermetic
-test:aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-test:aarch64 --host_platform=//config:linux_aarch64_platform
+test:hermetic_linux_aarch64 --config=hermetic_tool
+test:hermetic_linux_aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
+test:hermetic_linux_aarch64 --host_platform=//config:linux_aarch64_platform
 
 # x86_64
-test:x86_64 --config=hermetic
-test:x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
-test:x86_64 --host_platform=//config:linux_x86_64_platform
+test:hermetic_linux_x86_64 --config=hermetic_tool
+test:hermetic_linux_x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
+test:hermetic_linux_x86_64 --host_platform=//config:linux_x86_64_platform
