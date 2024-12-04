@@ -1,5 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load(":http_archive_bazel7.bzl", "http_archive_bazel7")    # Remove this line after updating bazel to 7.3.0 or newer
+load(":http_archive_bazel7.bzl", "http_archive_bazel7")  # Remove this line after updating bazel to 7.3.0 or newer
 
 def cc_toolchain_deps():
     if "sysroot_linux_x86_64_glibc2_27" not in native.existing_rules():
@@ -20,6 +20,15 @@ def cc_toolchain_deps():
             strip_prefix = "ubuntu18_aarch64-sysroot",
         )
 
+    if "sysroot_macosx_arm64" not in native.existing_rules():
+        http_archive(
+            name = "sysroot_macosx_arm64",
+            sha256 = "badd9f4e42f876af77e42100002c7ea87f35e17ae3f64365031e4c944a8c0971",
+            urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_aarch64-sysroot.tar.xz"],
+            build_file = "//config:sysroot_macosx_arm64.BUILD",
+            strip_prefix = "MacOSX14.5.sdk",
+        )
+
     if "llvm_linux_x86_64" not in native.existing_rules():
         # Replace 'http_archive_bazel7' by 'http_archive' after updating bazel to 7.3.0 or newer
         http_archive_bazel7(
@@ -29,8 +38,8 @@ def cc_toolchain_deps():
             build_file = "//config:llvm_linux_x86_64.BUILD",
             strip_prefix = "clang+llvm-18.1.8-x86_64-linux-gnu-ubuntu-18.04",
             remote_file_urls = {
-                "lib/libtinfo.so.5": [ "https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/libtinfo.so.5" ],
-                "lib/libtinfo5-copyright.txt": [ "https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/copyright" ],
+                "lib/libtinfo.so.5": ["https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/libtinfo.so.5"],
+                "lib/libtinfo5-copyright.txt": ["https://raw.githubusercontent.com/yuriit-google/binutils/refs/heads/main/libtinfo-binary/copyright"],
             },
             remote_file_integrity = {
                 "lib/libtinfo.so.5": "sha256-3AfQHdSwWRIn3v7sjDRd+IyZzex0FzpDSslg1eXV4ts=",
