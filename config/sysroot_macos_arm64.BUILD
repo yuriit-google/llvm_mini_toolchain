@@ -12,9 +12,6 @@ sysroot_package(
     visibility = ["//visibility:public"],
 )
 
-GCC_VERSION = 7
-GLIBC_VERSION = "2.27"
-
 CRT_OBJECTS = [
     "crt1",
 ]
@@ -133,34 +130,11 @@ cc_toolchain_import(
     }),
 )
 
-cc_toolchain_import(
-    name = "libc",
-    additional_libs = [
-        "lib/x86_64-linux-gnu/libc.so.6",
-        "lib/x86_64-linux-gnu/libc-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
-        "usr/lib/x86_64-linux-gnu/libc_nonshared.a",
-    ],
-    runtime_path = "/usr/lib/gcc/x86_64-linux-gnu/{gcc_version}".format(gcc_version = GCC_VERSION),
-    shared_library = "usr/lib/x86_64-linux-gnu/libc.so",
-    static_library = "usr/lib/x86_64-linux-gnu/libc.a",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
-    deps = [
-        ":includes",
-        ":math",
-        ":util",
-        ":stdc++",
-    ],
-)
-
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.
 cc_toolchain_import(
     name = "glibc",
-    runtime_path = "/lib/x86_64-linux-gnu",
+    #runtime_path = "/lib/x86_64-linux-gnu",
     target_compatible_with = select({
         "@platforms//os:macos": ["@platforms//cpu:arm64"],
         "//conditions:default": ["@platforms//:incompatible"],
@@ -168,6 +142,9 @@ cc_toolchain_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [
         #":dynamic_linker",
-        ":libc",
+        ":includes",
+        ":math",
+        ":util",
+        ":stdc++",
     ],
 )

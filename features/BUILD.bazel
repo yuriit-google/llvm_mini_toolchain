@@ -154,6 +154,13 @@ cc_toolchain_sysroot_feature(
     target = "aarch64-linux-gnu",
 )
 
+cc_toolchain_sysroot_feature(
+    name = "sysroot_macos_aarch64",
+    enabled = True,
+    sysroot = "@sysroot_macos_aarch64//:sysroot",
+    target = "aarch64-apple-darwin20.1.0",
+)
+
 cc_feature(
     name = "fastbuild",
     compiler_flags = ["-O0"],

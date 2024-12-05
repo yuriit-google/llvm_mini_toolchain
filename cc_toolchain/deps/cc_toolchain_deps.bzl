@@ -25,7 +25,7 @@ def cc_toolchain_deps():
             name = "sysroot_macosx_arm64",
             sha256 = "badd9f4e42f876af77e42100002c7ea87f35e17ae3f64365031e4c944a8c0971",
             urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_aarch64-sysroot.tar.xz"],
-            build_file = "//config:sysroot_macosx_arm64.BUILD",
+            build_file = "//config:sysroot_macos_arm64.BUILD",
             strip_prefix = "MacOSX14.5.sdk",
         )
 

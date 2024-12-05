@@ -21,6 +21,14 @@ config_setting(
     ],
 )
 
+config_setting(
+    name = "macos_arm64",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:arm64",
+    ],
+)
+
 platform(
     name = "linux_x86_64_platform",
     constraint_values = [
@@ -37,12 +45,21 @@ platform(
     ],
 )
 
+platform(
+    name = "macos_arm64_platform",
+    constraint_values = [
+        "@platforms//os:macos",
+        "@platforms//cpu:arm64",
+    ],
+)
+
 # Sysroot aliases
 alias(
     name = "sysroot",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:sysroot",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:sysroot",
+        ":macos_arm64": "@sysroot_macos_arm64//:sysroot",
     }),
 )
 
@@ -51,6 +68,7 @@ alias(
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:glibc",
+        ":macos_arm64": "@sysroot_macos_arm64//:glibc",
     }),
 )
 
@@ -59,14 +77,7 @@ alias(
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:pthread",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:pthread",
-    }),
-)
-
-alias(
-    name = "sysroot_math",
-    actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:math",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:math",
+        ":macos_arm64": "@sysroot_macos_arm64//:pthread",
     }),
 )
 
@@ -75,6 +86,7 @@ alias(
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
         ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
+        ":macos_arm64": "@sysroot_macos_arm64//:startup_libs",
         #"//conditions:default": ":empty",
     }),
 )
