@@ -9,9 +9,9 @@ cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
-        "//config:llvm_clang_includes",
         "//config:sysroot_libc",
         "//config:sysroot_pthread",
+        "//config:llvm_clang_includes",
     ],
 )
 
@@ -196,7 +196,7 @@ cc_toolchain_config(
         "//features:toolchain_import",
 
         # Toolchain configuration
-        "//features:garbage_collect_symbols",
+        #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
         "//features:warnings",
         "//features:errors",
         "//features:reproducible",

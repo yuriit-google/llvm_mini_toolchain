@@ -13,7 +13,7 @@ sysroot_package(
 )
 
 CRT_OBJECTS = [
-    "crt1",
+    # "crt1", # error: ld64.lld: warning: usr/lib/crt1.o has architecture x86_64 which is incompatible with target architecture arm64
 ]
 
 [
