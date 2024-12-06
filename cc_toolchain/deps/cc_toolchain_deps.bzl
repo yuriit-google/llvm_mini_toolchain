@@ -1,4 +1,6 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+#load("@bazel_tools//tools/build_defs/repo:local.bzl", "local_repository")
 load(":http_archive_bazel7.bzl", "http_archive_bazel7")  # Remove this line after updating bazel to 7.3.0 or newer
 
 def cc_toolchain_deps():
@@ -20,14 +22,19 @@ def cc_toolchain_deps():
             strip_prefix = "ubuntu18_aarch64-sysroot",
         )
 
-    if "sysroot_macosx_arm64" not in native.existing_rules():
+    if "sysroot_macos_arm64" not in native.existing_rules():
         http_archive(
-            name = "sysroot_macosx_arm64",
-            sha256 = "badd9f4e42f876af77e42100002c7ea87f35e17ae3f64365031e4c944a8c0971",
-            urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_aarch64-sysroot.tar.xz"],
+            name = "sysroot_macos_arm64",
+            sha256 = "e8f24dc4e97f2526a8398bb2bb92985934008828b20525538b69b8d4557d78e1",
+            urls = ["https://github.com/yuatop/binutils/raw/refs/heads/main/sdk.tar.xz"],
             build_file = "//config:sysroot_macos_arm64.BUILD",
-            strip_prefix = "MacOSX14.5.sdk",
+            strip_prefix = "MacOSX.sdk",
         )
+        #local_repository(
+        #    name = "sysroot_macosx_aarch64",
+        #    #build_file = "//config:sysroot_macos_arm64.BUILD",
+        #    path = ".local_repositories/MacOSX14.5.sdk",
+        #)
 
     if "llvm_linux_x86_64" not in native.existing_rules():
         # Replace 'http_archive_bazel7' by 'http_archive' after updating bazel to 7.3.0 or newer

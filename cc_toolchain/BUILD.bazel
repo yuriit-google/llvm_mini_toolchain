@@ -58,6 +58,7 @@ cc_toolchain_suite(
     toolchains = {
         "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
         "aarch64|linux_clang": ":linux_aarch64_toolchain",
+        "arm64|linux_clang": ":macos_arm64_toolchain",
     },
 )
 
@@ -168,7 +169,7 @@ cc_toolchain_config(
 )
 
 ######################################################################
-# macos arm64
+# macos aarch64
 ######################################################################
 cc_toolchain(
     name = "macos_arm64_toolchain",
@@ -216,7 +217,7 @@ cc_toolchain_config(
         "//features:c++17",
     ],
     linker = "//config:llvm_ld",
-    target_cpu = "arm64",
+    target_cpu = "aarch64",
     target_system_name = "local",
 )
 

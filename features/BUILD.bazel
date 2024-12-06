@@ -155,9 +155,9 @@ cc_toolchain_sysroot_feature(
 )
 
 cc_toolchain_sysroot_feature(
-    name = "sysroot_macos_aarch64",
+    name = "sysroot_macos_arm64",
     enabled = True,
-    sysroot = "@sysroot_macos_aarch64//:sysroot",
+    sysroot = "@sysroot_macos_arm64//:sysroot",
     target = "aarch64-apple-darwin20.1.0",
 )
 

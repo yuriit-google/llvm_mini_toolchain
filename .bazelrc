@@ -9,15 +9,20 @@ build:hermetic_tool --crosstool_top=//cc_toolchain:clang_suite
 build:hermetic_tool --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:hermetic_tool --compiler=linux_clang
 
-# aarch64 target hermetic build
+# Linux aarch64 target hermetic build
 build:hermetic_linux_aarch64 --config=hermetic_tool
 build:hermetic_linux_aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cc_toolchain_suite.
 build:hermetic_linux_aarch64 --host_platform=//config:linux_aarch64_platform
 
-# x86_64 target hermetic build
+# Linux x86_64 target hermetic build
 build:hermetic_linux_x86_64 --config=hermetic_tool
 build:hermetic_linux_x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cc_toolchain_suite.
 build:hermetic_linux_x86_64 --host_platform=//config:linux_x86_64_platform
+
+# macOS aarch64 target hermetic build
+build:hermetic_macos_arm64 --config=hermetic_tool
+build:hermetic_macos_arm64 --cpu=arm64                  # Use --cpu as a differentiator for cc_toolchain_suite.
+build:hermetic_macos_arm64 --host_platform=//config:macos_arm64_platform
 
 ##########
 # Tests

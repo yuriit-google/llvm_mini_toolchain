@@ -27,7 +27,7 @@ CRT_OBJECTS = [
 cc_toolchain_import(
     name = "startup_libs",
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
@@ -47,7 +47,7 @@ cc_toolchain_import(
         "System/Library/Frameworks",
     ],
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
@@ -59,7 +59,7 @@ cc_toolchain_import(
     name = "stdc++",
     shared_library = "usr/lib/libc++.tbd",
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
@@ -77,7 +77,7 @@ cc_toolchain_import(
 #    shared_library = "usr/lib/x86_64-linux-gnu/libmvec.so",
 #    static_library = "usr/lib/x86_64-linux-gnu/libmvec.a",
 #    target_compatible_with = select({
-#        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+#        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
 #        "//conditions:default": ["@platforms//:incompatible"],
 #    }),
 #)
@@ -92,7 +92,7 @@ cc_toolchain_import(
 #    shared_library = "usr/lib/x86_64-linux-gnu/libdl.so",
 #    static_library = "usr/lib/x86_64-linux-gnu/libdl.a",
 #    target_compatible_with = select({
-#        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+#        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
 #        "//conditions:default": ["@platforms//:incompatible"],
 #    }),
 #    deps = [":libc"],
@@ -102,7 +102,7 @@ cc_toolchain_import(
     name = "math",
     shared_library = "usr/lib/libm.tbd",
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
@@ -112,12 +112,12 @@ cc_toolchain_import(
     name = "pthread",
     shared_library = "usr/lib/libpthread.tbd",
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [
-        ":libc",
+        ":glibc",
     ],
 )
 
@@ -125,7 +125,7 @@ cc_toolchain_import(
     name = "util",
     shared_library = "usr/lib/libutil.tbd",
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
 )
@@ -136,7 +136,7 @@ cc_toolchain_import(
     name = "glibc",
     #runtime_path = "/lib/x86_64-linux-gnu",
     target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:arm64"],
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
