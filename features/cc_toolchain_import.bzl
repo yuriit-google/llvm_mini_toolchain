@@ -203,7 +203,7 @@ cc_toolchain_import = rule(
         ),
         "shared_library": attr.label(
             doc = "The precompiled shared library.",
-            allow_single_file = [".so", ".dll", ".dylib"],
+            allow_single_file = [".so", ".dll", ".dylib", ".tbd"],
         ),
         "additional_libs": attr.label_list(
             doc = "Additional files that are needed to link this library.\

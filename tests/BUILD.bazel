@@ -2,6 +2,13 @@ load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_proto_library", "c
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 #############################################
+# C
+cc_binary(
+    name = "hello_world_c",
+    srcs = ["hello_world.c"],
+)
+
+#############################################
 # C++
 cc_binary(
     name = "hello_world",

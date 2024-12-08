@@ -9,10 +9,9 @@ cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
-        "//config:llvm_clang_includes",
         "//config:sysroot_libc",
-        "//config:sysroot_math",
         "//config:sysroot_pthread",
+        "//config:llvm_clang_includes",
     ],
 )
 
@@ -59,11 +58,12 @@ cc_toolchain_suite(
     toolchains = {
         "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
         "aarch64|linux_clang": ":linux_aarch64_toolchain",
+        "arm64|linux_clang": ":macos_arm64_toolchain",
     },
 )
 
 ######################################################################
-# k8 / x86_64
+# linux k8 / x86_64
 ######################################################################
 cc_toolchain(
     name = "linux_x86_64_toolchain",
@@ -116,7 +116,7 @@ cc_toolchain_config(
 )
 
 ######################################################################
-# aarch64
+# linux aarch64
 ######################################################################
 cc_toolchain(
     name = "linux_aarch64_toolchain",
@@ -150,6 +150,59 @@ cc_toolchain_config(
         "//features:language",
         "//features:use_lld",
         "//features:sysroot_linux_aarch64",
+        "//features:dbg",
+        "//features:opt",
+        "//features:fastbuild",
+        "//features:position_independent_code",
+        "//features:supports_pic",
+        "//features:startup_libs",
+        "//features:coverage",
+
+        # C++ standard configuration
+        "//features:c++11",
+        "//features:c++14",
+        "//features:c++17",
+    ],
+    linker = "//config:llvm_ld",
+    target_cpu = "aarch64",
+    target_system_name = "local",
+)
+
+######################################################################
+# macos aarch64
+######################################################################
+cc_toolchain(
+    name = "macos_arm64_toolchain",
+    all_files = ":all",
+    ar_files = ":ar_files",
+    compiler_files = ":compiler_files",
+    dwp_files = ":all",
+    linker_files = ":linker_files",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":macos_arm64_toolchain_config",
+    toolchain_identifier = "macos_arm64_toolchain_id",
+)
+
+cc_toolchain_config(
+    name = "macos_arm64_toolchain_config",
+    archiver = "//config:llvm_ar",
+    c_compiler = "//config:llvm_clang",
+    cc_compiler = "//config:llvm_clang++",
+    compiler_features = [
+        # Hermetic libraries feature required before import.
+        "//features:hermetic_libraries",
+        "//features:toolchain_import",
+
+        # Toolchain configuration
+        #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
+        "//features:warnings",
+        "//features:errors",
+        "//features:reproducible",
+        "//features:language",
+        "//features:use_lld",
+        "//features:sysroot_macos_arm64",
         "//features:dbg",
         "//features:opt",
         "//features:fastbuild",

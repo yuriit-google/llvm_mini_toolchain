@@ -56,6 +56,7 @@ cc_toolchain_import(
     ],
     target_compatible_with = select({
         "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
