@@ -49,7 +49,7 @@ http_archive(
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
-# older version doesn't work for cross compilation. Details: https://github.com/bulletphysics/bullet3/issues/4607
+# Cross compilation error with older version. Details: https://github.com/bulletphysics/bullet3/issues/4607
 http_archive(
     name = "zlib",
     build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
