@@ -35,14 +35,27 @@ cc_toolchain_import(
 )
 
 cc_toolchain_import(
-    name = "includes",
+    name = "includes_c",
     hdrs = glob([
         "usr/include/c++/v1/**",
+    ]),
+    includes = [
+        "usr/include/c++/v1",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
+cc_toolchain_import(
+    name = "includes_system",
+    hdrs = glob([
         "usr/include/**",
         "System/Library/Frameworks/**",
     ]),
     includes = [
-        "usr/include/c++/v1",
         "usr/include",
         "System/Library/Frameworks",
     ],
@@ -53,8 +66,31 @@ cc_toolchain_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-# usr/lib/libc++.tbd
-# usr/lib/libc++abi.tbd
+# In Darwin, much is built into the system library, /usr/lib/libSystem.tbd.
+# In particular, the following libraries are included in libSystem:
+#   * libinfo - NetInfo library
+#   * libm - math library, which contains arithmetic functions
+#   * libpthread - POSIX threads library, which allows multiple tasks to run concurrently
+cc_toolchain_import(
+    name = "system",
+    shared_library = "usr/lib/libSystem.tbd",
+    target_compatible_with = select({
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
+cc_toolchain_import(
+    name = "libm",
+    shared_library = "usr/lib/libm.tbd",
+    target_compatible_with = select({
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
 cc_toolchain_import(
     name = "stdc++",
     shared_library = "usr/lib/libc++.tbd",
@@ -65,49 +101,7 @@ cc_toolchain_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
 )
 
-# Path to vecLib.tbd
-# ./System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/vecLib.tbd
-#cc_toolchain_import(
-#    name = "mvec",
-#    additional_libs = [
-#        "lib/x86_64-linux-gnu/libmvec-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
-#        "lib/x86_64-linux-gnu/libmvec.so.1",
-#        "usr/lib/x86_64-linux-gnu/libmvec_nonshared.a",
-#    ],
-#    shared_library = "usr/lib/x86_64-linux-gnu/libmvec.so",
-#    static_library = "usr/lib/x86_64-linux-gnu/libmvec.a",
-#    target_compatible_with = select({
-#        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-#        "//conditions:default": ["@platforms//:incompatible"],
-#    }),
-#)
-
-#cc_toolchain_import(
-#    name = "dynamic_linker",
-#    additional_libs = [
-#        "lib64/ld-linux-x86-64.so.2",
-#        "lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
-#    ],
-#    runtime_path = "/lib64",
-#    shared_library = "usr/lib/x86_64-linux-gnu/libdl.so",
-#    static_library = "usr/lib/x86_64-linux-gnu/libdl.a",
-#    target_compatible_with = select({
-#        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-#        "//conditions:default": ["@platforms//:incompatible"],
-#    }),
-#    deps = [":libc"],
-#)
-
-cc_toolchain_import(
-    name = "math",
-    shared_library = "usr/lib/libm.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
-)
-
+# Redundancy library (for configuration compatibility with Linux system)
 cc_toolchain_import(
     name = "pthread",
     shared_library = "usr/lib/libpthread.tbd",
@@ -142,8 +136,8 @@ cc_toolchain_import(
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [
         #":dynamic_linker",
-        ":includes",
-        ":math",
+        ":system",
+        ":libm",
         ":util",
         ":stdc++",
     ],
