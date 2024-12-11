@@ -64,6 +64,24 @@ alias(
 )
 
 alias(
+    name = "sysroot_includes_c",
+    actual = select({
+        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:includes_c",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:includes_c",
+        ":macos_arm64": "@sysroot_macos_arm64//:includes_c",
+    }),
+)
+
+alias(
+    name = "sysroot_includes_system",
+    actual = select({
+        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:includes_system",
+        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:includes_system",
+        ":macos_arm64": "@sysroot_macos_arm64//:includes_system",
+    }),
+)
+
+alias(
     name = "sysroot_libc",
     actual = select({
         ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",

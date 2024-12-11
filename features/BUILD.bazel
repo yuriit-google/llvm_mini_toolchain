@@ -158,7 +158,7 @@ cc_toolchain_sysroot_feature(
     name = "sysroot_macos_arm64",
     enabled = True,
     sysroot = "@sysroot_macos_arm64//:sysroot",
-    target = "arm64-apple-darwin",
+    target = "arm64-apple-macosx15.1",
 )
 
 cc_feature(

@@ -5,13 +5,16 @@ load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
 # Add libraries and includes here
+# buildifier: leave-alone
 cc_toolchain_import(
     name = "all_imports",
     visibility = ["//visibility:public"],
     deps = [
+        "//config:sysroot_includes_c",
+        "//config:llvm_clang_includes",
+        "//config:sysroot_includes_system",
         "//config:sysroot_libc",
         "//config:sysroot_pthread",
-        "//config:llvm_clang_includes",
     ],
 )
 
@@ -58,7 +61,7 @@ cc_toolchain_suite(
     toolchains = {
         "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
         "aarch64|linux_clang": ":linux_aarch64_toolchain",
-        "arm64|linux_clang": ":macos_arm64_toolchain",
+        #"arm64|linux_clang": ":macos_arm64_toolchain",
     },
 )
 

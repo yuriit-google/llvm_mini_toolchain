@@ -6,4 +6,4 @@ compare/
 .ijwb/
 .clwb/
 .idea/
-.local_repositories/
+/sysroots/macos_arm64/*.sdk

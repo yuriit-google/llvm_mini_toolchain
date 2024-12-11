@@ -41,20 +41,33 @@ cc_toolchain_import(
 )
 
 cc_toolchain_import(
-    name = "includes",
+    name = "includes_c",
     hdrs = glob([
         "usr/include/c++/*/**",
         "usr/include/x86_64-linux-gnu/c++/*/**",
         "usr/lib/gcc/x86_64-linux-gnu/7/include/**",
-        "usr/local/include/**",
-        "usr/include/x86_64-linux-gnu/**",
-        "usr/include/**",
     ]),
     includes = [
         "usr/include/c++/7",
         "usr/include/x86_64-linux-gnu/c++/7",
         "usr/include/c++/7/backward",
         "usr/lib/gcc/x86_64-linux-gnu/7/include",
+    ],
+    target_compatible_with = select({
+        "@platforms//os:linux": ["@platforms//cpu:x86_64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+)
+
+cc_toolchain_import(
+    name = "includes_system",
+    hdrs = glob([
+        "usr/local/include/**",
+        "usr/include/x86_64-linux-gnu/**",
+        "usr/include/**",
+    ]),
+    includes = [
         "usr/local/include",
         "usr/include/x86_64-linux-gnu",
         "usr/include",
@@ -189,7 +202,6 @@ cc_toolchain_import(
     }),
     visibility = ["@llvm_mini_toolchain//config:__pkg__"],
     deps = [
-        ":includes",
         ":gcc",
         ":math",
         ":mvec",
