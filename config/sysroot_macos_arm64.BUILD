@@ -128,7 +128,7 @@ cc_toolchain_import(
 # out to fix link ordering problems that cause false undefined symbol positives.
 cc_toolchain_import(
     name = "glibc",
-    #runtime_path = "/lib/x86_64-linux-gnu",
+    #runtime_path = "usr/lib",
     target_compatible_with = select({
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],

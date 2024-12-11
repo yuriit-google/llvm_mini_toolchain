@@ -23,18 +23,11 @@ def cc_toolchain_deps():
         )
 
     if "sysroot_macos_arm64" not in native.existing_rules():
-        http_archive(
+        native.new_local_repository(
             name = "sysroot_macos_arm64",
-            sha256 = "e8f24dc4e97f2526a8398bb2bb92985934008828b20525538b69b8d4557d78e1",
-            urls = ["https://github.com/yuatop/binutils/raw/refs/heads/main/sdk.tar.xz"],
             build_file = "//config:sysroot_macos_arm64.BUILD",
-            strip_prefix = "MacOSX.sdk",
+            path = "sysroots/macos_arm64/MacOSX.sdk",
         )
-        #local_repository(
-        #    name = "sysroot_macosx_aarch64",
-        #    #build_file = "//config:sysroot_macos_arm64.BUILD",
-        #    path = ".local_repositories/MacOSX14.5.sdk",
-        #)
 
     if "llvm_linux_x86_64" not in native.existing_rules():
         # Replace 'http_archive_bazel7' by 'http_archive' after updating bazel to 7.3.0 or newer
