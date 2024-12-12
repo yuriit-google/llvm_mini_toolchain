@@ -65,13 +65,6 @@ cc_toolchain_suite(
     },
 )
 
-cc_toolchain_suite(
-    name = "host_tools_suite",
-    toolchains = {
-        "x86_64": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
-    },
-)
-
 ######################################################################
 # linux k8 / x86_64
 ######################################################################

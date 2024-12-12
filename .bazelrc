@@ -7,25 +7,25 @@ build --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 ##################################################################
 # For Hermetic builds
 build:hermetic_tools --crosstool_top=//cc_toolchain:tools_suite
-build:hermetic_tools --host_crosstool_top=//cc_toolchain:host_tools_suite
+build:hermetic_tools --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:hermetic_tools --compiler=linux_clang
 
 # Host: Linux x86_64, Target: Linux aarch64
 build:hermetic_linux_aarch64 --config=hermetic_tools
 build:hermetic_linux_aarch64 --cpu=aarch64                  # Use --cpu as a differentiator for cross tools.
-build:hermetic_linux_aarch64 --host_cpu=x86_64              # Use --host_cpu as a differentiator for host cross tools.
+#build:hermetic_linux_aarch64 --host_cpu=x86_64              # Use --host_cpu as a differentiator for host cross tools.
 build:hermetic_linux_aarch64 --host_platform=//config:linux_aarch64_platform
 
 # Host: Linux x86_64, Target: Linux x86_64
 build:hermetic_linux_x86_64 --config=hermetic_tools
 build:hermetic_linux_x86_64 --cpu=x86_64                  # Use --cpu as a differentiator for cross tools.
-build:hermetic_linux_x86_64 --host_cpu=x86_64             # Use --host_cpu as a differentiator for host cross tools.
+#build:hermetic_linux_x86_64 --host_cpu=x86_64             # Use --host_cpu as a differentiator for host cross tools.
 build:hermetic_linux_x86_64 --host_platform=//config:linux_x86_64_platform
 
 # Host: Linux x86_64, Target: macOS aarch64
 build:hermetic_macos_arm64 --config=hermetic_tools
 build:hermetic_macos_arm64 --cpu=arm64                  # Use --cpu as a differentiator for cross tools.
-build:hermetic_macos_arm64 --host_cpu=x86_64            # Use --host_cpu as a differentiator for host cross tools.
+#build:hermetic_macos_arm64 --host_cpu=x86_64            # Use --host_cpu as a differentiator for host cross tools.
 build:hermetic_macos_arm64 --host_platform=//config:macos_arm64_platform
 
 ##########
