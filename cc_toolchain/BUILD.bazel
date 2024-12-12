@@ -57,11 +57,18 @@ filegroup(
 )
 
 cc_toolchain_suite(
-    name = "clang_suite",
+    name = "tools_suite",
     toolchains = {
         "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
         "aarch64|linux_clang": ":linux_aarch64_toolchain",
         #"arm64|linux_clang": ":macos_arm64_toolchain",
+    },
+)
+
+cc_toolchain_suite(
+    name = "host_tools_suite",
+    toolchains = {
+        "x86_64": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
     },
 )
 
