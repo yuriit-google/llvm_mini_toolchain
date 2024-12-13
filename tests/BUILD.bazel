@@ -40,9 +40,7 @@ cc_binary(
     name = "hello_absl",
     srcs = ["hello_absl.cc"],
     deps = [
-        "@com_google_absl//absl/algorithm",
         "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/random",
         "@com_google_absl//absl/strings",
     ],
 )
@@ -51,9 +49,7 @@ cc_test(
     name = "hello_absl_test",
     srcs = ["hello_absl.cc"],
     deps = [
-        "@com_google_absl//absl/algorithm",
         "@com_google_absl//absl/container:flat_hash_map",
-        "@com_google_absl//absl/random",
         "@com_google_absl//absl/strings",
     ],
 )
