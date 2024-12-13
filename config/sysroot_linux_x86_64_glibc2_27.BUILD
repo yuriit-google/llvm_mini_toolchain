@@ -82,7 +82,7 @@ cc_toolchain_import(
 cc_toolchain_import(
     name = "gcc",
     additional_libs = [
-        "lib/x86_64-linux-gnu/libgcc_s.so.1",       # TODO: Fix sysroot bad link
+        "lib/x86_64-linux-gnu/libgcc_s.so.1",       # TODO: check this (docker image has this file)
         "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libgcc_eh.a".format(gcc_version = GCC_VERSION),
     ],
     runtime_path = "/usr/lib/x86_64-linux-gnu",
