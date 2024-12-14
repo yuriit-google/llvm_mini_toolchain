@@ -167,6 +167,12 @@ cc_feature(
     provides = ["compilation_mode"],
 )
 
+#cc_feature(
+#    name = "nobuiltin",
+#    compiler_flags = ["-fno-builtin"],
+#    provides = ["compilation_mode"],
+#)
+
 # Language features.
 CC_VERSIONS = [
     "c++11",

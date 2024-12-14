@@ -45,13 +45,13 @@ cc_toolchain_import(
     hdrs = glob([
         "usr/include/c++/*/**",
         "usr/include/x86_64-linux-gnu/c++/*/**",
-        "usr/lib/gcc/x86_64-linux-gnu/7/include/**",
+        "usr/include/c++/7/experimental/**",
     ]),
     includes = [
         "usr/include/c++/7",
         "usr/include/x86_64-linux-gnu/c++/7",
         "usr/include/c++/7/backward",
-        "usr/lib/gcc/x86_64-linux-gnu/7/include",
+        "usr/include/c++/7/experimental",
     ],
     target_compatible_with = select({
         "@platforms//os:linux": ["@platforms//cpu:x86_64"],
@@ -82,7 +82,7 @@ cc_toolchain_import(
 cc_toolchain_import(
     name = "gcc",
     additional_libs = [
-        "lib/x86_64-linux-gnu/libgcc_s.so.1",
+        "lib/x86_64-linux-gnu/libgcc_s.so.1",       # TODO: check this (docker image has this file)
         "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libgcc_eh.a".format(gcc_version = GCC_VERSION),
     ],
     runtime_path = "/usr/lib/x86_64-linux-gnu",
