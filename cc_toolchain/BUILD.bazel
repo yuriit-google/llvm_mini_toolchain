@@ -110,7 +110,6 @@ cc_toolchain_config(
         "//features:dbg",
         "//features:opt",
         "//features:fastbuild",
-        #"//features:nobuiltin",
         "//features:position_independent_code",
         "//features:supports_pic",
         "//features:startup_libs",
