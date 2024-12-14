@@ -19,3 +19,4 @@
 - [X] Import abseil library and write tests
 - [ ] Add support of local machine toolchain for build without arguments (for example k8|linux for x86_64)
 - [ ] Add macOS target support (aarch64 only)
+- [ ] Check -std=c++17 flag
