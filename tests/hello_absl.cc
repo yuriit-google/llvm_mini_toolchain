@@ -11,7 +11,7 @@ int main() {
   std::string s1 = absl::StrJoin(v1, " ");
   std::cout << s1 << "!\n";
 
-  absl::flat_hash_map<int, std::string> m1 = {{1, "Hello"}, {2, "flat_hash_map"}, };
+  absl::flat_hash_map<int, std::string> m1 = {{1, "Hello"}, {2, "Abseil flat_hash_map"}, };
   std::cout << m1.at(1) << " " << m1.at(2) << "!\n";
 
   return 0;
