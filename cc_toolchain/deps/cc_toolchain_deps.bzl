@@ -22,12 +22,12 @@ def cc_toolchain_deps():
             strip_prefix = "ubuntu18_aarch64-sysroot",
         )
 
-    #if "sysroot_macos_arm64" not in native.existing_rules():
-    #    native.new_local_repository(
-    #        name = "sysroot_macos_arm64",
-    #        build_file = "//config:sysroot_macos_arm64.BUILD",
-    #        path = "sysroots/macos_arm64/MacOSX.sdk",
-    #    )
+    if "sysroot_macos_arm64" not in native.existing_rules():
+        native.new_local_repository(
+            name = "sysroot_macos_arm64",
+            build_file = "//config:sysroot_macos_arm64.BUILD",
+            path = "sysroots/macos_arm64/MacOSX.sdk",
+        )
 
     if "llvm_linux_x86_64" not in native.existing_rules():
         # Replace 'http_archive_bazel7' by 'http_archive' after updating bazel to 7.3.0 or newer

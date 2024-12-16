@@ -9,7 +9,7 @@ build --toolchain_resolution_debug=.*
 ##################################################################
 # For Hermetic builds
 build:hermetic_tools --crosstool_top=//cc_toolchain:tools_suite
-build:hermetic_tools --host_crosstool_top=//cc_toolchain:host_tools_suite
+build:hermetic_tools --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:hermetic_tools --compiler=linux_clang
 
 # Host: Linux x86_64, Target: Linux aarch64

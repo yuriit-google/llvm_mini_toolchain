@@ -26,3 +26,9 @@ Let's imagine that you copy or download SDK to `~/Downloads` directory and the p
 `tar xf ~/Downloads/MacOSX.sdk.tar.xz -C ~/Projects/llvm_mini_toolchain/sysroots/macos_arm64/`
 
 That's it, you project is ready for cross-platform builds where target is macOS ARM64.
+
+# Modify macOS SDK
+
+<code>
+ sudo ln -s ./System/Library/Frameworks/CoreFoundation.framework/Headers ./System/Library/Frameworks/CoreFoundation
+</code>
