@@ -45,13 +45,13 @@ cc_toolchain_import(
     hdrs = glob([
         "usr/include/c++/*/**",
         "usr/include/aarch64-linux-gnu/c++/*/**",
-        "usr/lib/gcc/aarch64-linux-gnu/7/include/**",
+        "usr/include/c++/7/experimental/**",
     ]),
     includes = [
         "usr/include/c++/7",
         "usr/include/aarch64-linux-gnu/c++/7",
         "usr/include/c++/7/backward",
-        "usr/lib/gcc/aarch64-linux-gnu/7/include",
+        "usr/include/c++/7/experimental",
     ],
     target_compatible_with = select({
         "@platforms//os:linux": ["@platforms//cpu:aarch64"],

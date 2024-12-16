@@ -124,6 +124,26 @@ cc_toolchain_import(
     }),
 )
 
+cc_toolchain_import(
+    name = "objc",
+    shared_library = "usr/lib/libobjc.tbd",
+    target_compatible_with = select({
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)
+
+# TODO: Add below line to compilation (Linux -> macOS)
+# external/sysroot_macos_arm64/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd
+cc_toolchain_import(
+    name = "core_foundation",
+    shared_library = "System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd",
+    target_compatible_with = select({
+        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)
+
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.
 cc_toolchain_import(
@@ -140,5 +160,7 @@ cc_toolchain_import(
         ":libm",
         ":util",
         ":stdc++",
+        ":objc",
+        ":core_foundation",
     ],
 )
