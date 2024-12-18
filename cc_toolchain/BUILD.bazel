@@ -1,7 +1,5 @@
-load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
+load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
-#load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
 # Add libraries and includes here
@@ -56,25 +54,68 @@ filegroup(
     ],
 )
 
-cc_toolchain_suite(
-    name = "tools_suite",
-    toolchains = {
-        "x86_64|linux_clang": ":linux_x86_64_toolchain",  # k8 default cpu architecture for x86_64
-        "aarch64|linux_clang": ":linux_aarch64_toolchain",
-        #"arm64|linux_clang": ":macos_arm64_toolchain",
-    },
-)
-
 ######################################################################
 # linux k8 / x86_64
 ######################################################################
+# Add libraries and includes here
+# buildifier: leave-alone
+cc_toolchain_import(
+    name = "imports_linux_x86_64",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@sysroot_linux_x86_64_glibc2_27//:includes_c",
+        "//config:llvm_clang_includes",
+        "@sysroot_linux_x86_64_glibc2_27//:includes_system",
+        "@sysroot_linux_x86_64_glibc2_27//:glibc",
+        "@sysroot_linux_x86_64_glibc2_27//:pthread",
+    ],
+)
+
+filegroup(
+    name = "all_linux_x86_64",
+    srcs = [
+        ":imports_linux_x86_64",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_all",
+        "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
+    ],
+)
+
+filegroup(
+    name = "compiler_linux_x86_64",
+    srcs = [
+        ":imports_linux_x86_64",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_clang",
+        "//config:llvm_clang++",
+    ],
+)
+
+filegroup(
+    name = "linker_linux_x86_64",
+    srcs = [
+        ":compiler_linux_x86_64",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ld",
+        "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
+    ],
+)
+
+filegroup(
+    name = "ar_linux_x86_64",
+    srcs = [
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ar",
+    ],
+)
+
 cc_toolchain(
     name = "linux_x86_64_toolchain",
-    all_files = ":all",
-    ar_files = ":ar_files",
-    compiler_files = ":compiler_files",
-    dwp_files = ":all",
-    linker_files = ":linker_files",
+    all_files = ":all_linux_x86_64",
+    ar_files = ":ar_linux_x86_64",
+    compiler_files = ":compiler_linux_x86_64",
+    dwp_files = ":all_linux_x86_64",
+    linker_files = ":linker_linux_x86_64",
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
@@ -118,16 +159,82 @@ cc_toolchain_config(
     target_system_name = "local",
 )
 
+toolchain(
+    name = "linux_x86_64_to_x86_64",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":linux_x86_64_toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
+
 ######################################################################
 # linux aarch64
 ######################################################################
+# Add libraries and includes here
+# buildifier: leave-alone
+cc_toolchain_import(
+    name = "imports_linux_aarch64",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@sysroot_linux_aarch64_glibc2_27//:includes_c",
+        "//config:llvm_clang_includes",
+        "@sysroot_linux_aarch64_glibc2_27//:includes_system",
+        "@sysroot_linux_aarch64_glibc2_27//:glibc",
+        "@sysroot_linux_aarch64_glibc2_27//:pthread",
+    ],
+)
+
+filegroup(
+    name = "all_linux_aarch64",
+    srcs = [
+        ":imports_linux_aarch64",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_all",
+        "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
+    ],
+)
+
+filegroup(
+    name = "compiler_linux_aarch64",
+    srcs = [
+        ":all_linux_aarch64",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_clang",
+        "//config:llvm_clang++",
+    ],
+)
+
+filegroup(
+    name = "linker_linux_aarch64",
+    srcs = [
+        ":compiler_linux_aarch64",
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ld",
+        "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
+    ],
+)
+
+filegroup(
+    name = "ar_linux_aarch64",
+    srcs = [
+        "//cc_toolchain/wrappers:all",
+        "//config:llvm_ar",
+    ],
+)
+
 cc_toolchain(
     name = "linux_aarch64_toolchain",
-    all_files = ":all",
-    ar_files = ":ar_files",
-    compiler_files = ":compiler_files",
-    dwp_files = ":all",
-    linker_files = ":linker_files",
+    all_files = ":all_linux_aarch64",
+    ar_files = ":ar_linux_aarch64",
+    compiler_files = ":compiler_linux_aarch64",
+    dwp_files = ":all_linux_aarch64",
+    linker_files = ":linker_linux_aarch64",
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
@@ -169,6 +276,21 @@ cc_toolchain_config(
     linker = "//config:llvm_ld",
     target_cpu = "aarch64",
     target_system_name = "local",
+)
+
+# buildifier: leave-alone
+toolchain(
+    name = "linux_x86_64_to_aarch64",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":linux_aarch64_toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
 
 ######################################################################
@@ -223,20 +345,3 @@ cc_toolchain_config(
     target_cpu = "aarch64",
     target_system_name = "local",
 )
-
-#
-# Supported by bazel 7.0.2 version or higher
-#
-#toolchain(
-#    name = "linux_aarch64_cc_toolchain",
-#    exec_compatible_with = [
-#        "@platforms//cpu:aarch64",
-#        #"@platforms//os:linux",
-#    ],
-#    target_compatible_with = [
-#        "@platforms//cpu:aarch64",
-#        #"@platforms//os:linux",
-#    ],
-#    toolchain = ":linux_aarch64_toolchain",
-#    toolchain_type = "@rules_cc//cc:toolchain_type",
-#)

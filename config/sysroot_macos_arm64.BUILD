@@ -30,7 +30,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
     deps = [":" + obj for obj in CRT_OBJECTS],
 )
 
@@ -46,7 +46,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 cc_toolchain_import(
@@ -63,7 +63,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 # In Darwin, much is built into the system library, /usr/lib/libSystem.tbd.
@@ -78,7 +78,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 cc_toolchain_import(
@@ -88,7 +88,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 cc_toolchain_import(
@@ -98,7 +98,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 # Redundancy library (for configuration compatibility with Linux system)
@@ -109,7 +109,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
     deps = [
         ":glibc",
     ],
@@ -153,7 +153,7 @@ cc_toolchain_import(
         "@platforms//os:macos": ["@platforms//cpu:aarch64"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
     deps = [
         #":dynamic_linker",
         ":system",

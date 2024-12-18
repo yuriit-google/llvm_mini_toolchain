@@ -71,4 +71,4 @@ http_archive(
     urls = ["https://github.com/abseil/abseil-cpp/releases/download/20240116.2/abseil-cpp-20240116.2.tar.gz"],
 )
 
-#register_toolchains("//cc_toolchain/...")
+register_toolchains("//cc_toolchain/...")

@@ -4,8 +4,7 @@ package(
     default_visibility = ["//visibility:public"],
 )
 
-# Platforms settings
-config_setting(
+platform(
     name = "linux_x86_64",
     constraint_values = [
         "@platforms//os:linux",
@@ -13,7 +12,7 @@ config_setting(
     ],
 )
 
-config_setting(
+platform(
     name = "linux_aarch64",
     constraint_values = [
         "@platforms//os:linux",
@@ -21,7 +20,7 @@ config_setting(
     ],
 )
 
-config_setting(
+platform(
     name = "macos_arm64",
     constraint_values = [
         "@platforms//os:macos",
@@ -29,24 +28,24 @@ config_setting(
     ],
 )
 
-platform(
-    name = "linux_x86_64_platform",
+config_setting(
+    name = "is_linux_x86_64",
     constraint_values = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
 )
 
-platform(
-    name = "linux_aarch64_platform",
+config_setting(
+    name = "is_linux_aarch64",
     constraint_values = [
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
     ],
 )
 
-platform(
-    name = "macos_arm64_platform",
+config_setting(
+    name = "is_macos_arm64",
     constraint_values = [
         "@platforms//os:macos",
         "@platforms//cpu:arm64",
@@ -57,54 +56,54 @@ platform(
 alias(
     name = "sysroot",
     actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:sysroot",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:sysroot",
-        ":macos_arm64": "@sysroot_macos_arm64//:sysroot",
+        ":is_linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:sysroot",
+        ":is_linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:sysroot",
+        ":is_macos_arm64": "@sysroot_macos_arm64//:sysroot",
     }),
 )
 
 alias(
     name = "sysroot_includes_c",
     actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:includes_c",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:includes_c",
-        ":macos_arm64": "@sysroot_macos_arm64//:includes_c",
+        ":is_linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:includes_c",
+        ":is_linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:includes_c",
+        ":is_macos_arm64": "@sysroot_macos_arm64//:includes_c",
     }),
 )
 
 alias(
     name = "sysroot_includes_system",
     actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:includes_system",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:includes_system",
-        ":macos_arm64": "@sysroot_macos_arm64//:includes_system",
+        ":is_linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:includes_system",
+        ":is_linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:includes_system",
+        ":is_macos_arm64": "@sysroot_macos_arm64//:includes_system",
     }),
 )
 
 alias(
     name = "sysroot_libc",
     actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:glibc",
-        ":macos_arm64": "@sysroot_macos_arm64//:glibc",
+        ":is_linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:glibc",
+        ":is_linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:glibc",
+        ":is_macos_arm64": "@sysroot_macos_arm64//:glibc",
     }),
 )
 
 alias(
     name = "sysroot_pthread",
     actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:pthread",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:pthread",
-        ":macos_arm64": "@sysroot_macos_arm64//:pthread",
+        ":is_linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:pthread",
+        ":is_linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:pthread",
+        ":is_macos_arm64": "@sysroot_macos_arm64//:pthread",
     }),
 )
 
 alias(
     name = "sysroot_startup_libs",
     actual = select({
-        ":linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
-        ":linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
-        ":macos_arm64": "@sysroot_macos_arm64//:startup_libs",
+        ":is_linux_x86_64": "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
+        ":is_linux_aarch64": "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
+        ":is_macos_arm64": "@sysroot_macos_arm64//:startup_libs",
         #"//conditions:default": ":empty",
     }),
 )
