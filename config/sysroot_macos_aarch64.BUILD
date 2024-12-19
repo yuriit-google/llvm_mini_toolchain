@@ -26,10 +26,10 @@ CRT_OBJECTS = [
 
 cc_toolchain_import(
     name = "startup_libs",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
     deps = [":" + obj for obj in CRT_OBJECTS],
 )
@@ -42,10 +42,10 @@ cc_toolchain_import(
     includes = [
         "usr/include/c++/v1",
     ],
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -59,10 +59,10 @@ cc_toolchain_import(
         "usr/include",
         "System/Library/Frameworks",
     ],
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -74,30 +74,30 @@ cc_toolchain_import(
 cc_toolchain_import(
     name = "system",
     shared_library = "usr/lib/libSystem.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
 )
 
 cc_toolchain_import(
     name = "libm",
     shared_library = "usr/lib/libm.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
 )
 
 cc_toolchain_import(
     name = "stdc++",
     shared_library = "usr/lib/libc++.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -105,10 +105,10 @@ cc_toolchain_import(
 cc_toolchain_import(
     name = "pthread",
     shared_library = "usr/lib/libpthread.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
     deps = [
         ":glibc",
@@ -118,41 +118,37 @@ cc_toolchain_import(
 cc_toolchain_import(
     name = "util",
     shared_library = "usr/lib/libutil.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
 )
 
 cc_toolchain_import(
     name = "objc",
     shared_library = "usr/lib/libobjc.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
 )
 
 # TODO: Add below line to compilation (Linux -> macOS)
 # external/sysroot_macos_arm64/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd
-cc_toolchain_import(
-    name = "core_foundation",
-    shared_library = "System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
-)
+#cc_toolchain_import(
+#    name = "core_foundation",
+#    shared_library = "System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd",
+#)
 
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.
 cc_toolchain_import(
     name = "glibc",
     #runtime_path = "usr/lib",
-    target_compatible_with = select({
-        "@platforms//os:macos": ["@platforms//cpu:aarch64"],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    #target_compatible_with = select({
+    #    "@platforms//os:macos": ["@platforms//cpu:aarch64"],
+    #    "//conditions:default": ["@platforms//:incompatible"],
+    #}),
     visibility = ["//visibility:public"],
     deps = [
         #":dynamic_linker",
@@ -161,6 +157,6 @@ cc_toolchain_import(
         ":util",
         ":stdc++",
         ":objc",
-        ":core_foundation",
+        #":core_foundation",
     ],
 )

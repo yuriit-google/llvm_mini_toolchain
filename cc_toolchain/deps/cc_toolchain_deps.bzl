@@ -22,10 +22,10 @@ def cc_toolchain_deps():
             strip_prefix = "ubuntu18_aarch64-sysroot",
         )
 
-    if "sysroot_macos_arm64" not in native.existing_rules():
+    if "sysroot_macos_aarch64" not in native.existing_rules():
         native.new_local_repository(
-            name = "sysroot_macos_arm64",
-            build_file = "//config:sysroot_macos_arm64.BUILD",
+            name = "sysroot_macos_aarch64",
+            build_file = "//config:sysroot_macos_aarch64.BUILD",
             path = "sysroots/macos_arm64/MacOSX.sdk",
         )
 

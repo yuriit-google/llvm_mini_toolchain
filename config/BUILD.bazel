@@ -21,10 +21,10 @@ platform(
 )
 
 platform(
-    name = "macos_arm64",
+    name = "macos_aarch64",
     constraint_values = [
         "@platforms//os:macos",
-        "@platforms//cpu:arm64",
+        "@platforms//cpu:aarch64",
     ],
 )
 
