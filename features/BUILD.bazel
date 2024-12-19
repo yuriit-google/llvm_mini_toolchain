@@ -9,17 +9,40 @@ package(
     default_visibility = ["//cc_toolchain:__pkg__"],
 )
 
-# System library feature.
 cc_toolchain_import_feature(
-    name = "toolchain_import",
+    name = "toolchain_import_lx64_lx64",
     enabled = True,
-    toolchain_import = "//cc_toolchain:all_imports",
+    toolchain_import = "//cc_toolchain:imports_lx64_lx64",
 )
 
 cc_toolchain_import_feature(
-    name = "startup_libs",
+    name = "toolchain_import_lx64_la64",
     enabled = True,
-    toolchain_import = "//config:sysroot_startup_libs",
+    toolchain_import = "//cc_toolchain:imports_lx64_la64",
+)
+
+cc_toolchain_import_feature(
+    name = "toolchain_import_lx64_ma64",
+    enabled = True,
+    toolchain_import = "//cc_toolchain:imports_lx64_ma64",
+)
+
+cc_toolchain_import_feature(
+    name = "startup_libs_lx64",
+    enabled = True,
+    toolchain_import = "//cc_toolchain:startup_libs_lx64",
+)
+
+cc_toolchain_import_feature(
+    name = "startup_libs_la64",
+    enabled = True,
+    toolchain_import = "//cc_toolchain:startup_libs_la64",
+)
+
+cc_toolchain_import_feature(
+    name = "startup_libs_ma64",
+    enabled = True,
+    toolchain_import = "//cc_toolchain:startup_libs_ma64",
 )
 
 # Reduces binary size by putting each block of data and function in their own
@@ -141,23 +164,23 @@ cc_feature(
 )
 
 cc_toolchain_sysroot_feature(
-    name = "sysroot_linux_x86_64",
+    name = "sysroot_lx64",
     enabled = True,
-    sysroot = "@sysroot_linux_x86_64_glibc2_27//:sysroot",
+    sysroot = "@sysroot_linux_x86_64//:sysroot",
     target = "x86_64-linux-gnu",
 )
 
 cc_toolchain_sysroot_feature(
-    name = "sysroot_linux_aarch64",
+    name = "sysroot_la64",
     enabled = True,
-    sysroot = "@sysroot_linux_aarch64_glibc2_27//:sysroot",
+    sysroot = "@sysroot_linux_aarch64//:sysroot",
     target = "aarch64-linux-gnu",
 )
 
 cc_toolchain_sysroot_feature(
-    name = "sysroot_macos_arm64",
+    name = "sysroot_ma64",
     enabled = True,
-    sysroot = "@sysroot_macos_arm64//:sysroot",
+    sysroot = "@sysroot_macos_aarch64//:sysroot",
     target = "arm64-apple-macosx15.1",
 )
 
