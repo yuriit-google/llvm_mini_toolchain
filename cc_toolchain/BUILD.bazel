@@ -2,136 +2,90 @@ load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
-# Add libraries and includes here
+######################################################################
+# Tools: Linux x86_64, Sysroot: Linux x86_64
+######################################################################
+
+alias(
+    name = "startup_libs_lx64",
+    actual = "@sysroot_linux_x86_64//:startup_libs",
+    visibility = ["//visibility:public"],
+)
+
 # buildifier: leave-alone
 cc_toolchain_import(
-    name = "all_imports",
-    visibility = ["//visibility:public"],
+    name = "imports_lx64_lx64",
     deps = [
-        "//config:sysroot_includes_c",
-        "//config:llvm_clang_includes",
-        "//config:sysroot_includes_system",
-        "//config:sysroot_libc",
-        "//config:sysroot_pthread",
+        "@sysroot_linux_x86_64//:includes_c",
+        "@llvm_linux_x86_64//:clang_includes",
+        "@sysroot_linux_x86_64//:includes_system",
+        "@sysroot_linux_x86_64//:glibc",
+        "@sysroot_linux_x86_64//:pthread",
     ],
-)
-
-filegroup(
-    name = "all",
-    srcs = [
-        ":all_imports",
-        "//cc_toolchain/wrappers:all",
-        "//config:llvm_all",
-        "//features:startup_libs",
-    ],
-)
-
-filegroup(
-    name = "compiler_files",
-    srcs = [
-        ":all_imports",
-        "//cc_toolchain/wrappers:all",
-        "//config:llvm_clang",
-        "//config:llvm_clang++",
-    ],
-)
-
-filegroup(
-    name = "linker_files",
-    srcs = [
-        ":compiler_files",
-        "//cc_toolchain/wrappers:all",
-        "//config:llvm_ld",
-        "//features:startup_libs",
-    ],
-)
-
-filegroup(
-    name = "ar_files",
-    srcs = [
-        "//cc_toolchain/wrappers:all",
-        "//config:llvm_ar",
-    ],
-)
-
-######################################################################
-# linux k8 / x86_64
-######################################################################
-# Add libraries and includes here
-# buildifier: leave-alone
-cc_toolchain_import(
-    name = "imports_linux_x86_64",
     visibility = ["//visibility:public"],
-    deps = [
-        "@sysroot_linux_x86_64_glibc2_27//:includes_c",
-        "//config:llvm_clang_includes",
-        "@sysroot_linux_x86_64_glibc2_27//:includes_system",
-        "@sysroot_linux_x86_64_glibc2_27//:glibc",
-        "@sysroot_linux_x86_64_glibc2_27//:pthread",
+)
+
+filegroup(
+    name = "all_lx64_lx64",
+    srcs = [
+        ":imports_lx64_lx64",
+        "//cc_toolchain/wrappers:all",
+        "//features:startup_libs_lx64",
+        "@llvm_linux_x86_64//:all",
     ],
 )
 
 filegroup(
-    name = "all_linux_x86_64",
+    name = "compiler_lx64_lx64",
     srcs = [
-        ":imports_linux_x86_64",
+        ":imports_lx64_lx64",
         "//cc_toolchain/wrappers:all",
-        "//config:llvm_all",
-        "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
+        "@llvm_linux_x86_64//:clang",
+        "@llvm_linux_x86_64//:clang++",
     ],
 )
 
 filegroup(
-    name = "compiler_linux_x86_64",
+    name = "linker_lx64_lx64",
     srcs = [
-        ":imports_linux_x86_64",
+        ":compiler_lx64_lx64",
         "//cc_toolchain/wrappers:all",
-        "//config:llvm_clang",
-        "//config:llvm_clang++",
+        "@llvm_linux_x86_64//:ld",
+        "@sysroot_linux_x86_64//:startup_libs",
     ],
 )
 
 filegroup(
-    name = "linker_linux_x86_64",
-    srcs = [
-        ":compiler_linux_x86_64",
-        "//cc_toolchain/wrappers:all",
-        "//config:llvm_ld",
-        "@sysroot_linux_x86_64_glibc2_27//:startup_libs",
-    ],
-)
-
-filegroup(
-    name = "ar_linux_x86_64",
+    name = "ar_lx64_lx64",
     srcs = [
         "//cc_toolchain/wrappers:all",
-        "//config:llvm_ar",
+        "@llvm_linux_x86_64//:ar",
     ],
 )
 
 cc_toolchain(
-    name = "linux_x86_64_toolchain",
-    all_files = ":all_linux_x86_64",
-    ar_files = ":ar_linux_x86_64",
-    compiler_files = ":compiler_linux_x86_64",
-    dwp_files = ":all_linux_x86_64",
-    linker_files = ":linker_linux_x86_64",
+    name = "toolchain_lx64_lx64",
+    all_files = ":all_lx64_lx64",
+    ar_files = ":ar_lx64_lx64",
+    compiler_files = ":compiler_lx64_lx64",
+    dwp_files = ":all_lx64_lx64",
+    linker_files = ":linker_lx64_lx64",
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":linux_x86_64_toolchain_config",
-    toolchain_identifier = "linux_x86_64_toolchain",
+    toolchain_config = ":toolchain_config_lx64_lx64",
+    toolchain_identifier = "toolchain_lx64_lx64_id",
 )
 
 cc_toolchain_config(
-    name = "linux_x86_64_toolchain_config",
-    archiver = "//config:llvm_ar",
-    c_compiler = "//config:llvm_clang",
-    cc_compiler = "//config:llvm_clang++",
+    name = "toolchain_config_lx64_lx64",
+    archiver = "@llvm_linux_x86_64//:ar",
+    c_compiler = "@llvm_linux_x86_64//:clang",
+    cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
-        "//features:toolchain_import",
+        "//features:toolchain_import_lx64_lx64",
 
         # Toolchain configuration
         "//features:garbage_collect_symbols",
@@ -146,7 +100,7 @@ cc_toolchain_config(
         "//features:fastbuild",
         "//features:position_independent_code",
         "//features:supports_pic",
-        "//features:startup_libs",
+        "//features:startup_libs_lx64",
         "//features:coverage",
 
         # C++ standard configuration
@@ -154,13 +108,13 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
-    linker = "//config:llvm_ld",
+    linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "x86_64",
     target_system_name = "local",
 )
 
 toolchain(
-    name = "linux_x86_64_to_x86_64",
+    name = "lx64_lx64",
     exec_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
@@ -169,88 +123,94 @@ toolchain(
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
     ],
-    toolchain = ":linux_x86_64_toolchain",
+    toolchain = ":toolchain_lx64_lx64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
 
 ######################################################################
-# linux aarch64
+# Tools: Linux x86_64, Sysroot: Linux aarch64
 ######################################################################
-# Add libraries and includes here
+
+alias(
+    name = "startup_libs_la64",
+    actual = "@sysroot_linux_aarch64//:startup_libs",
+    visibility = ["//visibility:public"],
+)
+
 # buildifier: leave-alone
 cc_toolchain_import(
-    name = "imports_linux_aarch64",
-    visibility = ["//visibility:public"],
+    name = "imports_lx64_la64",
     deps = [
-        "@sysroot_linux_aarch64_glibc2_27//:includes_c",
-        "//config:llvm_clang_includes",
-        "@sysroot_linux_aarch64_glibc2_27//:includes_system",
-        "@sysroot_linux_aarch64_glibc2_27//:glibc",
-        "@sysroot_linux_aarch64_glibc2_27//:pthread",
+        "@sysroot_linux_aarch64//:includes_c",
+        "@llvm_linux_x86_64//:clang_includes",
+        "@sysroot_linux_aarch64//:includes_system",
+        "@sysroot_linux_aarch64//:glibc",
+        "@sysroot_linux_aarch64//:pthread",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "all_lx64_la64",
+    srcs = [
+        ":imports_lx64_la64",
+        "//cc_toolchain/wrappers:all",
+        "//features:startup_libs_la64",
+        "@llvm_linux_x86_64//:all",
     ],
 )
 
 filegroup(
-    name = "all_linux_aarch64",
+    name = "compiler_lx64_la64",
     srcs = [
-        ":imports_linux_aarch64",
+        ":all_lx64_la64",
         "//cc_toolchain/wrappers:all",
-        "//config:llvm_all",
-        "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
+        "@llvm_linux_x86_64//:clang",
+        "@llvm_linux_x86_64//:clang++",
     ],
 )
 
 filegroup(
-    name = "compiler_linux_aarch64",
+    name = "linker_lx64_la64",
     srcs = [
-        ":all_linux_aarch64",
+        ":compiler_lx64_la64",
         "//cc_toolchain/wrappers:all",
-        "//config:llvm_clang",
-        "//config:llvm_clang++",
+        "@llvm_linux_x86_64//:ld",
+        "@sysroot_linux_aarch64//:startup_libs",
     ],
 )
 
 filegroup(
-    name = "linker_linux_aarch64",
-    srcs = [
-        ":compiler_linux_aarch64",
-        "//cc_toolchain/wrappers:all",
-        "//config:llvm_ld",
-        "@sysroot_linux_aarch64_glibc2_27//:startup_libs",
-    ],
-)
-
-filegroup(
-    name = "ar_linux_aarch64",
+    name = "ar_lx64_la64",
     srcs = [
         "//cc_toolchain/wrappers:all",
-        "//config:llvm_ar",
+        "@llvm_linux_x86_64//:ar",
     ],
 )
 
 cc_toolchain(
-    name = "linux_aarch64_toolchain",
-    all_files = ":all_linux_aarch64",
-    ar_files = ":ar_linux_aarch64",
-    compiler_files = ":compiler_linux_aarch64",
-    dwp_files = ":all_linux_aarch64",
-    linker_files = ":linker_linux_aarch64",
+    name = "toolchain_lx64_la64",
+    all_files = ":all_lx64_la64",
+    ar_files = ":ar_lx64_la64",
+    compiler_files = ":compiler_lx64_la64",
+    dwp_files = ":all_lx64_la64",
+    linker_files = ":linker_lx64_la64",
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":linux_aarch64_toolchain_config",
-    toolchain_identifier = "linux_aarch64_toolchain_id",
+    toolchain_config = ":toolchain_config_lx64_la64",
+    toolchain_identifier = "toolchain_id_lx64_la64",
 )
 
 cc_toolchain_config(
-    name = "linux_aarch64_toolchain_config",
-    archiver = "//config:llvm_ar",
-    c_compiler = "//config:llvm_clang",
-    cc_compiler = "//config:llvm_clang++",
+    name = "toolchain_config_lx64_la64",
+    archiver = "@llvm_linux_x86_64//:ar",
+    c_compiler = "@llvm_linux_x86_64//:clang",
+    cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
-        "//features:toolchain_import",
+        "//features:toolchain_import_lx64_la64",
 
         # Toolchain configuration
         "//features:garbage_collect_symbols",
@@ -265,7 +225,7 @@ cc_toolchain_config(
         "//features:fastbuild",
         "//features:position_independent_code",
         "//features:supports_pic",
-        "//features:startup_libs",
+        "//features:startup_libs_la64",
         "//features:coverage",
 
         # C++ standard configuration
@@ -273,14 +233,14 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
-    linker = "//config:llvm_ld",
+    linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
     target_system_name = "local",
 )
 
 # buildifier: leave-alone
 toolchain(
-    name = "linux_x86_64_to_aarch64",
+    name = "lx64_la64",
     exec_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
@@ -289,12 +249,12 @@ toolchain(
         "@platforms//cpu:aarch64",
         "@platforms//os:linux",
     ],
-    toolchain = ":linux_aarch64_toolchain",
+    toolchain = ":toolchain_lx64_la64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
 
 ######################################################################
-# macos aarch64
+# Tools: Linux x86_64, Sysroot: macOS aarch64
 ######################################################################
 cc_toolchain(
     name = "macos_arm64_toolchain",
@@ -312,9 +272,9 @@ cc_toolchain(
 
 cc_toolchain_config(
     name = "macos_arm64_toolchain_config",
-    archiver = "//config:llvm_ar",
-    c_compiler = "//config:llvm_clang",
-    cc_compiler = "//config:llvm_clang++",
+    archiver = "@llvm_linux_x86_64//:ar",
+    c_compiler = "@llvm_linux_x86_64//:clang",
+    cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
@@ -341,7 +301,7 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
-    linker = "//config:llvm_ld",
+    linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
     target_system_name = "local",
 )

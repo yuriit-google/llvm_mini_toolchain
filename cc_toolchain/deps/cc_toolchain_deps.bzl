@@ -4,21 +4,21 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load(":http_archive_bazel7.bzl", "http_archive_bazel7")  # Remove this line after updating bazel to 7.3.0 or newer
 
 def cc_toolchain_deps():
-    if "sysroot_linux_x86_64_glibc2_27" not in native.existing_rules():
+    if "sysroot_linux_x86_64" not in native.existing_rules():
         http_archive(
-            name = "sysroot_linux_x86_64_glibc2_27",
+            name = "sysroot_linux_x86_64",
             sha256 = "d19c4b010a75eb9d599f055c834a993d848880c936d7d91366a7c3765ad028ae",
             urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_x86_64_sysroot.tar.xz"],
-            build_file = "//config:sysroot_linux_x86_64_glibc2_27.BUILD",
+            build_file = "//config:sysroot_linux_x86_64.BUILD",
             strip_prefix = "ubuntu18_x86_64_sysroot",
         )
 
-    if "sysroot_linux_aarch64_glibc2_27" not in native.existing_rules():
+    if "sysroot_linux_aarch64" not in native.existing_rules():
         http_archive(
-            name = "sysroot_linux_aarch64_glibc2_27",
+            name = "sysroot_linux_aarch64",
             sha256 = "d883a1d664500f11bb49aa70c650a9e68d49341324c447f9abda77ec2f335ac5",
             urls = ["https://media.githubusercontent.com/media/yuriit-google/binutils/refs/heads/main/ubuntu18_aarch64-sysroot.tar.xz"],
-            build_file = "//config:sysroot_linux_aarch64_glibc2_27.BUILD",
+            build_file = "//config:sysroot_linux_aarch64.BUILD",
             strip_prefix = "ubuntu18_aarch64-sysroot",
         )
 

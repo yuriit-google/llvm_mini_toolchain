@@ -10,7 +10,7 @@ CLANG_VERSION = "18"
 filegroup(
     name = "all",
     srcs = glob(["**/*"]),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -18,7 +18,7 @@ filegroup(
     srcs = [
         "bin/clang",
     ],
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -26,7 +26,7 @@ filegroup(
     srcs = [
         "bin/clang++",
     ],
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -34,7 +34,7 @@ filegroup(
     srcs = [
         "bin/ld.lld",
     ],
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -58,5 +58,5 @@ cc_toolchain_import(
         "@platforms//os:linux": [],
         "@platforms//os:macos": [],
     }),
-    visibility = ["@llvm_mini_toolchain//config:__pkg__"],
+    visibility = ["//visibility:public"],
 )
