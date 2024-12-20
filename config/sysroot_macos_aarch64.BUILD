@@ -135,10 +135,10 @@ cc_toolchain_import(
 
 # TODO: Add below line to compilation (Linux -> macOS)
 # external/sysroot_macos_arm64/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd
-#cc_toolchain_import(
-#    name = "core_foundation",
-#    shared_library = "System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd",
-#)
+cc_toolchain_import(
+    name = "core_foundation",
+    shared_library = "System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd",
+)
 
 # This is a group of all the system libraries we need. The actual glibc library is split
 # out to fix link ordering problems that cause false undefined symbol positives.

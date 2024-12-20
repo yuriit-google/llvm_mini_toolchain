@@ -30,5 +30,9 @@ That's it, you project is ready for cross-platform builds where target is macOS 
 # Modify macOS SDK
 
 <code>
- sudo ln -s ./System/Library/Frameworks/CoreFoundation.framework/Headers ./System/Library/Frameworks/CoreFoundation
+ cd ./System/Library/Frameworks/
+</code>
+<br />
+<code>
+ sudo ln -s ./CoreFoundation.framework/Versions/Current/Headers ./CoreFoundation
 </code>
