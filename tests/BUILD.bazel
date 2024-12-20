@@ -53,3 +53,10 @@ cc_test(
         "@com_google_absl//absl/strings",
     ],
 )
+
+#############################################
+# macOS temporary test
+#cc_binary(
+#    name = "macos",
+#    srcs = ["macos.cc"],
+#)
