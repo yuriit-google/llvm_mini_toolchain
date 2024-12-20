@@ -3,12 +3,12 @@ Project supports hermetic builds on:
 * Linux x86_64 - Done
 * macOS - <i>In Progress</i>
 
-You could run hermetic builds by run
+You could run hermetic build with help of command
 
 `bazel build //tests/...`
 
 If project doesn't support cross-platform builds for specified platform,
-it will use host utilities and sysroot for running build.
+it will use host utilities and host sysroot for running such build.
 
 # Cross-platform builds
 Project supports cross-platform builds only on Linux x86_64 executor 
