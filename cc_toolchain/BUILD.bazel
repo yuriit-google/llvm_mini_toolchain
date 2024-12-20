@@ -123,6 +123,7 @@ toolchain(
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
     ],
+    target_settings = ["//config:hermetic_cc_on"],
     toolchain = ":toolchain_lx64_lx64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
@@ -249,6 +250,7 @@ toolchain(
         "@platforms//cpu:aarch64",
         "@platforms//os:linux",
     ],
+    target_settings = ["//config:hermetic_cc_on"],
     toolchain = ":toolchain_lx64_la64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
@@ -375,6 +377,7 @@ toolchain(
         "@platforms//cpu:aarch64",
         "@platforms//os:macos",
     ],
+    target_settings = ["//config:hermetic_cc_on"],
     toolchain = ":toolchain_lx64_ma64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
