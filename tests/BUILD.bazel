@@ -56,7 +56,7 @@ cc_test(
 
 #############################################
 # macOS temporary test
-cc_binary(
-    name = "macos",
-    srcs = ["macos.cc"],
-)
+#cc_binary(
+#    name = "macos",
+#    srcs = ["macos.cc"],
+#)
