@@ -1,6 +1,6 @@
 build --incompatible_enable_cc_toolchain_resolution     # C++ rules use platforms to select toolchains when you set this
 build --toolchain_resolution_debug=.*
-#build:linux --cxxopt=-std=c++17
+build --cxxopt=-std=c++17
 #build:linux --host_cxxopt=-std=c++17
 
 ##################################################################
