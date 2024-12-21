@@ -28,6 +28,12 @@ cc_toolchain_import_feature(
 )
 
 cc_toolchain_import_feature(
+    name = "toolchain_import_ma64_ma64",
+    enabled = True,
+    toolchain_import = "//cc_toolchain:imports_ma64_ma64",
+)
+
+cc_toolchain_import_feature(
     name = "startup_libs_lx64",
     enabled = True,
     toolchain_import = "//cc_toolchain:startup_libs_lx64",

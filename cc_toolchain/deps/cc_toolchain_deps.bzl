@@ -46,3 +46,12 @@ def cc_toolchain_deps():
                 "lib/libtinfo5-copyright.txt": "sha256-Xo7pAsiQbdt3ef023Jl5ywi1H76/fAsamut4rzgq9ZA=",
             },
         )
+
+    if "llvm_macos_aarch64" not in native.existing_rules():
+        http_archive(
+            name = "llvm_macos_aarch64",
+            url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-arm64-apple-macos11.tar.xz",
+            sha256 = "4573b7f25f46d2a9c8882993f091c52f416c83271db6f5b213c93f0bd0346a10",
+            build_file = "//config:llvm_macos_aarch64.BUILD",
+            strip_prefix = "clang+llvm-18.1.8-arm64-apple-macos11",
+        )

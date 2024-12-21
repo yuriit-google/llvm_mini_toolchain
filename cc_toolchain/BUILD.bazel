@@ -381,3 +381,130 @@ toolchain(
     toolchain = ":toolchain_lx64_ma64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
+
+######################################################################
+# Tools: macOS aarch64, Sysroot: macOS aarch64
+######################################################################
+
+alias(
+    name = "startup_libs_ma64",
+    actual = "@sysroot_macos_aarch64//:startup_libs",
+    visibility = ["//visibility:public"],
+)
+
+# buildifier: leave-alone
+cc_toolchain_import(
+    name = "imports_ma64_ma64",
+    deps = [
+        "@sysroot_macos_aarch64//:includes_c",
+        "@llvm_macos_aarch64//:clang_includes",
+        "@sysroot_macos_aarch64//:includes_system",
+        "@sysroot_macos_aarch64//:glibc",
+        "@sysroot_macos_aarch64//:pthread",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "all_ma64_ma64",
+    srcs = [
+        ":imports_ma64_ma64",
+        "//cc_toolchain/wrappers:all",
+        "//features:startup_libs_ma64",
+        "@llvm_macos_aarch64//:all",
+    ],
+)
+
+filegroup(
+    name = "compiler_ma64_ma64",
+    srcs = [
+        ":all_ma64_ma64",
+        "//cc_toolchain/wrappers:all",
+        "@llvm_macos_aarch64//:clang",
+        "@llvm_macos_aarch64//:clang++",
+    ],
+)
+
+filegroup(
+    name = "linker_ma64_ma64",
+    srcs = [
+        ":compiler_ma64_ma64",
+        "//cc_toolchain/wrappers:all",
+        "@llvm_macos_aarch64//:ld",
+        "@sysroot_macos_aarch64//:startup_libs",
+    ],
+)
+
+filegroup(
+    name = "ar_ma64_ma64",
+    srcs = [
+        "//cc_toolchain/wrappers:all",
+        "@llvm_macos_aarch64//:ar",
+    ],
+)
+
+cc_toolchain(
+    name = "toolchain_ma64_ma64",
+    all_files = ":all_ma64_ma64",
+    ar_files = ":ar_ma64_ma64",
+    compiler_files = ":compiler_ma64_ma64",
+    dwp_files = ":all_ma64_ma64",
+    linker_files = ":linker_ma64_ma64",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":toolchain_config_ma64_ma64",
+    toolchain_identifier = "toolchain_id_ma64_ma64",
+)
+
+cc_toolchain_config(
+    name = "toolchain_config_ma64_ma64",
+    archiver = "@llvm_macos_aarch64//:ar",
+    c_compiler = "@llvm_macos_aarch64//:clang",
+    cc_compiler = "@llvm_macos_aarch64//:clang++",
+    compiler_features = [
+        # Hermetic libraries feature required before import.
+        "//features:hermetic_libraries",
+        "//features:toolchain_import_ma64_ma64",
+
+        # Toolchain configuration
+        #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
+        "//features:warnings",
+        "//features:errors",
+        "//features:reproducible",
+        "//features:language",
+        "//features:use_lld",
+        "//features:sysroot_ma64",
+        "//features:dbg",
+        "//features:opt",
+        "//features:fastbuild",
+        "//features:position_independent_code",
+        "//features:supports_pic",
+        "//features:startup_libs_ma64",
+        "//features:coverage",
+
+        # C++ standard configuration
+        "//features:c++11",
+        "//features:c++14",
+        "//features:c++17",
+    ],
+    linker = "@llvm_macos_aarch64//:ld",
+    target_cpu = "aarch64",
+    target_system_name = "local",
+)
+
+# buildifier: leave-alone
+toolchain(
+    name = "ma64_ma64",
+    exec_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+    target_settings = ["//config:hermetic_cc_on"],
+    toolchain = ":toolchain_ma64_ma64",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
