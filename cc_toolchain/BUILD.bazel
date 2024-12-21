@@ -386,12 +386,6 @@ toolchain(
 # Tools: macOS aarch64, Sysroot: macOS aarch64
 ######################################################################
 
-alias(
-    name = "startup_libs_ma64",
-    actual = "@sysroot_macos_aarch64//:startup_libs",
-    visibility = ["//visibility:public"],
-)
-
 # buildifier: leave-alone
 cc_toolchain_import(
     name = "imports_ma64_ma64",
