@@ -133,10 +133,12 @@ cc_toolchain_import(
     #}),
 )
 
-# TODO: Add below line to compilation (Linux -> macOS)
-# external/sysroot_macos_arm64/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd
 cc_toolchain_import(
     name = "core_foundation",
+    additional_libs = [
+        "usr/lib/libobjc.A.tbd",
+        "usr/lib/libobjc.tbd",
+    ],
     shared_library = "System/Library/Frameworks/CoreFoundation.framework/CoreFoundation.tbd",
 )
 
@@ -151,12 +153,11 @@ cc_toolchain_import(
     #}),
     visibility = ["//visibility:public"],
     deps = [
-        #":dynamic_linker",
         ":system",
         ":libm",
         ":util",
         ":stdc++",
         ":objc",
-        #":core_foundation",
+        ":core_foundation",
     ],
 )
