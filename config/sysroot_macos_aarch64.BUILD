@@ -53,7 +53,8 @@ cc_toolchain_import(
     name = "includes_system",
     hdrs = glob([
         "usr/include/**",
-        "System/Library/Frameworks/**",
+        "System/Library/Frameworks/CoreFoundation/**",                      # Include created symbolic link directory
+        "System/Library/Frameworks/CoreFoundation.framework/**",
     ]),
     includes = [
         "usr/include",
