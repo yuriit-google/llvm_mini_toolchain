@@ -36,3 +36,5 @@ That's it, you project is ready for cross-platform builds where target is macOS 
 <code>
  sudo ln -s ./CoreFoundation.framework/Versions/Current/Headers ./CoreFoundation
 </code>
+<br />
+<br />
