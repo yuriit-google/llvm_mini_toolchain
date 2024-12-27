@@ -7,3 +7,4 @@ compare/
 .clwb/
 .idea/
 /sysroots/macos_arm64/*.sdk
+/_
