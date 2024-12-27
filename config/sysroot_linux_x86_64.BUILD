@@ -110,6 +110,7 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# TODO: ld.lld: error: cannot open /usr/lib/x86_64-linux-gnu/libmvec_nonshared.a: No such file or directory
 cc_toolchain_import(
     name = "mvec",
     additional_libs = [
@@ -203,8 +204,8 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
     deps = [
         ":gcc",
-        ":math",
-        ":mvec",
+        #":math",
+        #":mvec",
         ":util",
         ":stdc++",
     ],
