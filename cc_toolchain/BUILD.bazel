@@ -72,7 +72,7 @@ cc_toolchain(
     linker_files = ":linker_lx64_lx64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_lx64_lx64",
     toolchain_identifier = "toolchain_lx64_lx64_id",
 )
@@ -198,7 +198,7 @@ cc_toolchain(
     linker_files = ":linker_lx64_la64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_lx64_la64",
     toolchain_identifier = "toolchain_id_lx64_la64",
 )
@@ -325,7 +325,7 @@ cc_toolchain(
     linker_files = ":linker_lx64_ma64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_lx64_ma64",
     toolchain_identifier = "toolchain_id_lx64_ma64",
 )
@@ -446,7 +446,7 @@ cc_toolchain(
     linker_files = ":linker_ma64_ma64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_ma64_ma64",
     toolchain_identifier = "toolchain_id_ma64_ma64",
 )
