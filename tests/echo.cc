@@ -1,6 +1,5 @@
-#include "hello_library.h"
+#include "echo.h"
 
-// TODO: Add stdlib funcions call
 std::string echo(std::string str) {
   return "You say: " + str;
 }

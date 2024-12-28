@@ -1,3 +1,4 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_proto_library", "cc_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
@@ -18,6 +19,36 @@ cc_binary(
 cc_test(
     name = "hello_world_test",
     srcs = ["hello_world.cc"],
+)
+
+#############################################
+# C++ library
+cc_library(
+    name = "echo",
+    srcs = ["echo.cc"],
+    hdrs = ["echo.h"],
+    alwayslink = True,
+)
+
+cc_binary(
+    name = "echo_dynamic",
+    linkshared = True,
+    deps = [":echo"],
+)
+
+cc_import(
+    name = "echo_import",
+    hdrs = ["echo.h"],
+    shared_library = ":echo_dynamic",
+)
+
+cc_binary(
+    name = "echo_run",
+    srcs = [
+        "echo_run.cc",
+        ":echo_dynamic",
+    ],
+    deps = [":echo_import"],
 )
 
 #############################################
@@ -55,6 +86,30 @@ cc_test(
         "@com_google_absl//absl/container:flat_hash_map",
         "@com_google_absl//absl/container:flat_hash_set",
         "@com_google_absl//absl/strings",
+    ],
+)
+
+cc_binary(
+    name = "pybind",
+    srcs = ["pybind.cc"],
+    linkshared = True,
+    deps = ["@pybind11"],
+)
+
+#cc_import(
+#    name = "pybind_import",
+#    shared_library = ":pybind",
+#)
+
+py_binary(
+    name = "pybind_tool",
+    srcs = ["pybind_tool.py"],
+    args = [
+        "-f /tmp/my.proto",
+    ],
+    #    main = ""
+    data = [
+        ":pybind",
     ],
 )
 

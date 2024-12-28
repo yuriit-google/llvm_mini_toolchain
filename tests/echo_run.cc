@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
-#include "hello_library.h"
+#include "echo.h"
 
 using namespace std;
 
 int main() {
-  cout << echo("Amigo") << endl;
+  cout << echo("The string was echoed!") << endl;
   return 0;
 }
 
