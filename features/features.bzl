@@ -93,7 +93,7 @@ the target is a C or C++ library.",
 
 def _file_to_library_flag(file):
     lib_prefix = "lib"
-    if file.basename.startswith(lib_prefix):
+    if file.basename.startswith(lib_prefix) and not file.extension.isdigit():  # don't add -l<x> if lib name ends with digit. Ex.: libm.so.6
         library_name = file.basename.replace("." + file.extension, "")
         library_flag = "-l" + library_name[len(lib_prefix):]
     else:
@@ -103,7 +103,16 @@ def _file_to_library_flag(file):
 
 LIB_EXCLUDE_CRT_OBJS = ["crt1.o", "Scrt1.o", "gcrt1.o", "Mcrt1.o"]
 
-def _filter_for_shared_obj(flags):
+def _filter_nonshared_lib(lib_file_list):
+    noshared_lib_path_list = []
+
+    for file in lib_file_list:
+        if file.basename.endswith("_nonshared.a"):
+            noshared_lib_path_list.append(file.path)
+
+    return noshared_lib_path_list
+
+def _filter_crts_for_shared_obj(flags):
     libFlags = []
     for flag in flags:
         needed = True
@@ -196,7 +205,7 @@ def _import_feature_impl(ctx):
             ],
         ))
 
-    linker_flags_for_shared_obj = depset(_filter_for_shared_obj([
+    linker_flags_for_shared_obj = depset(_filter_crts_for_shared_obj([
         _file_to_library_flag(file)
         for file in toolchain_import_info
             .linking_context.static_libraries.to_list()
@@ -216,6 +225,36 @@ def _import_feature_impl(ctx):
                 ),
             ],
         ))
+
+    linker_noshared_lib_flags = _filter_nonshared_lib(toolchain_import_info
+        .linking_context.additional_libs.to_list())
+    if linker_noshared_lib_flags:
+        #print("linker_noshared_lib_flags: ", linker_noshared_lib_flags)
+        flag_sets.append(flag_set(
+            actions = [
+                ACTION_NAMES.cpp_link_executable,
+                ACTION_NAMES.cpp_link_dynamic_library,
+            ],
+            flag_groups = [
+                flag_group(
+                    flags = linker_noshared_lib_flags,
+                ),
+            ],
+        ))
+
+    linker_dir_flags = depset([
+        "-L" + file.dirname
+        for file in toolchain_import_info
+            .linking_context.static_libraries.to_list()
+    ] + [
+        "-L" + file.dirname
+        for file in toolchain_import_info
+            .linking_context.dynamic_libraries.to_list()
+    ] + [
+        "-L" + file.dirname
+        for file in toolchain_import_info
+            .linking_context.additional_libs.to_list()
+    ]).to_list()
 
     library_feature = _feature(
         name = ctx.label.name,
