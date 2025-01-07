@@ -43,9 +43,18 @@ cc_import(
 )
 
 cc_binary(
-    name = "echo_run",
+    name = "echo_usage",
     srcs = [
-        "echo_run.cc",
+        "echo_usage.cc",
+        ":echo_dynamic",
+    ],
+    deps = [":echo_import"],
+)
+
+cc_test(
+    name = "echo_test",
+    srcs = [
+        "echo_test.cc",
         ":echo_dynamic",
     ],
     deps = [":echo_import"],
