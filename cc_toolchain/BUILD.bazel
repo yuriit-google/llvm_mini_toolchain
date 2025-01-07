@@ -312,7 +312,7 @@ filegroup(
     name = "ar_lx64_ma64",
     srcs = [
         "//cc_toolchain/wrappers:all",
-        "@llvm_linux_x86_64//:ar",
+        "@llvm_linux_x86_64//:ar_darwin",
     ],
 )
 
@@ -332,7 +332,7 @@ cc_toolchain(
 
 cc_toolchain_config(
     name = "toolchain_config_lx64_ma64",
-    archiver = "@llvm_linux_x86_64//:ar",
+    archiver = "@llvm_linux_x86_64//:ar_darwin",
     c_compiler = "@llvm_linux_x86_64//:clang",
     cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
@@ -363,6 +363,7 @@ cc_toolchain_config(
     ],
     linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
+    target_libc = "macosx",
     target_system_name = "local",
 )
 
