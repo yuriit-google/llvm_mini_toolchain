@@ -118,6 +118,7 @@ cc_toolchain_import(
 cc_toolchain_import(
     name = "math",
     additional_libs = [
+        "usr/lib/x86_64-linux-gnu/libm.so",
         "usr/lib/x86_64-linux-gnu/libm-2.27.a",
     ],
     shared_library = "lib/x86_64-linux-gnu/libm.so.6",
