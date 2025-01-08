@@ -13,12 +13,11 @@
 #
 
 from argparse import ArgumentParser
-from protogen import libprotogen
+from tests import libprotogen
 
-#print(libpybind.first_func(3, 2))
 def save_proto(file_name):
     f = open(file_name, "w")
-    f.write(protogen.get_proto())
+    f.write(libprotogen.get_proto())
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",
@@ -27,7 +26,7 @@ parser.add_argument("-f", "--file", dest="filename",
 args = parser.parse_args()
 
 if str.isspace(args.filename):
-    print("Put correct filename. For example: -f '/tmp/my.proto'")
+    print("Put correct filename. For example: -f './my.proto'")
 else:
     save_proto(args.filename)
 

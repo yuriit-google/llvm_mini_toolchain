@@ -6,10 +6,6 @@
 
 #include "pybind11/pybind11.h"
 
-int first_func(int a, int b) {
-  return a + b + 13;
-}
-
 std::string get_proto() {
     std::string proto = "syntax = \"proto3\";\n";
 
@@ -25,8 +21,13 @@ std::string get_proto() {
     return proto;
 }
 
+//int hash_code(int a) {
+//    int start = 12;
+//    return 31 * start + a;
+//}
+
 PYBIND11_MODULE(libprotogen, m) {
-    m.doc() = "pybind11 example plugin";
-    m.def("first_func", &first_func, "The first function");
+    m.doc() = "pybind11 proto generator plugin";
     m.def("get_proto", &get_proto, "Generates content of proto file");
+    //m.def("hash_code", &hash_code, "The first function");
 }
