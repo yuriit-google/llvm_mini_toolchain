@@ -1,10 +1,6 @@
 load(
-    "@rules_cc//cc:cc_toolchain_config_lib.bzl",
-    "FeatureInfo",
-    "feature",
-    "flag_group",
-    "flag_set",
-    _feature = "feature",
+    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
+    "CcToolchainImportInfo",
 )
 load(
     "@rules_cc//cc:action_names.bzl",
@@ -13,10 +9,15 @@ load(
     "ALL_CC_COMPILE_ACTION_NAMES",
     "ALL_CPP_COMPILE_ACTION_NAMES",
     "CC_LINK_EXECUTABLE_ACTION_NAMES",
+    "DYNAMIC_LIBRARY_LINK_ACTION_NAMES",
 )
 load(
-    "@llvm_mini_toolchain//features:cc_toolchain_import.bzl",
-    "CcToolchainImportInfo",
+    "@rules_cc//cc:cc_toolchain_config_lib.bzl",
+    "FeatureInfo",
+    "feature",
+    "flag_group",
+    "flag_set",
+    _feature = "feature",
 )
 
 def _cc_feature_impl(ctx):
@@ -101,6 +102,22 @@ def _file_to_library_flag(file):
 
     return library_flag
 
+LIB_EXCLUDE_CRT_OBJS = ["crt1.o", "Scrt1.o", "gcrt1.o", "Mcrt1.o"]
+
+def _filter_for_shared_obj(flags):
+    libFlags = []
+    for flag in flags:
+        needed = True
+        for crtObj in LIB_EXCLUDE_CRT_OBJS:
+            if crtObj in flag:
+                needed = False
+                break
+
+        if needed:
+            libFlags.append(flag)
+
+    return libFlags
+
 def _import_feature_impl(ctx):
     toolchain_import_info = ctx.attr.toolchain_import[CcToolchainImportInfo]
 
@@ -138,7 +155,6 @@ def _import_feature_impl(ctx):
             .linking_context.additional_libs.to_list()
     ]).to_list()
 
-    lib_prefix = "lib"
     linker_flags = depset([
         _file_to_library_flag(file)
         for file in toolchain_import_info
@@ -181,6 +197,27 @@ def _import_feature_impl(ctx):
             ],
         ))
 
+    linker_flags_for_shared_obj = depset(_filter_for_shared_obj([
+        _file_to_library_flag(file)
+        for file in toolchain_import_info
+            .linking_context.static_libraries.to_list()
+    ]) + [
+        _file_to_library_flag(file)
+        for file in toolchain_import_info
+            .linking_context.dynamic_libraries.to_list()
+    ]).to_list()
+
+    if linker_dir_flags or linker_flags_for_shared_obj:
+        flag_sets.append(flag_set(
+            actions = [ACTION_NAMES.cpp_link_dynamic_library],
+            flag_groups = [
+                flag_group(
+                    flags = linker_dir_flags +
+                            linker_flags_for_shared_obj,
+                ),
+            ],
+        ))
+
     library_feature = _feature(
         name = ctx.label.name,
         enabled = ctx.attr.enabled,
@@ -211,6 +248,7 @@ def _sysroot_feature(ctx):
         flag_sets = [
             flag_set(
                 actions = CC_LINK_EXECUTABLE_ACTION_NAMES +
+                          DYNAMIC_LIBRARY_LINK_ACTION_NAMES +
                           ALL_CC_COMPILE_ACTION_NAMES,
                 flag_groups = [
                     flag_group(

@@ -1,4 +1,9 @@
 load(
+    "@rules_cc//cc:action_names.bzl",
+    "ACTION_NAMES",
+    "ACTION_NAME_GROUPS",
+)
+load(
     "@rules_cc//cc:cc_toolchain_config_lib.bzl",
     "FeatureInfo",
     "action_config",
@@ -7,11 +12,6 @@ load(
     "feature",
     "tool",
     "tool_path",
-)
-load(
-    "@rules_cc//cc:action_names.bzl",
-    "ACTION_NAMES",
-    "ACTION_NAME_GROUPS",
 )
 
 ALL_ACTIONS = [
@@ -77,8 +77,8 @@ def _cc_toolchain_config_impl(ctx):
         host_system_name = "local",
         target_system_name = ctx.attr.target_system_name,
         target_cpu = ctx.attr.target_cpu,
+        target_libc = ctx.attr.target_libc,
         toolchain_identifier = "aarch64_linux_clang_id",
-        target_libc = "unknown",
         compiler = "clang",
         abi_version = "unknown",
         abi_libc_version = "unknown",
@@ -107,6 +107,11 @@ cc_toolchain_config = rule(
         "target_cpu": attr.string(
             doc = "Target CPU name.",
             mandatory = True,
+        ),
+        "target_libc": attr.string(
+            doc = "Target libc.",
+            mandatory = False,
+            default = "unknown",
         ),
         "_tool_paths": attr.string_dict(
             default = {

@@ -43,6 +43,12 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "ar_darwin",
+    srcs = ["bin/llvm-libtool-darwin"],
+    visibility = ["//visibility:public"],
+)
+
 cc_toolchain_import(
     name = "clang_includes",
     hdrs = glob([

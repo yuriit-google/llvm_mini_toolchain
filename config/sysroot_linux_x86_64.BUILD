@@ -15,6 +15,9 @@ sysroot_package(
 GCC_VERSION = 7
 GLIBC_VERSION = "2.27"
 
+# Details about C RunTime (CRT) objects:
+# https://docs.oracle.com/cd/E88353_01/html/E37853/crt1.o-7.html
+# https://dev.gentoo.org/~vapier/crt.txt
 CRT_OBJECTS = [
     "crti",
     "crtn",
@@ -32,10 +35,6 @@ CRT_OBJECTS = [
 
 cc_toolchain_import(
     name = "startup_libs",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
     deps = [":" + obj for obj in CRT_OBJECTS],
 )
@@ -53,10 +52,6 @@ cc_toolchain_import(
         "usr/include/c++/7/backward",
         "usr/include/c++/7/experimental",
     ],
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -72,10 +67,6 @@ cc_toolchain_import(
         "usr/include/x86_64-linux-gnu",
         "usr/include",
     ],
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -85,13 +76,8 @@ cc_toolchain_import(
         "lib/x86_64-linux-gnu/libgcc_s.so.1",       # TODO: check this (docker image has this file)
         "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libgcc_eh.a".format(gcc_version = GCC_VERSION),
     ],
-    runtime_path = "/usr/lib/x86_64-linux-gnu",
     shared_library = "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libgcc_s.so".format(gcc_version = GCC_VERSION),
     static_library = "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libgcc.a".format(gcc_version = GCC_VERSION),
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -103,13 +89,10 @@ cc_toolchain_import(
     ],
     shared_library = "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libstdc++.so".format(gcc_version = GCC_VERSION),
     static_library = "usr/lib/gcc/x86_64-linux-gnu/{gcc_version}/libstdc++.a".format(gcc_version = GCC_VERSION),
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
 )
 
+# TODO: ld.lld: error: cannot open /usr/lib/x86_64-linux-gnu/libmvec_nonshared.a: No such file or directory
 cc_toolchain_import(
     name = "mvec",
     additional_libs = [
@@ -119,10 +102,6 @@ cc_toolchain_import(
     ],
     shared_library = "usr/lib/x86_64-linux-gnu/libmvec.so",
     static_library = "usr/lib/x86_64-linux-gnu/libmvec.a",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
 )
 
 cc_toolchain_import(
@@ -131,25 +110,19 @@ cc_toolchain_import(
         "lib64/ld-linux-x86-64.so.2",
         "lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
     ],
-    runtime_path = "/lib64",
     shared_library = "usr/lib/x86_64-linux-gnu/libdl.so",
     static_library = "usr/lib/x86_64-linux-gnu/libdl.a",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     deps = [":libc"],
 )
 
 cc_toolchain_import(
     name = "math",
-    additional_libs = ["lib/x86_64-linux-gnu/libm.so.6"],
+    additional_libs = [
+        "lib/x86_64-linux-gnu/libm.so.6",
+        "usr/lib/x86_64-linux-gnu/libm-{glibc_version}.a".format(glibc_version = GLIBC_VERSION),
+        "usr/lib/x86_64-linux-gnu/libpthread_nonshared.a",
+    ],
     shared_library = "usr/lib/x86_64-linux-gnu/libm.so",
-    static_library = "usr/lib/x86_64-linux-gnu/libm.a",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
 )
 
@@ -162,10 +135,6 @@ cc_toolchain_import(
     ],
     shared_library = "usr/lib/x86_64-linux-gnu/libpthread.so",
     static_library = "usr/lib/x86_64-linux-gnu/libpthread.a",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
     deps = [
         ":libc",
@@ -180,10 +149,6 @@ cc_toolchain_import(
     ],
     shared_library = "usr/lib/x86_64-linux-gnu/libutil.so",
     static_library = "usr/lib/x86_64-linux-gnu/libutil.a",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
 )
 
 cc_toolchain_import(
@@ -193,13 +158,8 @@ cc_toolchain_import(
         "lib/x86_64-linux-gnu/libc-{glibc_version}.so".format(glibc_version = GLIBC_VERSION),
         "usr/lib/x86_64-linux-gnu/libc_nonshared.a",
     ],
-    runtime_path = "/usr/lib/gcc/x86_64-linux-gnu/{gcc_version}".format(gcc_version = GCC_VERSION),
     shared_library = "usr/lib/x86_64-linux-gnu/libc.so",
     static_library = "usr/lib/x86_64-linux-gnu/libc.a",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
     deps = [
         ":gcc",
@@ -214,11 +174,6 @@ cc_toolchain_import(
 # out to fix link ordering problems that cause false undefined symbol positives.
 cc_toolchain_import(
     name = "glibc",
-    runtime_path = "/lib/x86_64-linux-gnu",
-    #target_compatible_with = select({
-    #    "@platforms//os:linux": ["@platforms//cpu:x86_64"],
-    #    "//conditions:default": ["@platforms//:incompatible"],
-    #}),
     visibility = ["//visibility:public"],
     deps = [
         ":dynamic_linker",

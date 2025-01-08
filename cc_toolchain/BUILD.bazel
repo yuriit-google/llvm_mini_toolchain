@@ -72,7 +72,7 @@ cc_toolchain(
     linker_files = ":linker_lx64_lx64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_lx64_lx64",
     toolchain_identifier = "toolchain_lx64_lx64_id",
 )
@@ -198,7 +198,7 @@ cc_toolchain(
     linker_files = ":linker_lx64_la64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_lx64_la64",
     toolchain_identifier = "toolchain_id_lx64_la64",
 )
@@ -312,7 +312,7 @@ filegroup(
     name = "ar_lx64_ma64",
     srcs = [
         "//cc_toolchain/wrappers:all",
-        "@llvm_linux_x86_64//:ar",
+        "@llvm_linux_x86_64//:ar_darwin",
     ],
 )
 
@@ -325,14 +325,14 @@ cc_toolchain(
     linker_files = ":linker_lx64_ma64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_lx64_ma64",
     toolchain_identifier = "toolchain_id_lx64_ma64",
 )
 
 cc_toolchain_config(
     name = "toolchain_config_lx64_ma64",
-    archiver = "@llvm_linux_x86_64//:ar",
+    archiver = "@llvm_linux_x86_64//:ar_darwin",
     c_compiler = "@llvm_linux_x86_64//:clang",
     cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
@@ -363,6 +363,7 @@ cc_toolchain_config(
     ],
     linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
+    target_libc = "macosx",
     target_system_name = "local",
 )
 
@@ -446,7 +447,7 @@ cc_toolchain(
     linker_files = ":linker_ma64_ma64",
     objcopy_files = ":empty",
     strip_files = ":empty",
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_ma64_ma64",
     toolchain_identifier = "toolchain_id_ma64_ma64",
 )
