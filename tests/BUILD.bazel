@@ -98,33 +98,27 @@ cc_test(
     ],
 )
 
+#############################################
+# Hermetic CC Toolchain Ultimate Test
 cc_binary(
-    name = "pybind",
-    srcs = ["pybind.cc"],
+    name = "protogen",
+    srcs = ["protogen.cc"],
     linkshared = True,
     deps = ["@pybind11"],
 )
 
-#cc_import(
-#    name = "pybind_import",
-#    shared_library = ":pybind",
-#)
-
 py_binary(
-    name = "pybind_tool",
-    srcs = ["pybind_tool.py"],
+    name = "protogen_wrapper",
+    srcs = ["protogen_wrapper.py"],
     args = [
         "-f /tmp/my.proto",
     ],
-    #    main = ""
     data = [
-        ":pybind",
+        ":protogen",
     ],
 )
 
-#############################################
-# macOS temporary test
-#cc_binary(
-#    name = "macos",
-#    srcs = ["macos.cc"],
+#genrule(
+#    name = "proto",
+#    cmd = "$(location :)",
 #)
