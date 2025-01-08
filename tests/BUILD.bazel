@@ -112,9 +112,9 @@ cc_binary(
 py_binary(
     name = "protogen_tool",
     srcs = ["protogen_tool.py"],
-    args = [
-        "-f /tmp/my.proto",
-    ],
+    #args = [
+    #    "-f /tmp/my.proto",
+    #],
     data = [
         ":protogen",
     ],
