@@ -7,8 +7,7 @@ using namespace std;
 
 int main() {
 
-  std::string s = "The string was echoed!";
-  assert(s.compare(echo("The string was echoed!")));
+  assert("You say: The string was echoed!" == echo("The string was echoed!"));
 
   return 0;
 }
