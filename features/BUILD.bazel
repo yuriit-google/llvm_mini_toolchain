@@ -169,6 +169,16 @@ cc_feature(
     implies = [":supports_pic"],
 )
 
+# Undefined symbols for macOS (pybind modules)
+# TODO: Add only to libraries (now adds for all)
+cc_feature(
+    name = "undefined_symbols",
+    enabled = True,
+    linker_flags = [
+        "-Wl,-undefined,dynamic_lookup",
+    ],
+)
+
 cc_toolchain_sysroot_feature(
     name = "sysroot_lx64",
     enabled = True,

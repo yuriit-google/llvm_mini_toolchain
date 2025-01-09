@@ -339,6 +339,7 @@ cc_toolchain_config(
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
         "//features:toolchain_import_lx64_ma64",
+        "//features:undefined_symbols",
 
         # Toolchain configuration
         #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
@@ -462,6 +463,7 @@ cc_toolchain_config(
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
         "//features:toolchain_import_ma64_ma64",
+        "//features:undefined_symbols",
 
         # Toolchain configuration
         #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
