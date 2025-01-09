@@ -26,6 +26,6 @@ std::string say_hello(std::string name) {
     return "Hello, " + echo_name(name);
 }
 
-PYBIND11_MODULE(libprotoclient, m) {
+PYBIND11_MODULE(protoclient, m) {
     m.def("say_hello", &say_hello, "Adds 'Hello' before your name");
 }

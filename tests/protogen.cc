@@ -26,7 +26,7 @@ std::string get_proto() {
 //    return 31 * start + a;
 //}
 
-PYBIND11_MODULE(libprotogen, m) {
+PYBIND11_MODULE(protogen, m) {
     m.doc() = "pybind11 proto generator plugin";
     m.def("get_proto", &get_proto, "Generates content of proto file");
     //m.def("hash_code", &hash_code, "The first function");

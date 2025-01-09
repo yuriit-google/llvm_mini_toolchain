@@ -13,11 +13,11 @@
 #
 
 from argparse import ArgumentParser
-from tests import libprotogen
+from tests import protogen
 
 def save_proto(file_name):
     f = open(file_name, "w")
-    f.write(libprotogen.get_proto())
+    f.write(protogen.get_proto())
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",

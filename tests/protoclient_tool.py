@@ -12,6 +12,6 @@
 # Target - for mac
 #
 
-from tests import libprotoclient
+from tests import protoclient
 
-print(libprotoclient.say_hello("Julius Caesar"))
+print(protoclient.say_hello("Julius Caesar"))

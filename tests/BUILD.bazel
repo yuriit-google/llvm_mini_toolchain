@@ -105,8 +105,16 @@ cc_test(
 cc_binary(
     name = "protogen",
     srcs = ["protogen.cc"],
+    #linkopts = ["-Wl,-undefined,dynamic_lookup"],
     linkshared = True,
     deps = ["@pybind11"],
+)
+
+genrule(
+    name = "protogen_so",
+    srcs = [":protogen"],
+    outs = ["protogen.so"],
+    cmd = "cp $(location :protogen) $@",
 )
 
 py_binary(
@@ -115,9 +123,7 @@ py_binary(
     #args = [
     #    "-f /tmp/my.proto",
     #],
-    data = [
-        ":protogen",
-    ],
+    data = [":protogen.so"],
 )
 
 genrule(
@@ -143,7 +149,7 @@ cc_proto_library(
 cc_binary(
     name = "protoclient",
     srcs = ["protoclient.cc"],
-    linkopts = ["-Wl,-undefined,dynamic_lookup"],
+    #linkopts = ["-Wl,-undefined,dynamic_lookup"],
     linkshared = True,
     linkstatic = True,
     deps = [
@@ -153,9 +159,16 @@ cc_binary(
     ],
 )
 
+genrule(
+    name = "protoclient_so",
+    srcs = [":protoclient"],
+    outs = ["protoclient.so"],
+    cmd = "cp $(location :protoclient) $@",
+)
+
 py_binary(
     name = "protoclient_tool",
     srcs = ["protoclient_tool.py"],
-    data = [":protoclient"],
+    data = [":protoclient.so"],
     deps = [],
 )
