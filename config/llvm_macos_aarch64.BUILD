@@ -39,7 +39,7 @@ filegroup(
 
 filegroup(
     name = "ar",
-    srcs = ["bin/llvm-ar"],
+    srcs = ["bin/llvm-libtool-darwin"],
     visibility = ["//visibility:public"],
 )
 

@@ -487,6 +487,7 @@ cc_toolchain_config(
     dynamic_library_extension = ".dylib",
     linker = "@llvm_macos_aarch64//:ld",
     target_cpu = "aarch64",
+    target_libc = "macosx",
     target_system_name = "local",
 )
 
