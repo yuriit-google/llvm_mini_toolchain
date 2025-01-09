@@ -143,6 +143,7 @@ cc_proto_library(
 cc_binary(
     name = "protoclient",
     srcs = ["protoclient.cc"],
+    linkopts = ["-Wl,-undefined,dynamic_lookup"],
     linkshared = True,
     linkstatic = True,
     deps = [

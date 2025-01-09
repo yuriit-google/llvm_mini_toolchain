@@ -7,6 +7,7 @@ load(
     "@rules_cc//cc:cc_toolchain_config_lib.bzl",
     "FeatureInfo",
     "action_config",
+    "artifact_name_pattern",
     "env_entry",
     "env_set",
     "feature",
@@ -61,6 +62,25 @@ def _label_to_tool_path_feature(tool_mapping = {}):
         )],
     )
 
+def _create_artifact_name_patterns(ctx):
+    artifact_name_patterns = []
+    if ctx.attr.dynamic_library_extension:
+        artifact_name_pattern(
+            category_name = "dynamic_library",
+            prefix = "lib",
+            extension = ctx.attr.dynamic_library_extension,
+        )
+
+        artifact_name_patterns = [
+            artifact_name_pattern(
+                category_name = "dynamic_library",
+                prefix = "lib",
+                extension = ctx.attr.dynamic_library_extension,
+            ),
+        ]
+
+    return artifact_name_patterns
+
 def _cc_toolchain_config_impl(ctx):
     action_configs = [action_config(
         action_name = action,
@@ -78,6 +98,7 @@ def _cc_toolchain_config_impl(ctx):
         target_system_name = ctx.attr.target_system_name,
         target_cpu = ctx.attr.target_cpu,
         target_libc = ctx.attr.target_libc,
+        artifact_name_patterns = _create_artifact_name_patterns(ctx),
         toolchain_identifier = "aarch64_linux_clang_id",
         compiler = "clang",
         abi_version = "unknown",
@@ -112,6 +133,11 @@ cc_toolchain_config = rule(
             doc = "Target libc.",
             mandatory = False,
             default = "unknown",
+        ),
+        "dynamic_library_extension": attr.string(
+            doc = "Dynamic library extension.",
+            mandatory = False,
+            default = "",
         ),
         "_tool_paths": attr.string_dict(
             default = {
