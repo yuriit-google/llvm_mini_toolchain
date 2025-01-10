@@ -57,28 +57,34 @@ cc_test(
         "echo_test.cc",
         ":echo_dynamic",
     ],
-    deps = [":echo_import"],
+    deps = [
+        ":echo_import",
+        "@gtest//:gtest_main",
+    ],
 )
 
 #############################################
 # C++ and Google Protobuf
 cc_binary(
-    name = "hello_protobuf",
-    srcs = ["hello_protobuf.cc"],
+    name = "protobuf",
+    srcs = ["protobuf.cc"],
     deps = ["//tests/protobuf:hello_proto_lib"],
 )
 
 cc_test(
-    name = "hello_protobuf_test",
-    srcs = ["hello_protobuf.cc"],
-    deps = ["//tests/protobuf:hello_proto_lib"],
+    name = "protobuf_test",
+    srcs = ["protobuf_test.cc"],
+    deps = [
+        "//tests/protobuf:hello_proto_lib",
+        "@gtest//:gtest_main",
+    ],
 )
 
 #############################################
 # C++ and Abseil
 cc_binary(
-    name = "hello_absl",
-    srcs = ["hello_absl.cc"],
+    name = "absl",
+    srcs = ["absl.cc"],
     deps = [
         "@com_google_absl//absl/algorithm:container",
         "@com_google_absl//absl/container:flat_hash_map",
@@ -88,13 +94,14 @@ cc_binary(
 )
 
 cc_test(
-    name = "hello_absl_test",
-    srcs = ["hello_absl.cc"],
+    name = "absl_test",
+    srcs = ["absl_test.cc"],
     deps = [
         "@com_google_absl//absl/algorithm:container",
         "@com_google_absl//absl/container:flat_hash_map",
         "@com_google_absl//absl/container:flat_hash_set",
         "@com_google_absl//absl/strings",
+        "@gtest//:gtest_main",
     ],
 )
 
@@ -169,4 +176,23 @@ py_binary(
     srcs = ["protoclient_tool.py"],
     data = [":protoclient.so"],
     deps = [],
+)
+
+py_test(
+    name = "protoclient_tool_test",
+    srcs = ["protoclient_tool_test.py"],
+    data = [":protoclient.so"],
+    deps = [],
+)
+
+#############################################
+# Tests Suite
+test_suite(
+    name = "all",
+    tests = [
+        ":absl_test",
+        ":echo_test",
+        ":protobuf_test",
+        ":protoclient_tool_test",
+    ],
 )

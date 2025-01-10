@@ -1,14 +1,7 @@
-#include <iostream>
-#include <cassert>
-#include <vector>
 #include "echo.h"
+#include "gtest/gtest.h"
 
-using namespace std;
-
-int main() {
-
-  assert("You say: The string was echoed!" == echo("The string was echoed!"));
-
-  return 0;
+TEST(EchoTest, EchoTest) {
+  EXPECT_EQ("You say: The string was echoed!", echo("The string was echoed!"));
 }
 
