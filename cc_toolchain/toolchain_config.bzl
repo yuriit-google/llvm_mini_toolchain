@@ -86,7 +86,7 @@ def _cc_toolchain_config_impl(ctx):
         action_name = action,
         enabled = True,
         tools = [
-            tool(ctx.attr._tool_paths["ld"]),
+            tool(ctx.attr.tool_paths["ld"]),
         ],
         implies = [
         ],
@@ -105,7 +105,7 @@ def _cc_toolchain_config_impl(ctx):
         abi_libc_version = "unknown",
         tool_paths = [
             tool_path(name = name, path = path)
-            for name, path in ctx.attr._tool_paths.items()
+            for name, path in ctx.attr.tool_paths.items()
         ],
         features = [
             label[FeatureInfo]
@@ -139,7 +139,7 @@ cc_toolchain_config = rule(
             mandatory = False,
             default = "",
         ),
-        "_tool_paths": attr.string_dict(
+        "tool_paths": attr.string_dict(
             default = {
                 "gcc": "wrappers/posix/gcc",
                 "cpp": "wrappers/posix/cpp",

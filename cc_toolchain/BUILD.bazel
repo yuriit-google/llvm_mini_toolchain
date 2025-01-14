@@ -2,6 +2,18 @@ load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
+MACOS_TOOLS = {
+    "gcc": "wrappers/macos/gcc",
+    "cpp": "wrappers/macos/cpp",
+    "ld": "wrappers/macos/ld",
+    "ar": "wrappers/macos/ar",
+    "gcov": "wrappers/macos/idle",
+    "llvm-cov": "wrappers/macos/idle",
+    "nm": "wrappers/macos/idle",
+    "objdump": "wrappers/macos/idle",
+    "strip": "wrappers/macos/idle",
+}
+
 ######################################################################
 # Tools: Linux x86_64, Sysroot: Linux x86_64
 ######################################################################
@@ -367,6 +379,7 @@ cc_toolchain_config(
     target_cpu = "aarch64",
     target_libc = "macosx",
     target_system_name = "local",
+    tool_paths = MACOS_TOOLS,
 )
 
 # buildifier: leave-alone
@@ -491,6 +504,7 @@ cc_toolchain_config(
     target_cpu = "aarch64",
     target_libc = "macosx",
     target_system_name = "local",
+    tool_paths = MACOS_TOOLS,
 )
 
 # buildifier: leave-alone
