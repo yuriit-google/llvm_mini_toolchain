@@ -2,16 +2,16 @@ load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
-MACOS_TOOLS = {
-    "gcc": "wrappers/macos/gcc",
-    "cpp": "wrappers/macos/cpp",
-    "ld": "wrappers/macos/ld",
-    "ar": "wrappers/macos/ar",
-    "gcov": "wrappers/macos/idle",
-    "llvm-cov": "wrappers/macos/idle",
-    "nm": "wrappers/macos/idle",
-    "objdump": "wrappers/macos/idle",
-    "strip": "wrappers/macos/idle",
+MAC_TOOLS = {
+    "gcc": "wrappers/mac/gcc",
+    "cpp": "wrappers/mac/cpp",
+    "ld": "wrappers/mac/ld",
+    "ar": "wrappers/mac/ar",
+    "gcov": "wrappers/mac/idle",
+    "llvm-cov": "wrappers/mac/idle",
+    "nm": "wrappers/mac/idle",
+    "objdump": "wrappers/mac/idle",
+    "strip": "wrappers/mac/idle",
 }
 
 ######################################################################
@@ -375,11 +375,12 @@ cc_toolchain_config(
         "//features:c++17",
     ],
     dynamic_library_extension = ".dylib",
+    install_name = "@llvm_linux_x86_64//:install_name_tool_darwin",
     linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
     target_libc = "macosx",
     target_system_name = "local",
-    tool_paths = MACOS_TOOLS,
+    tool_paths = MAC_TOOLS,
 )
 
 # buildifier: leave-alone
@@ -500,11 +501,12 @@ cc_toolchain_config(
         "//features:c++17",
     ],
     dynamic_library_extension = ".dylib",
+    install_name = "@llvm_macos_aarch64//:install_name_tool_darwin",
     linker = "@llvm_macos_aarch64//:ld",
     target_cpu = "aarch64",
     target_libc = "macosx",
     target_system_name = "local",
-    tool_paths = MACOS_TOOLS,
+    tool_paths = MAC_TOOLS,
 )
 
 # buildifier: leave-alone

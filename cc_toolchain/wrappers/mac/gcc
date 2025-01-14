@@ -102,7 +102,7 @@ function get_otool_path() {
 }
 
 function call_install_name() {
-    /usr/bin/xcrun install_name_tool -change $(get_otool_path "$1") \
+    $IN_TOOL_PATH -change $(get_otool_path "$1") \
         "@loader_path/$2/$3" "${OUTPUT}"
 }
 

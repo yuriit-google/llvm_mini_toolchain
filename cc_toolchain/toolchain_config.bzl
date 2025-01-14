@@ -115,6 +115,7 @@ def _cc_toolchain_config_impl(ctx):
             "cpp": ctx.file.cc_compiler,
             "ld": ctx.file.linker,
             "ar": ctx.file.archiver,
+            "in": ctx.file.install_name,
         })],
     )
 
@@ -176,6 +177,11 @@ cc_toolchain_config = rule(
             doc = "The archiver e.g. ar/llvm-ar. Maps to tool path 'ar'.",
             allow_single_file = True,
             mandatory = True,
+        ),
+        "install_name": attr.label(
+            doc = "The install name tool for macOS e.g. install_name_tool/llvm-install-name-tool. Maps to tool path 'nmt'.",
+            allow_single_file = True,
+            mandatory = False,
         ),
     },
     provides = [CcToolchainConfigInfo],

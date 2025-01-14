@@ -43,6 +43,12 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "install_name_tool_darwin",
+    srcs = ["bin/llvm-install-name-tool"],
+    visibility = ["//visibility:public"],
+)
+
 cc_toolchain_import(
     name = "clang_includes",
     hdrs = glob([
