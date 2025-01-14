@@ -12,6 +12,12 @@
 # Target - for mac
 #
 
+import unittest
 from tests import protoclient
 
-print(protoclient.say_hello("Julius Caesar"))
+class TestProtoClient(unittest.TestCase):
+    def test(self):
+        self.assertEqual("Hello, Julius Caesar", protoclient.say_hello("Julius Caesar"))
+
+if __name__ == '__main__':
+    unittest.main()

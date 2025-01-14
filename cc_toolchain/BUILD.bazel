@@ -2,6 +2,18 @@ load("@rules_cc//cc:defs.bzl", "cc_toolchain")
 load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
+MAC_TOOLS = {
+    "gcc": "wrappers/mac/gcc",
+    "cpp": "wrappers/mac/cpp",
+    "ld": "wrappers/mac/ld",
+    "ar": "wrappers/mac/ar",
+    "gcov": "wrappers/mac/idle",
+    "llvm-cov": "wrappers/mac/idle",
+    "nm": "wrappers/mac/idle",
+    "objdump": "wrappers/mac/idle",
+    "strip": "wrappers/mac/idle",
+}
+
 ######################################################################
 # Tools: Linux x86_64, Sysroot: Linux x86_64
 ######################################################################
@@ -339,6 +351,7 @@ cc_toolchain_config(
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
         "//features:toolchain_import_lx64_ma64",
+        "//features:undefined_symbols",
 
         # Toolchain configuration
         #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
@@ -361,10 +374,13 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
+    dynamic_library_extension = ".dylib",
+    install_name = "@llvm_linux_x86_64//:install_name_tool_darwin",
     linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
     target_libc = "macosx",
     target_system_name = "local",
+    tool_paths = MAC_TOOLS,
 )
 
 # buildifier: leave-alone
@@ -461,6 +477,7 @@ cc_toolchain_config(
         # Hermetic libraries feature required before import.
         "//features:hermetic_libraries",
         "//features:toolchain_import_ma64_ma64",
+        "//features:undefined_symbols",
 
         # Toolchain configuration
         #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
@@ -483,9 +500,13 @@ cc_toolchain_config(
         "//features:c++14",
         "//features:c++17",
     ],
+    dynamic_library_extension = ".dylib",
+    install_name = "@llvm_macos_aarch64//:install_name_tool_darwin",
     linker = "@llvm_macos_aarch64//:ld",
     target_cpu = "aarch64",
+    target_libc = "macosx",
     target_system_name = "local",
+    tool_paths = MAC_TOOLS,
 )
 
 # buildifier: leave-alone

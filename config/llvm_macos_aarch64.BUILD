@@ -39,7 +39,13 @@ filegroup(
 
 filegroup(
     name = "ar",
-    srcs = ["bin/llvm-ar"],
+    srcs = ["bin/llvm-libtool-darwin"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "install_name_tool_darwin",
+    srcs = ["bin/llvm-install-name-tool"],
     visibility = ["//visibility:public"],
 )
 

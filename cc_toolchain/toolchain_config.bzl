@@ -7,6 +7,7 @@ load(
     "@rules_cc//cc:cc_toolchain_config_lib.bzl",
     "FeatureInfo",
     "action_config",
+    "artifact_name_pattern",
     "env_entry",
     "env_set",
     "feature",
@@ -61,12 +62,31 @@ def _label_to_tool_path_feature(tool_mapping = {}):
         )],
     )
 
+def _create_artifact_name_patterns(ctx):
+    artifact_name_patterns = []
+    if ctx.attr.dynamic_library_extension:
+        artifact_name_pattern(
+            category_name = "dynamic_library",
+            prefix = "lib",
+            extension = ctx.attr.dynamic_library_extension,
+        )
+
+        artifact_name_patterns = [
+            artifact_name_pattern(
+                category_name = "dynamic_library",
+                prefix = "lib",
+                extension = ctx.attr.dynamic_library_extension,
+            ),
+        ]
+
+    return artifact_name_patterns
+
 def _cc_toolchain_config_impl(ctx):
     action_configs = [action_config(
         action_name = action,
         enabled = True,
         tools = [
-            tool(ctx.attr._tool_paths["ld"]),
+            tool(ctx.attr.tool_paths["ld"]),
         ],
         implies = [
         ],
@@ -78,13 +98,14 @@ def _cc_toolchain_config_impl(ctx):
         target_system_name = ctx.attr.target_system_name,
         target_cpu = ctx.attr.target_cpu,
         target_libc = ctx.attr.target_libc,
+        artifact_name_patterns = _create_artifact_name_patterns(ctx),
         toolchain_identifier = "aarch64_linux_clang_id",
         compiler = "clang",
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = [
             tool_path(name = name, path = path)
-            for name, path in ctx.attr._tool_paths.items()
+            for name, path in ctx.attr.tool_paths.items()
         ],
         features = [
             label[FeatureInfo]
@@ -94,6 +115,7 @@ def _cc_toolchain_config_impl(ctx):
             "cpp": ctx.file.cc_compiler,
             "ld": ctx.file.linker,
             "ar": ctx.file.archiver,
+            "in": ctx.file.install_name,
         })],
     )
 
@@ -113,7 +135,12 @@ cc_toolchain_config = rule(
             mandatory = False,
             default = "unknown",
         ),
-        "_tool_paths": attr.string_dict(
+        "dynamic_library_extension": attr.string(
+            doc = "Dynamic library extension.",
+            mandatory = False,
+            default = "",
+        ),
+        "tool_paths": attr.string_dict(
             default = {
                 "gcc": "wrappers/posix/gcc",
                 "cpp": "wrappers/posix/cpp",
@@ -150,6 +177,11 @@ cc_toolchain_config = rule(
             doc = "The archiver e.g. ar/llvm-ar. Maps to tool path 'ar'.",
             allow_single_file = True,
             mandatory = True,
+        ),
+        "install_name": attr.label(
+            doc = "The install name tool for macOS e.g. install_name_tool/llvm-install-name-tool. Maps to tool path 'nmt'.",
+            allow_single_file = True,
+            mandatory = False,
         ),
     },
     provides = [CcToolchainConfigInfo],
