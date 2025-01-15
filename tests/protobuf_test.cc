@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <fstream>
-#include "tests/protobuf/hello.pb.h"
+#include "tests/protobuf_hello.pb.h"
 #include "gtest/gtest.h"
 
 std::string setAndGetName(std::string name) {
