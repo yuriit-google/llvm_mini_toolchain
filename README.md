@@ -1,7 +1,7 @@
 # Hermetic builds
 Project supports hermetic builds on:
-* Linux x86_64 - Done
-* macOS - <i>In Progress</i>
+* Linux x86_64
+* macOS aarch64
 
 You could run hermetic build with help of command
 
@@ -13,8 +13,8 @@ it will use host utilities and host sysroot for running such build.
 # Cross-platform builds
 Project supports cross-platform builds only on Linux x86_64 executor 
 and allows build for such targets:
-* Linux aarch64 - Done
-* macOS aarch64 - <i>In Progress</i>
+* Linux aarch64
+* macOS aarch64
 
 ### Build for Linux aarch64
 `bazel build //tests/... --platforms=//config:linux_aarch64`
@@ -32,6 +32,6 @@ En executor and a target are the same.
 - [X] Test prototype with protobuf stubs. Make sure that new toolchains works correctly with cc_proto_library (toolchain for executor)
 - [X] Import abseil library and write tests
 - [X] Add support of hermetic build without arguments
-- [ ] Add macOS target support (aarch64 only) - <i>In Progress</i>
+- [X] Add macOS target support (aarch64 only)
 - [ ] Check -std=c++17 flag
 - [ ] Add multiple tools (clang versions) and sysroots
