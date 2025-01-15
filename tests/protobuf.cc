@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "tests/protobuf/hello.pb.h"
+#include "tests/protobuf_hello.pb.h"
 
 using namespace std;
 

@@ -43,18 +43,18 @@ cc_import(
 )
 
 cc_binary(
-    name = "echo_usage",
+    name = "echoclient",
     srcs = [
-        "echo_usage.cc",
+        "echoclient.cc",
         ":echo_dynamic",
     ],
     deps = [":echo_import"],
 )
 
 cc_test(
-    name = "echo_test",
+    name = "echoclient_test",
     srcs = [
-        "echo_test.cc",
+        "echoclient_test.cc",
         ":echo_dynamic",
     ],
     deps = [
@@ -65,17 +65,29 @@ cc_test(
 
 #############################################
 # C++ and Google Protobuf
+proto_library(
+    name = "protobuf_hello",
+    srcs = ["protobuf_hello.proto"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "protobuf_hello_lib",
+    visibility = ["//visibility:public"],
+    deps = [":protobuf_hello"],
+)
+
 cc_binary(
     name = "protobuf",
     srcs = ["protobuf.cc"],
-    deps = ["//tests/protobuf:hello_proto_lib"],
+    deps = [":protobuf_hello_lib"],
 )
 
 cc_test(
     name = "protobuf_test",
     srcs = ["protobuf_test.cc"],
     deps = [
-        "//tests/protobuf:hello_proto_lib",
+        ":protobuf_hello_lib",
         "@gtest//:gtest_main",
     ],
 )
@@ -191,7 +203,7 @@ test_suite(
     name = "all",
     tests = [
         ":absl_test",
-        ":echo_test",
+        ":echoclient_test",
         ":protobuf_test",
         ":protoclient_tool_test",
     ],
