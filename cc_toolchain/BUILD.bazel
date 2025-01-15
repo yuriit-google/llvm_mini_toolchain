@@ -3,15 +3,15 @@ load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
 MAC_TOOLS = {
-    "gcc": "wrappers/mac/gcc",
-    "cpp": "wrappers/mac/cpp",
-    "ld": "wrappers/mac/ld",
-    "ar": "wrappers/mac/ar",
-    "gcov": "wrappers/mac/idle",
-    "llvm-cov": "wrappers/mac/idle",
-    "nm": "wrappers/mac/idle",
-    "objdump": "wrappers/mac/idle",
-    "strip": "wrappers/mac/idle",
+    "gcc": "wrappers/darwin/gcc",
+    "cpp": "wrappers/darwin/cpp",
+    "ld": "wrappers/darwin/ld",
+    "ar": "wrappers/darwin/ar",
+    "gcov": "wrappers/darwin/idle",
+    "llvm-cov": "wrappers/darwin/idle",
+    "nm": "wrappers/darwin/idle",
+    "objdump": "wrappers/darwin/idle",
+    "strip": "wrappers/darwin/idle",
 }
 
 ######################################################################
