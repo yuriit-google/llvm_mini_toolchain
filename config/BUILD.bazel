@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
-load("//features:features.bzl", "cc_toolchain_import_feature")
+load("//cc_toolchain/features:features.bzl", "cc_toolchain_import_feature")
 
 package(
     default_visibility = ["//visibility:public"],
