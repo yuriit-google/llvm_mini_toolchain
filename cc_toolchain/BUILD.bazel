@@ -59,6 +59,7 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_lx64_lx64",
     srcs = [
@@ -69,6 +70,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_lx64_lx64",
     srcs = [
@@ -79,6 +81,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_lx64_lx64",
     srcs = [
@@ -89,6 +92,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_lx64_lx64",
     srcs = [
@@ -185,6 +189,7 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_lx64_la64",
     srcs = [
@@ -195,6 +200,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_lx64_la64",
     srcs = [
@@ -205,6 +211,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_lx64_la64",
     srcs = [
@@ -215,6 +222,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_lx64_la64",
     srcs = [
@@ -312,6 +320,7 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_lx64_ma64",
     srcs = [
@@ -322,6 +331,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_lx64_ma64",
     srcs = [
@@ -332,6 +342,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_lx64_ma64",
     srcs = [
@@ -342,6 +353,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_lx64_ma64",
     srcs = [
@@ -438,6 +450,7 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_ma64_ma64",
     srcs = [
@@ -448,6 +461,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_ma64_ma64",
     srcs = [
@@ -458,6 +472,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_ma64_ma64",
     srcs = [
@@ -468,6 +483,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_ma64_ma64",
     srcs = [
