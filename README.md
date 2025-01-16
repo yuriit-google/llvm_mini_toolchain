@@ -23,6 +23,11 @@ You could run hermetic build tests with help of command
 If project doesn't support cross-platform builds for specified platform,
 it will use host utilities and host sysroot for running such build.
 
+### Non-hermetic build
+When executor and a target are the same, you still can run non-hermetic build. Command should look like:
+
+`bazel build //tests/... --//config:hermetic_cc=False`
+
 ## C++ toolchains for cross-platform builds
 Project supports cross-platform builds only on Linux x86_64 executor 
 and allows build for such targets:
@@ -34,8 +39,3 @@ and allows build for such targets:
 
 #### Build for macOS aarch64
 `bazel build //tests/... --platforms=//config:macos_aarch64`
-
-### Non-hermetic build
-En executor and a target are the same.
-
-`bazel build //tests/... --//config:hermetic_cc=False`
