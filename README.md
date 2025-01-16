@@ -26,12 +26,3 @@ and allows build for such targets:
 En executor and a target are the same.
 
 `bazel build //tests/... --//config:hermetic_cc=False`
-
-# TODOs
-- [X] Create custom repository rule which downloads LLVM18 and libtinfo5
-- [X] Test prototype with protobuf stubs. Make sure that new toolchains works correctly with cc_proto_library (toolchain for executor)
-- [X] Import abseil library and write tests
-- [X] Add support of hermetic build without arguments
-- [X] Add macOS target support (aarch64 only)
-- [ ] Check -std=c++17 flag
-- [ ] Add multiple tools (clang versions) and sysroots

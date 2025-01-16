@@ -1,5 +1,27 @@
+# MIT License
+#
+# Copyright (c) 2024 Google LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 load("@rules_cc//cc:defs.bzl", "cc_toolchain")
-load("//features:cc_toolchain_import.bzl", "cc_toolchain_import")
+load("//cc_toolchain/features:cc_toolchain_import.bzl", "cc_toolchain_import")
 load(":toolchain_config.bzl", "cc_toolchain_config")
 
 MAC_TOOLS = {
@@ -37,16 +59,18 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_lx64_lx64",
     srcs = [
         ":imports_lx64_lx64",
         "//cc_toolchain/wrappers:all",
-        "//features:startup_libs_lx64",
+        "//cc_toolchain/features:startup_libs_lx64",
         "@llvm_linux_x86_64//:all",
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_lx64_lx64",
     srcs = [
@@ -57,6 +81,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_lx64_lx64",
     srcs = [
@@ -67,6 +92,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_lx64_lx64",
     srcs = [
@@ -96,29 +122,29 @@ cc_toolchain_config(
     cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
-        "//features:hermetic_libraries",
-        "//features:toolchain_import_lx64_lx64",
+        "//cc_toolchain/features:hermetic_libraries",
+        "//cc_toolchain/features:toolchain_import_lx64_lx64",
 
         # Toolchain configuration
-        "//features:garbage_collect_symbols",
-        "//features:warnings",
-        "//features:errors",
-        "//features:reproducible",
-        "//features:language",
-        "//features:use_lld",
-        "//features:sysroot_lx64",
-        "//features:dbg",
-        "//features:opt",
-        "//features:fastbuild",
-        "//features:position_independent_code",
-        "//features:supports_pic",
-        "//features:startup_libs_lx64",
-        "//features:coverage",
+        "//cc_toolchain/features:garbage_collect_symbols",
+        "//cc_toolchain/features:warnings",
+        "//cc_toolchain/features:errors",
+        "//cc_toolchain/features:reproducible",
+        "//cc_toolchain/features:language",
+        "//cc_toolchain/features:use_lld",
+        "//cc_toolchain/features:sysroot_lx64",
+        "//cc_toolchain/features:dbg",
+        "//cc_toolchain/features:opt",
+        "//cc_toolchain/features:fastbuild",
+        "//cc_toolchain/features:position_independent_code",
+        "//cc_toolchain/features:supports_pic",
+        "//cc_toolchain/features:startup_libs_lx64",
+        "//cc_toolchain/features:coverage",
 
         # C++ standard configuration
-        "//features:c++11",
-        "//features:c++14",
-        "//features:c++17",
+        "//cc_toolchain/features:c++11",
+        "//cc_toolchain/features:c++14",
+        "//cc_toolchain/features:c++17",
     ],
     linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "x86_64",
@@ -163,16 +189,18 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_lx64_la64",
     srcs = [
         ":imports_lx64_la64",
         "//cc_toolchain/wrappers:all",
-        "//features:startup_libs_la64",
+        "//cc_toolchain/features:startup_libs_la64",
         "@llvm_linux_x86_64//:all",
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_lx64_la64",
     srcs = [
@@ -183,6 +211,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_lx64_la64",
     srcs = [
@@ -193,6 +222,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_lx64_la64",
     srcs = [
@@ -222,29 +252,29 @@ cc_toolchain_config(
     cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
-        "//features:hermetic_libraries",
-        "//features:toolchain_import_lx64_la64",
+        "//cc_toolchain/features:hermetic_libraries",
+        "//cc_toolchain/features:toolchain_import_lx64_la64",
 
         # Toolchain configuration
-        "//features:garbage_collect_symbols",
-        "//features:warnings",
-        "//features:errors",
-        "//features:reproducible",
-        "//features:language",
-        "//features:use_lld",
-        "//features:sysroot_la64",
-        "//features:dbg",
-        "//features:opt",
-        "//features:fastbuild",
-        "//features:position_independent_code",
-        "//features:supports_pic",
-        "//features:startup_libs_la64",
-        "//features:coverage",
+        "//cc_toolchain/features:garbage_collect_symbols",
+        "//cc_toolchain/features:warnings",
+        "//cc_toolchain/features:errors",
+        "//cc_toolchain/features:reproducible",
+        "//cc_toolchain/features:language",
+        "//cc_toolchain/features:use_lld",
+        "//cc_toolchain/features:sysroot_la64",
+        "//cc_toolchain/features:dbg",
+        "//cc_toolchain/features:opt",
+        "//cc_toolchain/features:fastbuild",
+        "//cc_toolchain/features:position_independent_code",
+        "//cc_toolchain/features:supports_pic",
+        "//cc_toolchain/features:startup_libs_la64",
+        "//cc_toolchain/features:coverage",
 
         # C++ standard configuration
-        "//features:c++11",
-        "//features:c++14",
-        "//features:c++17",
+        "//cc_toolchain/features:c++11",
+        "//cc_toolchain/features:c++14",
+        "//cc_toolchain/features:c++17",
     ],
     linker = "@llvm_linux_x86_64//:ld",
     target_cpu = "aarch64",
@@ -290,16 +320,18 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_lx64_ma64",
     srcs = [
         ":imports_lx64_ma64",
         "//cc_toolchain/wrappers:all",
-        "//features:startup_libs_ma64",
+        "//cc_toolchain/features:startup_libs_ma64",
         "@llvm_linux_x86_64//:all",
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_lx64_ma64",
     srcs = [
@@ -310,6 +342,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_lx64_ma64",
     srcs = [
@@ -320,6 +353,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_lx64_ma64",
     srcs = [
@@ -349,30 +383,30 @@ cc_toolchain_config(
     cc_compiler = "@llvm_linux_x86_64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
-        "//features:hermetic_libraries",
-        "//features:toolchain_import_lx64_ma64",
-        "//features:undefined_symbols",
+        "//cc_toolchain/features:hermetic_libraries",
+        "//cc_toolchain/features:toolchain_import_lx64_ma64",
+        "//cc_toolchain/features:undefined_symbols",
 
         # Toolchain configuration
-        #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
-        "//features:warnings",
-        "//features:errors",
-        "//features:reproducible",
-        "//features:language",
-        "//features:use_lld",
-        "//features:sysroot_ma64",
-        "//features:dbg",
-        "//features:opt",
-        "//features:fastbuild",
-        "//features:position_independent_code",
-        "//features:supports_pic",
-        "//features:startup_libs_ma64",
-        "//features:coverage",
+        #"//cc_toolchain/features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
+        "//cc_toolchain/features:warnings",
+        "//cc_toolchain/features:errors",
+        "//cc_toolchain/features:reproducible",
+        "//cc_toolchain/features:language",
+        "//cc_toolchain/features:use_lld",
+        "//cc_toolchain/features:sysroot_ma64",
+        "//cc_toolchain/features:dbg",
+        "//cc_toolchain/features:opt",
+        "//cc_toolchain/features:fastbuild",
+        "//cc_toolchain/features:position_independent_code",
+        "//cc_toolchain/features:supports_pic",
+        "//cc_toolchain/features:startup_libs_ma64",
+        "//cc_toolchain/features:coverage",
 
         # C++ standard configuration
-        "//features:c++11",
-        "//features:c++14",
-        "//features:c++17",
+        "//cc_toolchain/features:c++11",
+        "//cc_toolchain/features:c++14",
+        "//cc_toolchain/features:c++17",
     ],
     dynamic_library_extension = ".dylib",
     install_name = "@llvm_linux_x86_64//:install_name_tool_darwin",
@@ -416,16 +450,18 @@ cc_toolchain_import(
     visibility = ["//visibility:public"],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "all_ma64_ma64",
     srcs = [
         ":imports_ma64_ma64",
         "//cc_toolchain/wrappers:all",
-        "//features:startup_libs_ma64",
+        "//cc_toolchain/features:startup_libs_ma64",
         "@llvm_macos_aarch64//:all",
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "compiler_ma64_ma64",
     srcs = [
@@ -436,6 +472,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "linker_ma64_ma64",
     srcs = [
@@ -446,6 +483,7 @@ filegroup(
     ],
 )
 
+# buildifier: leave-alone
 filegroup(
     name = "ar_ma64_ma64",
     srcs = [
@@ -475,30 +513,30 @@ cc_toolchain_config(
     cc_compiler = "@llvm_macos_aarch64//:clang++",
     compiler_features = [
         # Hermetic libraries feature required before import.
-        "//features:hermetic_libraries",
-        "//features:toolchain_import_ma64_ma64",
-        "//features:undefined_symbols",
+        "//cc_toolchain/features:hermetic_libraries",
+        "//cc_toolchain/features:toolchain_import_ma64_ma64",
+        "//cc_toolchain/features:undefined_symbols",
 
         # Toolchain configuration
-        #"//features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
-        "//features:warnings",
-        "//features:errors",
-        "//features:reproducible",
-        "//features:language",
-        "//features:use_lld",
-        "//features:sysroot_ma64",
-        "//features:dbg",
-        "//features:opt",
-        "//features:fastbuild",
-        "//features:position_independent_code",
-        "//features:supports_pic",
-        "//features:startup_libs_ma64",
-        "//features:coverage",
+        #"//cc_toolchain/features:garbage_collect_symbols",      # error: ld64.lld: error: unknown argument '--gc-sections'
+        "//cc_toolchain/features:warnings",
+        "//cc_toolchain/features:errors",
+        "//cc_toolchain/features:reproducible",
+        "//cc_toolchain/features:language",
+        "//cc_toolchain/features:use_lld",
+        "//cc_toolchain/features:sysroot_ma64",
+        "//cc_toolchain/features:dbg",
+        "//cc_toolchain/features:opt",
+        "//cc_toolchain/features:fastbuild",
+        "//cc_toolchain/features:position_independent_code",
+        "//cc_toolchain/features:supports_pic",
+        "//cc_toolchain/features:startup_libs_ma64",
+        "//cc_toolchain/features:coverage",
 
         # C++ standard configuration
-        "//features:c++11",
-        "//features:c++14",
-        "//features:c++17",
+        "//cc_toolchain/features:c++11",
+        "//cc_toolchain/features:c++14",
+        "//cc_toolchain/features:c++17",
     ],
     dynamic_library_extension = ".dylib",
     install_name = "@llvm_macos_aarch64//:install_name_tool_darwin",
